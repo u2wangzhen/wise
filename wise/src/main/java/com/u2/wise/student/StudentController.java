@@ -12,7 +12,7 @@ public class StudentController extends BaseController{
 		/*new Student()
 		.set("id", IDKit.generatorID())
 		.set("name", "test")
-		.set("age", 2)
+		.set("age", 2)发发
 		.set("sex",1).save();*/
 		System.out.println("ss");
 		Page<Student> page = Student.dao.paginate(1, 10,"select * ","from t_student ");
