@@ -3,9 +3,9 @@ package com.u2.wise.student;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.jfinal.kit.JsonKit;
 import com.jfinal.plugin.activerecord.Page;
 import com.u2.common.BaseController;
+import com.u2.common.IDKit;
 import com.u2.wise.model.Student;
 
 public class StudentController extends BaseController{
@@ -27,6 +27,14 @@ public class StudentController extends BaseController{
 	public void toAdd(){
 		
 		render(BASS_PATH+"student/add.html");
+	}
+	public void addStudent(){
+		boolean s = new Student()
+		.set("id", IDKit.generatorID())
+		.set("name", getPara("name"))
+		.set("age", getParaToInt("age"))
+		.set("sex",1).save();
+		
 	}
 	public void listData(){
 		
