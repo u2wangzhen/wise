@@ -1,7 +1,15 @@
 package com.u2.wise.model;
 
-import com.jfinal.plugin.activerecord.Model;
+import com.u2.wise.model.base.BaseStudent;
 
-public class Student extends Model<Student>{
-	public static final Student dao = new Student().dao();
+/**
+ * 
+ */
+public class Student extends BaseStudent<Student> implements java.io.Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	public static final Student dao = new Student();
+
 }

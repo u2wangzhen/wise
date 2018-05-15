@@ -13,10 +13,10 @@ import com.jfinal.plugin.druid.DruidPlugin;
 import com.jfinal.template.Engine;
 import com.u2.common.GlobalHandler;
 import com.u2.common.IfLoginInterceptor;
-import com.u2.wise.LoginController;
-import com.u2.wise.MainController;
+import com.u2.wise.controller.LoginController;
+import com.u2.wise.controller.MainController;
+import com.u2.wise.controller.StudentController2;
 import com.u2.wise.model.Student;
-import com.u2.wise.student.StudentController;
 
 public class MainConfig extends JFinalConfig{
 
@@ -63,7 +63,7 @@ public class MainConfig extends JFinalConfig{
 		// TODO Auto-generated method stub
 		me.setBaseViewPath("/");
 		me.add("/login", LoginController.class);
-		me.add("/student", StudentController.class);
+		me.add("/student", StudentController2.class);
 		me.add("/main", MainController.class);
 	}
 

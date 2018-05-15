@@ -1,4 +1,4 @@
-package com.u2.wise;
+package com.u2.wise.controller;
 
 import com.u2.common.BaseController;
 
