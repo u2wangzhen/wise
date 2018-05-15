@@ -23,7 +23,7 @@
 			<div class="layui-inline">
 				<label class="layui-form-label">姓名</label>
 				<div class="layui-input-inline">
-					<input type="text" name="name" lay-verify="required"
+					<input type="text" name="student.name" lay-verify="required"
 						autocomplete="off" class="layui-input">
 				</div>
 			</div>
@@ -34,7 +34,7 @@
 			<div class="layui-inline">
 				<label class="layui-form-label">年龄</label>
 				<div class="layui-input-inline">
-					<input type="text" name="age" lay-verify="required"
+					<input type="text" name="student.age" lay-verify="required"
 						autocomplete="off" class="layui-input">
 				</div>
 			</div>
@@ -45,13 +45,15 @@
 		<button class="layui-btn" lay-submit="" lay-filter="add">立即提交</button>
 		<button type="reset" class="layui-btn layui-btn-primary">重置</button>
 	</form>
-	#include("/WEB-INF/pages/common/_resource.html")
+	<script src="#(ctx)/lib/layui/layui.js" charset="utf-8"></script>
 	<script>
-		layui.use([ 'form', 'jquery', 'layer', 'laydate' ], function() {
-			var form = layui.form;
-			var $ = layui.jquery;
-			var layer = layui.layer;
-			var laydate = layui.laydate;
+	
+	 layui.use(['form','layer','jquery','laydate'], function(){
+         var form = layui.form,
+         	$ = layui.jquery;
+         	layer = layui.layer;
+         	laydate = layui.laydate;
+         	form.render();
 
 			laydate.render({
 				elem : ''
@@ -74,20 +76,25 @@
 
 			//监听提交
 			form.on('submit(add)', function(data) {
+				console.log(data.field);
 				$.ajax({
 					url:'#(ctx)/student/addStudent',
 					type:'POST',
 					data:data.field,
 					success:function(res){
-						alert(res);
-						parent.jtUtil.reloadTable2();
-						parent.jtUtil.closeAll();
+						console.log(JSON.stringify(res));
+						 layer.alert(res.msg, {icon: 6},function () {
+				                // 获得frame索引
+				                if(res.code==1){
+				                	 var index = parent.layer.getFrameIndex(window.name);
+						                //关闭当前frame
+						                parent.layer.close(index);
+				                }
+				            });
 					}
 				});
-				
+				return false;
 			});
-
-			form.render();
 		});
 	</script>
 </body>

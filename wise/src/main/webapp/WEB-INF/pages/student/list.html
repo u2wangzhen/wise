@@ -40,29 +40,38 @@
 			</button>
 			<span class="fr" style="line-height: 40px">共有数据：88 条</span>
 		</div>
-		<table class="layui-table" id="studentlist">
-
-		</table>
+		<table class="layui-table" id="studentlist"></table>
 
 	</div>
 	<script src="#(ctx)/lib/layui/layui.js" charset="utf-8"></script>
- 
+	<script type="text/html" id="jtBar">
+  <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
+  <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+  <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
 	<script type="text/javascript">
-		layui.use(['table','layer'], function() {
+		layui.use([ 'table', 'layer' ], function() {
 			var table = layui.table;
-			var layer=layui.layer;
-			
-			
-			
+			var layer = layui.layer;
+
 			table.render({
 				elem : '#studentlist',
 				url : '#(ctx)/student/listData',
-				page: true,
+				page : true,
+				limits : [ 13, 16, 19, 22 ],
+				limit : 13,
+				response : { //定义后端 json 格式，详细参见官方文档
+					statusName : 'code', //状态字段名称
+					statusCode : '1', //状态字段成功值
+					msgName : 'msg', //消息字段
+					countName : 'count', //总数字段
+					dataName : 'data' //数据字段
+				},
 				cols : [ [ {
 					field : 'id',
 					width : 80,
-					title : 'ID',
-					sort : true
+					checkbox : true,
+					fixed : true
 				}, {
 					field : 'name',
 					width : 80,
@@ -81,8 +90,7 @@
 					title : '父母联系方式',
 					width : '30%',
 					minWidth : 100
-				} 
-				, {
+				}, {
 					field : 'parent_info',
 					title : '信息',
 					sort : true
@@ -90,15 +98,30 @@
 					field : 'start_time',
 					title : '开始时间',
 					minWidth : 100
-				}] ]
+				}, {
+					title : '操作',
+					align : 'center',
+					toolbar : '#jtBar'
+				} ] ]
 			});
+			
+			table.on('tool(studentlist)', function(obj){
+			    var data = obj.data;
+			    if(obj.event === 'detail'){
+			    	jtUtil.detailRow('xxx详情','#(ctx)/sutra/teacher/toDetail/'+data.id);
+			    } else if(obj.event === 'del'){
+			    	jtUtil.delRow('真的删除吗','/sutra/teacher/delete/'+data.id,obj,layui.jquery);
+			    } else if(obj.event === 'edit'){
+			      layer.alert('编辑行：<br>'+ JSON.stringify(data))
+			    }
+			  });
 		});
-		function toAdd(){
+		function toAdd() {
 			layer.open({
-				  type: 2, 
-				  area: ['800px', '500px'],
-				  content: '#(ctx)/student/toAdd'
-			}); 
+				type : 2,
+				area : [ '800px', '500px' ],
+				content : '#(ctx)/student/toAdd'
+			});
 		}
 	</script>
 </body>

@@ -1,4 +1,4 @@
-package com.u2.config;
+package com.u2.common;
 
 import java.sql.Connection;
 
