@@ -82,6 +82,7 @@ public class StudentServiceImpl implements StudentService{
 		paraMap.remove("sort");
 		paraMap.remove("order");
 		Kv kv = Kv.by("id=", paraMap.get("id"));
+		kv.set("name ", paraMap.get("name"));
 		SqlPara para = Db.getSqlPara("student.pageList1", Kv.by("params", kv).set("sort", sort).set("order", order));
 		return Db.paginate(pageNum, pageSize, para);
 	}

@@ -5,8 +5,7 @@ import com.u2.common.BaseController;
 public class LoginController extends BaseController{
 
 	public void index(){
-		
-		render(BASS_PATH+"/login.html");
+		render("login.html");
 	}
 	public void toLogin(){
 		
@@ -18,13 +17,13 @@ public class LoginController extends BaseController{
 		}else{
 			setAttr("massage", "登陆失败！");
 			setSessionAttr("isLogin", false);
-			render(BASS_PATH+"/login.html");
+			render("login.html");
 		}
 		
 		
 	}
 	public void outLogin(){
 		setSessionAttr("isLogin", false);
-		render(BASS_PATH+"/login.html");
+		render("login.html");
 	}
 }

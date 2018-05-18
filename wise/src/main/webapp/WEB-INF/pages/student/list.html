@@ -14,27 +14,27 @@
 	</div>
 	<div class="weadmin-body">
 		<div class="layui-row">
-			<form class="layui-form layui-col-md12 we-search">
-				<div class="layui-inline">
+			<!-- <form class="layui-form layui-col-md12 we-search"> -->
+				<!-- <div class="layui-inline">
 					<input class="layui-input" placeholder="开始日" name="start"
 						id="start">
 				</div>
 				<div class="layui-inline">
 					<input class="layui-input" placeholder="截止日" name="end" id="end">
-				</div>
+				</div> -->
 				<div class="layui-inline">
-					<input type="text" name="username" placeholder="请输入用户名"
+					<input type="text" id="name" placeholder="请输入学生名册"
 						autocomplete="off" class="layui-input">
 				</div>
-				<button class="layui-btn" lay-submit="" lay-filter="sreach">
+				<button class="layui-btn" lay-submit="" lay-filter="sreach" id="sreachbut">
 					<i class="layui-icon">&#xe615;</i>
 				</button>
-			</form>
+			<!-- </form> -->
 		</div>
 		<div class="weadmin-block">
-			<button class="layui-btn layui-btn-danger" onclick="delAll()">
+			<!-- <button class="layui-btn layui-btn-danger" onclick="delAll()">
 				<i class="layui-icon"></i>批量删除
-			</button>
+			</button> -->
 			<button class="layui-btn" onclick="toAdd();">
 				<i class="layui-icon"></i>添加
 			</button>
@@ -50,12 +50,16 @@
   <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
 </script>
 	<script type="text/javascript">
-		layui.use([ 'table', 'layer' ], function() {
+		layui.use(['table', 'layer' ,'jquery'], function() {
+			
 			var table = layui.table;
 			var layer = layui.layer;
+			var $=layui.$;
+			
 
 			table.render({
 				elem : '#studentlist',
+				id:"studentlistreload",
 				url : '#(ctx)/student/listData',
 				page : true,
 				limits : [ 13, 16, 19, 22 ],
@@ -69,7 +73,7 @@
 				},
 				cols : [ [ {
 					field : 'id',
-					width : 80,
+					width : 50,
 					checkbox : true,
 					fixed : true
 				}, {
@@ -91,20 +95,21 @@
 				}, {
 					field : 'parent_name',
 					title : '父母称呼',
-					minWidth : 100
+					width : 100
 				}, {
 					field : 'parent_info',
 					title : '信息',
-					width : '50%',
+					width : 300,
 					sort : true
 				}, {
 					field : 'start_time',
-					title : '开始时间',
-					minWidth : 100
+					title : '注册时间',
+					width : 120
 					,templet:'<div>{{ jtUtil.dataFormat(d.start_time,"yyyy-MM-dd")}}</div>'
 				}, {
 					title : '操作',
 					align : 'center',
+					width : 80,
 					toolbar : '#jtBar'
 				} ] ]
 			});
@@ -116,6 +121,17 @@
 			    	toEdit(data.id);
 			    } 
 			  });
+		
+			$('#sreachbut').on('click', function(){
+				table.reload('studentlistreload', {
+			        page: {
+			          curr: 1 //重新从第 1 页开始
+			        }
+			        ,where: {
+			            name: $("#name").val()
+			        }
+			      });
+			});
 		});
 		function toAdd() {
 			layer.open({
@@ -131,31 +147,7 @@
 				content : '#(ctx)/student/toForm?id='+id
 			});
 		}
-		/* function Format(datetime,fmt) {
-			  if (parseInt(datetime)==datetime) {
-			    if (datetime.length==10) {
-			      datetime=parseInt(datetime)*1000;
-			    } else if(datetime.length==13) {
-			      datetime=parseInt(datetime);
-			    }
-			  }
-			  datetime=new Date(datetime);
-			  var o = {
-			  "M+" : datetime.getMonth()+1,                 //月份   
-			  "d+" : datetime.getDate(),                    //日   
-			  "h+" : datetime.getHours(),                   //小时   
-			  "m+" : datetime.getMinutes(),                 //分   
-			  "s+" : datetime.getSeconds(),                 //秒   
-			  "q+" : Math.floor((datetime.getMonth()+3)/3), //季度   
-			  "S"  : datetime.getMilliseconds()             //毫秒   
-			  };   
-			  if(/(y+)/.test(fmt))   
-			  fmt=fmt.replace(RegExp.$1, (datetime.getFullYear()+"").substr(4 - RegExp.$1.length));   
-			  for(var k in o)   
-			  if(new RegExp("("+ k +")").test(fmt))   
-			  fmt = fmt.replace(RegExp.$1, (RegExp.$1.length==1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));   
-			  return fmt;
-			} */
+		
 	</script>
 
 </body>

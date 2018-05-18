@@ -20,6 +20,7 @@ import com.jfinal.template.Engine;
 import com.u2.common.FieldDirective;
 import com.u2.common.GlobalHandler;
 import com.u2.common.IfLoginInterceptor;
+import com.u2.wise.SutraRoutes;
 import com.u2.wise.controller.LoginController;
 import com.u2.wise.controller.MainController;
 import com.u2.wise.controller.StudentController2;
@@ -84,10 +85,12 @@ public class MainConfig extends JFinalConfig {
 	@Override
 	public void configRoute(Routes me) {
 		// TODO Auto-generated method stub
-		me.setBaseViewPath("/");
-		me.add("/login", LoginController.class);
-		me.add("/student", StudentController2.class);
-		me.add("/main", MainController.class);
+		me.setBaseViewPath("/WEB-INF/pages");
+		me.add(new SutraRoutes());
+//		me.setBaseViewPath("/");
+//		me.add("/login", LoginController.class);
+//		me.add("/student", StudentController2.class);
+//		me.add("/main", MainController.class);
 	}
 
 }

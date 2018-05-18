@@ -6,10 +6,10 @@ public class MainController extends BaseController{
 
 	public void index(){
 		
-		render(BASS_PATH+"index.html");
+		render("index.html");
 	}
 	
 	public void welcome(){
-		render(BASS_PATH+"welcome.html");
+		render("welcome.html");
 	}
 }

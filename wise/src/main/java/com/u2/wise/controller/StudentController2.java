@@ -17,7 +17,7 @@ public class StudentController2 extends BaseController{
 	private StudentService srv = enhance(StudentServiceImpl.class);
 	
 	public void index(){
-		render(BASS_PATH+"student/list.html");
+		render("list.html");
 	}
 	public void toForm(){
 		String id = getPara("id");
@@ -29,7 +29,7 @@ public class StudentController2 extends BaseController{
 			stu=new Student();
 		}
 		setAttr("student",stu);
-		render(BASS_PATH+"student/add.html");
+		render("add.html");
 	}
 	
 	public void saveOrUpdate(){

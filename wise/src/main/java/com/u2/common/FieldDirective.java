@@ -14,7 +14,7 @@ public class FieldDirective extends Directive{
 		String key = exprList.eval(scope).toString().trim();
         write(writer, key);
         if (CharTable.isLetterOrDigit(key.charAt(key.length() - 1))) {
-            write(writer, " = ");
+            write(writer, " like ");
         }
 	}
 
