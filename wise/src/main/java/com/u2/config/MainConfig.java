@@ -20,6 +20,7 @@ import com.jfinal.template.Engine;
 import com.u2.common.FieldDirective;
 import com.u2.common.GlobalHandler;
 import com.u2.common.IfLoginInterceptor;
+import com.u2.common.StringUtil;
 import com.u2.wise.SutraRoutes;
 import com.u2.wise.controller.LoginController;
 import com.u2.wise.controller.MainController;
@@ -43,6 +44,7 @@ public class MainConfig extends JFinalConfig {
 	@Override
 	public void configEngine(Engine me) {
 		// TODO Auto-generated method stub
+		me.addSharedMethod(new StringUtil());
 	}
 
 	@Override

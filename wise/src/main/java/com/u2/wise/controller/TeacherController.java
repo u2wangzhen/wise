@@ -1,5 +1,6 @@
 package com.u2.wise.controller;
 
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
 
@@ -102,6 +103,17 @@ public class TeacherController extends Controller {
 	public void saveOrUpdate(){
 		ResultData result = new ResultData();
 		Teacher teacher = getModel(Teacher.class);
+		String[] cst = getParaValues("class_type");
+		if(cst!=null&&cst.length>0){
+			String s="";
+			for (String str : cst) {
+				if(!"".equals(s)){
+					s=s+',';
+				}
+				s=s+str;
+			}
+			teacher.setClassType(s);
+		}
 		if(teacher.getId() == null ){
 			if(srv.save(teacher)){
 				result.setSuccess("保存成功", null);
