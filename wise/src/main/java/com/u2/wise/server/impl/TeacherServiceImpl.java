@@ -1,7 +1,9 @@
 package com.u2.wise.server.impl;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +13,7 @@ import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.SqlPara;
+import com.u2.common.StringUtil;
 import com.u2.wise.model.Teacher;
 import com.u2.wise.server.TeacherService;
 
@@ -26,13 +29,14 @@ public class TeacherServiceImpl implements TeacherService{
 	// ---------------   系统自动生成 -请勿改动  以上区域为自行添加   -----------------
 	
 	//@Cacheable(cacheNames= ConstantsUtils.CACHE_NAME_OF_Teacher,key = "#{id}")
-	public Teacher getById(Integer id){
+	public Teacher getById(String id){
 		logger.info("查询id{}", id);
 		return Teacher.dao.findById(id);
 	}
 
 	//@CacheEvict(cacheNames=ConstantsUtils.CACHE_NAME_OF_Teacher, allEntries = true)
 	public boolean save(Teacher teacher) {
+		teacher.setId(UUID.randomUUID().toString().replaceAll("-", ""));
 		logger.info("新增id{}", teacher);
 		return teacher.save();
 	}
@@ -73,6 +77,22 @@ public class TeacherServiceImpl implements TeacherService{
 		paraMap.remove("sort");
 		paraMap.remove("order");
 		Kv kv = Kv.by("id=", paraMap.get("id"));
+		
+		kv.set("phone",paraMap.get("phone"));
+		try {
+			String ct=paraMap.get("class_type");
+			if(StringUtil.isNotEmpty(ct)){
+				kv.set("class_type",java.net.URLDecoder.decode(ct,"UTF-8"));
+			}
+			String name=paraMap.get("name");
+			if(StringUtil.isNotEmpty(name)){
+				kv.set("name",java.net.URLDecoder.decode(name,"UTF-8"));
+			}
+			
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		SqlPara para = Db.getSqlPara("teacher.pageList1", Kv.by("params", kv).set("sort", sort).set("order", order));
 		return Db.paginate(pageNum, pageSize, para);
 	}

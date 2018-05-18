@@ -9,6 +9,7 @@ import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
 import com.u2.common.ParamsUtils;
 import com.u2.common.ResultData;
+import com.u2.common.StringUtil;
 import com.u2.wise.model.Teacher;
 import com.u2.wise.server.TeacherService;
 import com.u2.wise.server.impl.TeacherServiceImpl;
@@ -17,7 +18,7 @@ import com.xiaoleilu.hutool.util.CollectionUtil;
 import com.jfinal.core.Controller;
 
 /**
- * controller:/sutra/teacher
+ * controller:/teacher
  */
 public class TeacherController extends Controller {
 	
@@ -76,7 +77,7 @@ public class TeacherController extends Controller {
 	 * 详情页
 	 */
 	public void toDetail(){
-		setAttr("teacher", srv.getById(getParaToInt()));
+		setAttr("teacher", srv.getById(getPara("id")));
 		render("detail.html");
 	}
 	
@@ -84,10 +85,14 @@ public class TeacherController extends Controller {
 	 * 新增编辑页
 	 */
 	public void toForm(){
-		Integer id = getParaToInt();
-		if(id != null && id > 0){
-			//
+		String id = getPara("id");
+		Teacher tea=null;
+		if(StringUtil.isNotEmpty(id)){
+			tea=srv.getById(id);
+		}else{
+			tea=new Teacher();
 		}
+		setAttr("teacher",tea);
 		render("_form.html");
 	}
 	
@@ -106,7 +111,6 @@ public class TeacherController extends Controller {
 		}else{
 			if(srv.update(teacher)){
 				result.setSuccess("更新成功", null);
-				return;
 			}else{
 				result.setFaild("更新失败", null);
 			}
@@ -119,10 +123,10 @@ public class TeacherController extends Controller {
 	 */
 	public void delete(){
 		ResultData result = new ResultData();
-		if(srv.delete(getParaToInt())){
+		/*if(srv.delete(getParaToInt())){
 			renderJson(result.setSuccess("删除成功", null));
 			return;
-		}
+		}*/
 		renderJson(result.setFaild("删除失败", null));
 	}
 	

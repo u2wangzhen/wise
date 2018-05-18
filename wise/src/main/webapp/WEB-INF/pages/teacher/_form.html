@@ -1,115 +1,135 @@
-<div class="layui-container">
-	<form class="layui-form" action="">
-		
-		
-		
-		
+
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="UTF-8">
+<title>添加管理员-WeAdmin Frame型后台管理系统-WeAdmin 1.0</title>
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+<link rel="stylesheet" href="#(ctx)/static/css/font.css">
+<link rel="stylesheet" href="#(ctx)/static/css/weadmin.css">
+<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+<!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+
+	<br>
+	<br>
+	<form class="layui-form layui-form-pane" action="">
+
+		<input type="hidden" name="teacher.id" value="#(teacher.id)">
+
+
 		<div class="layui-form-item">
-			<label class="layui-form-label"></label>
+			<label class="layui-form-label">姓名</label>
 			<div class="layui-input-block">
-				<input type='text' name="teacher.name" lay-verify="required"
-					autocomplete="off" placeholder="请输入" class="layui-input">
+				<input type='text' name="teacher.name"
+					lay-verify="required|nikename" autocomplete="off"
+					placeholder="请输入姓名" class="layui-input" value="#(teacher.name)">
 			</div>
 		</div>
-		
-		
-		
+
+
+
 		<div class="layui-form-item">
-			<label class="layui-form-label"></label>
+			<label class="layui-form-label">电话</label>
 			<div class="layui-input-block">
-				<input type='text' name="teacher.phone" lay-verify="required"
-					autocomplete="off" placeholder="请输入" class="layui-input">
+				<input type='text' name="teacher.phone" lay-verify="required|phone"
+					value="#(teacher.phone)" autocomplete="off" placeholder="请输入电话"
+					class="layui-input">
 			</div>
 		</div>
-		
-		
-		
+
+
+
 		<div class="layui-form-item">
-			<label class="layui-form-label"></label>
+			<label class="layui-form-label">性别</label>
 			<div class="layui-input-block">
-				<input type='number'  onkeypress="return jtUtil.noNumbers(event)" onkeyup="this.value=this.value.replace(/[\u4e00-\u9fa5]/g,'')" onpaste="return false" ondragenter="return false"  style="ime-mode:disabled" name="teacher.sex" lay-verify="required"
-					autocomplete="off" placeholder="请输入" class="layui-input">
+				<input type="radio" name="teacher.sex" value="1" title="男"
+					#if(teacher.sex==1) checked="checked" #end
+					#if(!teacher.sex ?? )checked="checked" #end> <input
+					type="radio" name="teacher.sex" value="0" title="女"
+					#if(teacher.sex==0) checked="checked" #end>
 			</div>
 		</div>
-		
-		
-		
+
+
+
 		<div class="layui-form-item">
-			<label class="layui-form-label"></label>
+			<label class="layui-form-label">科目</label>
 			<div class="layui-input-block">
 				<input type='text' name="teacher.class_type" lay-verify="required"
-					autocomplete="off" placeholder="请输入" class="layui-input">
+					value="#(teacher.class_type)" autocomplete="off"
+					placeholder="请输入科目，多个科目用','隔开" class="layui-input">
 			</div>
 		</div>
-		
-		
-		
-		<div class="layui-form-item">
-			<label class="layui-form-label"></label>
+
+
+
+		<div class="layui-form-item layui-form-text">
+			<label class="layui-form-label">备注信息</label>
 			<div class="layui-input-block">
-				<input type='text' name="teacher.remark" lay-verify="required"
-					autocomplete="off" placeholder="请输入" class="layui-input">
+				<textarea type="text" name="teacher.remark"   placeholder="请输入备注" class="layui-textarea">#(teacher.remark)</textarea>
 			</div>
 		</div>
-		
-		
-		
-		
 		<div class="layui-form-item">
-			<label class="layui-form-label"></label>
-			<div class="layui-input-block">
-				<input id="date6" readonly="readonly" type="text" name="teacher.create_time" lay-verify="required"
-					autocomplete="off" placeholder="请输入" class="layui-input">
-			</div>
-		</div>
-		
-		
-		<div class="layui-form-item">
-			<label class="layui-form-label"></label>
-			<div class="layui-input-block">
-				<input type='number'  onkeypress="return jtUtil.noNumbers(event)" onkeyup="this.value=this.value.replace(/[\u4e00-\u9fa5]/g,'')" onpaste="return false" ondragenter="return false"  style="ime-mode:disabled" name="teacher.del_flag" lay-verify="required"
-					autocomplete="off" placeholder="请输入" class="layui-input">
-			</div>
-		</div>
-		
-		
-		<div class="layui-form-item">
-			<div class="layui-input-block">
-				<button class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
-				<button type="reset" class="layui-btn layui-btn-primary">重置</button>
-			</div>
+			<center>
+				<button class="layui-btn" lay-submit="" lay-filter="add">立即提交</button>
+			</center>
 		</div>
 	</form>
-</div>
-#include("/assets/comm/_resource.html")
-<script>
-layui.use(['form','jquery','layer','laydate'], function(){
-	var form = layui.form;
-	var $ = layui.jquery;
-	var layer = layui.layer;
-	var laydate = layui.laydate;
-	form.on('submit(demo1)',function(data){
-		console.log(JSON.stringify(data.field))
-		$.ajax({
-			url:'#(CONTEXT_PATH)/sutra/teacher/saveOrUpdate',
-			type:'POST',
-			data:data.field,
-			success:function(res){
-				console.log(JSON.stringify(res));
-				parent.jtUtil.reloadTable2();
-				parent.jtUtil.closeAll();
-			}
+	<script src="#(ctx)/lib/layui/layui.js" charset="utf-8"></script>
+
+	<script>
+		layui.use([ 'form', 'jquery', 'layer' ], function() {
+			var form = layui.form;
+			var $ = layui.jquery;
+			var layer = layui.layer;
+			form.render();
+
+			form.verify({
+				nikename : function(value) {
+					if (value.length < 2) {
+						return '至少得2个字';
+					}
+				}
+			});
+
+			form.on('submit(add)', function(data) {
+				console.log(JSON.stringify(data.field))
+				$.ajax({
+					url : '#(ctx)/teacher/saveOrUpdate',
+					type : 'POST',
+					data : data.field,
+					success : function(res) {
+						console.log(JSON.stringify(res));
+						layer.alert(res.msg, {
+							icon : 6
+						}, function() {
+							// 获得frame索引
+							if (res.code == 1) {
+								parent.location.reload(); // 父页面刷新
+								var index = parent.layer
+										.getFrameIndex(window.name);
+								//关闭当前frame
+								parent.layer.close(index);
+							}
+						});
+					}
+				});
+
+				return false;
+			});
+
 		});
-		
-		return false;
-	});
-	
-	laydate.render({
-	    elem: '#date6' //指定元素
-	    ,format: 'yyyy-MM-dd' //可任意组合
-	});
-	
-	
-	form.render();
-});
-</script>
+	</script>
+</body>
+
+</html>

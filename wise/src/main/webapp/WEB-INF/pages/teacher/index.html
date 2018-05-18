@@ -1,111 +1,167 @@
-#@layout_admin() 
-#define main_layout()
-<blockquote class="layui-elem-quote layui-quote-nm layui-text" style="margin-top: 15px;">
-		<div class="jtSearch">
-		     搜索ID：
-		  <div class="layui-inline">
-		    <input class="layui-input" name="id" id="id" autocomplete="off">
-		  </div>
-		    关键字：
-		  <div class="layui-inline">
-		    <input class="layui-input" name="keyword" id="keyword" autocomplete="off">
-		  </div>		
-		  <button class="layui-btn" data-type="reload"> <i class="layui-icon">&#xe615;</i> 搜索</button>
- 		  <button class="layui-btn" data-type="addData"> <i class="layui-icon">&#xe608;</i> 新增</button>
-		  <button class="layui-btn" data-type="getCheckData">获取选中行数据</button>
+<!DOCTYPE html>
+<html>
+#include("/WEB-INF/pages/common/head.html")
+<body>
+	<div class="weadmin-nav">
+		<span class="layui-breadcrumb"> <a href="">首页</a> <a href="">老师管理</a>
+			<a> <cite>老师列表</cite></a>
+		</span> <a class="layui-btn layui-btn-sm"
+			style="line-height: 1.6em; margin-top: 3px; float: right"
+			href="javascript:location.replace(location.href);" title="刷新"> <i
+			class="layui-icon" style="line-height: 30px">ဂ</i></a>
+	</div>
+	<div class="weadmin-body">
+		<div class="layui-row">
+			<div class="layui-inline">
+				<input class="layui-input" id="name" placeholder="输入姓名"
+					autocomplete="off">
+			</div>
+			<div class="layui-inline">
+				<input class="layui-input" id="phone" placeholder="输入电话"
+					autocomplete="off">
+			</div>
+			<div class="layui-inline">
+				<input class="layui-input" id="class_type" placeholder="输入科目"
+					autocomplete="off">
+			</div>
+			<button class="layui-btn" lay-submit="" lay-filter="sreach"
+				id="sreachbut">
+				<i class="layui-icon">&#xe615;</i>
+			</button>
 		</div>
-</blockquote>
-<!-- table -->
-<table id="jtTable" lay-filter="jtTable"></table>
+	</div>
+	<div class="weadmin-block">
 
-<script type="text/html" id="jtBar">
-  <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
+		<button class="layui-btn" onclick="toAdd();">
+			<i class="layui-icon"></i>添加
+		</button>
+
+	</div>
+	<!-- table -->
+	<table class="layui-table" id="jtTable" lay-filter="jtTable"></table>
+
+	<script type="text/html" id="jtBar">
   <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-  <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
+	<script src="#(ctx)/lib/layui/layui.js" charset="utf-8"></script>
+	<script src="#(ctx)/static/js/jtUtil.js" charset="utf-8"></script>
+	<script>
+		layui
+				.use(
+						[ 'layer', 'table', 'jquery' ],
+						function() {
+							var layer = layui.layer;
+							var table = layui.table;
+							var $ = layui.$;
+							//第一个实例
+							table
+									.render({
+										elem : '#jtTable',
+										id : 'jtTableReload',
+										height : 590,
+										cellMinWidth : 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+										,
+										url : '#(ctx)/teacher/pageList1' //数据接口
+										,
+										page : true //开启分页
+										,
+										limits : [ 13, 16, 19, 22 ],
+										limit : 13,
+										response : { //定义后端 json 格式，详细参见官方文档
+											statusName : 'code', //状态字段名称
+											statusCode : '1', //状态字段成功值
+											msgName : 'msg', //消息字段
+											countName : 'count', //总数字段
+											dataName : 'data' //数据字段
+										},
+										cols : [ [ //表头
+												{
+													checkbox : true,
+													field : 'id',
+													fixed : true,
+													width : 50
+												},
+												{
+													field : 'name',
+													title : '姓名',
+													width : 80,
+													align : 'center'
+												},
+												{
+													field : 'phone',
+													title : '电话',
+													width : 200,
+													align : 'center'
+												},
+												{
+													field : 'sex',
+													title : '性别',
+													width : 80,
+													align : 'center',
+													templet : function(d) {
+														return d.sex == 0 ? '<span style="color: #c00;">女</span>'
+																: '男';
+													}
+												}, {
+													field : 'class_type',
+													title : '科目',
+													width : 300,
+													align : 'center'
+												}, {
+													field : 'remark',
+													title : '信息',
+													width : 400,
+													align : 'center'
+												}, {
+													title : '操作',
+													align : 'center',
+													width : 100,
+													toolbar : '#jtBar'
+												} ] ]
+									});
 
-<script>
-	
-layui.use(['form','table','jquery'], function(){
-	  var form = layui.form;
-	  var table = layui.table;
-	  
-	  //第一个实例
-	  table.render({
-	    elem: '#jtTable'
-	    ,id: 'jtTableReload'
-	    ,height:590
-	    ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
-	    ,url: '#(CONTEXT_PATH)/sutra/teacher/pageList1' //数据接口
-	    ,page: true //开启分页
-	    ,limits:[13,16,19,22]
-	  	,limit:13
-	    ,response: { //定义后端 json 格式，详细参见官方文档
-	    	   statusName: 'code', //状态字段名称
-	    	   statusCode: '1', //状态字段成功值
-	    	   msgName: 'msg', //消息字段
-	    	   countName: 'count', //总数字段
-	    	   dataName: 'data' //数据字段
-	   	 }
-	    ,cols: [[ //表头
-	       {checkbox: true, fixed: true}
-	      ,{field: 'id', title: 'ID', align: 'center', sort: true, fixed: 'left'}
-	      ,{field: 'name', title: '', align: 'center'}
-	      ,{field: 'phone', title: '', align: 'center'}
-	      ,{field: 'sex', title: '', align: 'center'}
-	      ,{field: 'class_type', title: '', align: 'center'}
-	      ,{field: 'remark', title: '', align: 'center'}
-	      ,{field: 'create_time', title: '', align: 'center'}
-	      ,{field: 'del_flag', title: '', align: 'center'}
-	      ,{title:'操作',align: 'center',toolbar: '#jtBar'}
-	    ]]
-	  });
-	  
-	  //监听表格复选框选择
-	  table.on('checkbox(jtTable)', function(obj){
-	    console.log(obj)
-	  });
-	//监听工具条
-	  table.on('tool(jtTable)', function(obj){
-	    var data = obj.data;
-	    if(obj.event === 'detail'){
-	    	jtUtil.detailRow('xxx详情','#(CONTEXT_PATH)/sutra/teacher/toDetail/'+data.id);
-	    } else if(obj.event === 'del'){
-	    	jtUtil.delRow('真的删除吗','/sutra/teacher/delete/'+data.id,obj,layui.jquery);
-	    } else if(obj.event === 'edit'){
-	      layer.alert('编辑行：<br>'+ JSON.stringify(data))
-	    }
-	  });
+							//监听表格复选框选择
+							table.on('checkbox(jtTable)', function(obj) {
+								console.log(obj)
+							});
+							//监听工具条
+							table.on('tool(jtTable)', function(obj) {
+								var data = obj.data;
+								if (obj.event === 'edit') {
+									toEdit(data.id);
+								}
+							});
 
-	  
-	  var $ = layui.$, active = {
-	    reload: function(){
-	      var idObj = $('#id');
-	      var keywordObj = $('#keyword');
-	      //执行重载
-	      table.reload('jtTableReload', {
-	        page: {
-	          curr: 1 //重新从第 1 页开始
-	        }
-	        ,where: {
-	            id: idObj.val()
-	            ,keyword:keywordObj.val()
-	        }
-	      });
-	    }
-	  	,addData:function(){
-	  		jtUtil.addRow(table,'新增用户','#(CONTEXT_PATH)/sutra/teacher/toForm');
-	  	}
-	  	,getCheckData: function(){ //获取选中数据
-	  		layer.alert(JSON.stringify(jtUtil.getCheckData(table,'jtTableReload')));
-	     }
-	  };
-	  
-	  $('.jtSearch .layui-btn').on('click', function(){
-	    var type = $(this).data('type');
-	    active[type] ? active[type].call(this) : '';
-	  });
-	  
-	});
-</script>
-#end
+							$('#sreachbut').on('click', function() {
+								table.reload('jtTableReload', {
+									page : {
+										curr : 1
+									//重新从第 1 页开始
+									},
+									where : {
+										name : encodeURI($("#name").val()),
+										phone : $("#phone").val(),
+										class_type : $("#class_type").val()
+									}
+								});
+							});
+
+						});
+		function toAdd() {
+			layer.open({
+				type : 2,
+				area : [ '800px', '500px' ],
+				content : '#(ctx)/teacher/toForm'
+			});
+		}
+		function toEdit(id) {
+			layer.open({
+				type : 2,
+				area : [ '800px', '500px' ],
+				content : '#(ctx)/teacher/toForm?id=' + id
+			});
+		}
+	</script>
+</body>
+
+</html>
