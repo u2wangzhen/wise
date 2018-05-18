@@ -76,7 +76,7 @@ public class StudentController extends Controller {
 	 * 详情页
 	 */
 	public void toDetail(){
-		setAttr("student", srv.getById(getParaToInt()));
+		setAttr("student", srv.getById(getPara()));
 		render("detail.html");
 	}
 	

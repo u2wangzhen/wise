@@ -28,7 +28,7 @@ public class StudentServiceImpl implements StudentService{
 	
 	//@Cacheable(cacheNames= ConstantsUtils.CACHE_NAME_OF_Student,key = "#{id}")
 	 
-	public Student getById(Integer id){
+	public Student getById(String id){
 		logger.info("查询id{}", id);
 		return Student.dao.findById(id);
 	}

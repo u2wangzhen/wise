@@ -38,16 +38,16 @@
 			<button class="layui-btn" onclick="toAdd();">
 				<i class="layui-icon"></i>添加
 			</button>
-			<span class="fr" style="line-height: 40px">共有数据：88 条</span>
+			
 		</div>
-		<table class="layui-table" id="studentlist"></table>
+		<table class="layui-table" id="studentlist" lay-filter="studentlist"></table>
 
 	</div>
 	<script src="#(ctx)/lib/layui/layui.js" charset="utf-8"></script>
+	<script src="#(ctx)/static/js/jtUtil.js" charset="utf-8"></script>
+	
 	<script type="text/html" id="jtBar">
-  <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
   <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-  <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
 	<script type="text/javascript">
 		layui.use([ 'table', 'layer' ], function() {
@@ -80,24 +80,28 @@
 					field : 'sex',
 					width : 80,
 					title : '性别',
-					sort : true
+					sort : true,
+					templet: function(d){
+				        return  d.sex==0?'<span style="color: #c00;">女</span>':'男';
+				      }
 				}, {
 					field : 'age',
 					width : 80,
 					title : '年龄'
 				}, {
 					field : 'parent_name',
-					title : '父母联系方式',
-					width : '30%',
+					title : '父母称呼',
 					minWidth : 100
 				}, {
 					field : 'parent_info',
 					title : '信息',
+					width : '50%',
 					sort : true
 				}, {
 					field : 'start_time',
 					title : '开始时间',
 					minWidth : 100
+					,templet:'<div>{{ jtUtil.dataFormat(d.start_time,"yyyy-MM-dd")}}</div>'
 				}, {
 					title : '操作',
 					align : 'center',
@@ -106,24 +110,54 @@
 			});
 			
 			table.on('tool(studentlist)', function(obj){
+				///console.log(obj)
 			    var data = obj.data;
-			    if(obj.event === 'detail'){
-			    	jtUtil.detailRow('xxx详情','#(ctx)/sutra/teacher/toDetail/'+data.id);
-			    } else if(obj.event === 'del'){
-			    	jtUtil.delRow('真的删除吗','/sutra/teacher/delete/'+data.id,obj,layui.jquery);
-			    } else if(obj.event === 'edit'){
-			      layer.alert('编辑行：<br>'+ JSON.stringify(data))
-			    }
+			    if(obj.event === 'edit'){
+			    	toEdit(data.id);
+			    } 
 			  });
 		});
 		function toAdd() {
 			layer.open({
 				type : 2,
 				area : [ '800px', '500px' ],
-				content : '#(ctx)/student/toAdd'
+				content : '#(ctx)/student/toForm'
 			});
 		}
+		function toEdit(id) {
+			layer.open({
+				type : 2,
+				area : [ '800px', '500px' ],
+				content : '#(ctx)/student/toForm?id='+id
+			});
+		}
+		/* function Format(datetime,fmt) {
+			  if (parseInt(datetime)==datetime) {
+			    if (datetime.length==10) {
+			      datetime=parseInt(datetime)*1000;
+			    } else if(datetime.length==13) {
+			      datetime=parseInt(datetime);
+			    }
+			  }
+			  datetime=new Date(datetime);
+			  var o = {
+			  "M+" : datetime.getMonth()+1,                 //月份   
+			  "d+" : datetime.getDate(),                    //日   
+			  "h+" : datetime.getHours(),                   //小时   
+			  "m+" : datetime.getMinutes(),                 //分   
+			  "s+" : datetime.getSeconds(),                 //秒   
+			  "q+" : Math.floor((datetime.getMonth()+3)/3), //季度   
+			  "S"  : datetime.getMilliseconds()             //毫秒   
+			  };   
+			  if(/(y+)/.test(fmt))   
+			  fmt=fmt.replace(RegExp.$1, (datetime.getFullYear()+"").substr(4 - RegExp.$1.length));   
+			  for(var k in o)   
+			  if(new RegExp("("+ k +")").test(fmt))   
+			  fmt = fmt.replace(RegExp.$1, (RegExp.$1.length==1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));   
+			  return fmt;
+			} */
 	</script>
+
 </body>
 
 </html>

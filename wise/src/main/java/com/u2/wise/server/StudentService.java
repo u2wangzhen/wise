@@ -13,7 +13,7 @@ public interface StudentService {
 	public boolean update(Student student);
 	public boolean delete(Integer id);
 	public boolean save(Student student);
-	public Student getById(Integer id);
+	public Student getById(String id);
 	public List<Record> list(Map<String, String> param);
 	public Page<Record> pageList(int pageNum, int pageSize,Map<String, String> paraMap,String sort,String order);
 	public Page<Record> pageList1(int pageNum, int pageSize,Map<String, String> paraMap,String sort,String order);

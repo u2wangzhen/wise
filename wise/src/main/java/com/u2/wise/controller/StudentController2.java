@@ -1,12 +1,10 @@
 package com.u2.wise.controller;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
 import com.u2.common.BaseController;
-import com.u2.common.IDKit;
 import com.u2.common.ParamsUtils;
 import com.u2.common.ResultData;
 import com.u2.common.StringUtil;
@@ -21,15 +19,29 @@ public class StudentController2 extends BaseController{
 	public void index(){
 		render(BASS_PATH+"student/list.html");
 	}
-	public void toAdd(){
+	public void toForm(){
+		String id = getPara("id");
+		Student stu=null;
+		if(StringUtil.isNotEmpty(id)){
+			stu = srv.getById(id);
+			
+		}else{
+			stu=new Student();
+		}
+		setAttr("student",stu);
 		render(BASS_PATH+"student/add.html");
 	}
-	public void addStudent(){
+	
+	public void saveOrUpdate(){
 		
 		ResultData rd=new ResultData();
 		Student stu=getModel(Student.class);
 		if(StringUtil.isNotEmpty(stu.getId())){
-			
+			if(srv.update(stu)){
+				rd.setSuccess("更新成功", null);
+			}else{
+				rd.setFaild("更新失败", null);
+			}
 		}else{
 			boolean a = srv.save(stu);
 			if(a){

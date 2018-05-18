@@ -12,7 +12,7 @@ public class LoginController extends BaseController{
 		
 		String name=getPara("username");
 		String pd=getPara("password");
-		if("admin".equals(name)&&"123456".equals(pd)){
+		if("admin".equals(name)&&"1".equals(pd)){
 			setSessionAttr("isLogin", true);
 			redirect("/main");
 		}else{
