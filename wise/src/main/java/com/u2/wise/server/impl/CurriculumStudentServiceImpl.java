@@ -2,6 +2,7 @@ package com.u2.wise.server.impl;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,6 +36,7 @@ public class CurriculumStudentServiceImpl implements CurriculumStudentService{
 	//@CacheEvict(cacheNames=ConstantsUtils.CACHE_NAME_OF_CurriculumStudent, allEntries = true)
 	 
 	public boolean save(CurriculumStudent curriculumStudent) {
+		curriculumStudent.setId(UUID.randomUUID().toString().replaceAll("-", ""));
 		logger.info("新增id{}", curriculumStudent);
 		return curriculumStudent.save();
 	}

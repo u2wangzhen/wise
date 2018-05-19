@@ -1,7 +1,8 @@
 ##获取列表
 #sql("list")
 	select id   ,name  ,phone  ,sex  ,class_type  ,remark  ,create_time  ,del_flag 	from
-    t_teacher 
+    t_teacher where 1=1 
+	#if(class_type!=null&&class_type!="") and  class_type like '%#(class_type)%' #end
 #end
 
 ##分页

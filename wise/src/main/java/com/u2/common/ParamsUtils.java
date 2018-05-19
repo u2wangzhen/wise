@@ -3,6 +3,7 @@ package com.u2.common;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -74,5 +75,25 @@ public class ParamsUtils {
 		}
 		
 		return returnMap;
+	}
+	public static String getCheckboxStr(Enumeration<String> names,String ss){
+		String str="";
+		if(names!=null){
+			
+			while(names.hasMoreElements()){
+				String n=names.nextElement();
+				if(n.startsWith(ss)){
+					if(!"".equals(str)){
+						str+=",";
+					}
+					str+=n.substring(n.indexOf('[')+1, n.indexOf(']'));
+				}
+			}
+		}
+		return str;
+	}
+	public static void main(String[] args) {
+		String str="[hello]";
+		System.out.println(str.substring(str.indexOf('[')+1, str.indexOf(']')));
 	}
 }

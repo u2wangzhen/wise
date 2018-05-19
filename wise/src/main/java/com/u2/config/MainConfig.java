@@ -31,6 +31,7 @@ import com.u2.wise.model._MappingKit;
 public class MainConfig extends JFinalConfig {
 
 	private WallFilter wallFilter;
+	private Engine engine;
 
 	@Override
 	public void configConstant(Constants me) {
@@ -44,6 +45,8 @@ public class MainConfig extends JFinalConfig {
 	@Override
 	public void configEngine(Engine me) {
 		// TODO Auto-generated method stub
+		this.engine = me;
+		me.addSharedFunction("/WEB-INF/pages/common/layout_admin.html");
 		me.addSharedMethod(new StringUtil());
 	}
 

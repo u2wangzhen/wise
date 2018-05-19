@@ -1,0 +1,157 @@
+#@layout_admin() 
+#define js()
+<script src="#(ctx)/static/js/jtUtil.js" charset="utf-8"></script>
+#end 
+#define main_layout()
+<div class="weadmin-body">
+	<div class="layui-row">
+		<div class="layui-inline">
+			<input class="layui-input" id="name" placeholder="输入名称"
+				autocomplete="off">
+		</div>
+		<div class="layui-inline">
+			<input class="layui-input" id="subject" placeholder="输入科目"
+				autocomplete="off">
+		</div>
+		
+		<button class="layui-btn" lay-submit="" lay-filter="sreach"
+			id="sreachbut">
+			<i class="layui-icon">&#xe615;</i>
+		</button>
+		<a class="layui-btn layui-btn-sm"
+			style="line-height: 1.6em; margin-top: 3px; float: right"
+			href="javascript:location.replace(location.href);" title="刷新"> <i
+			class="layui-icon" style="line-height: 30px">ဂ</i>
+		</a>
+	</div>
+</div>
+<div class="weadmin-block">
+
+	<button class="layui-btn" onclick="toAdd();">
+		<i class="layui-icon"></i>添加
+	</button>
+
+</div>
+<!-- table -->
+<table id="jtTable" lay-filter="jtTable"></table>
+
+<script type="text/html" id="jtBar">
+  <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
+  <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+  <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">结课</a>
+</script>
+
+<script>
+	layui.use([ 'form', 'table', 'jquery' ], function() {
+		var form = layui.form;
+		var table = layui.table;
+		var $ = layui.$;
+
+		//第一个实例
+		table.render({
+			elem : '#jtTable',
+			id : 'jtTableReload',
+			height : 400,
+			cellMinWidth : 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+			,
+			url : '#(ctx)/curriculum/pageList1' //数据接口
+			,
+			page : true //开启分页
+			,
+			limits : [ 13, 16, 19, 22 ],
+			limit : 13,
+			response : { //定义后端 json 格式，详细参见官方文档
+				statusName : 'code', //状态字段名称
+				statusCode : '1', //状态字段成功值
+				msgName : 'msg', //消息字段
+				countName : 'count', //总数字段
+				dataName : 'data' //数据字段
+			},
+			cols : [ [ //表头
+			{
+				checkbox : true,
+				field : 'id',
+				fixed : true,
+				width : 50
+			}, {
+				field : 'name',
+				title : '课程名称',
+				width : 200,
+				align : 'center'
+			}, {
+				field : 'subject',
+				title : '科目',
+				width : 80,
+				align : 'center'
+			}, {
+				field : 'type',
+				title : '学级',
+				align : 'center'
+			}, {
+				field : 'grade',
+				title : '年级',
+				align : 'center'
+			}, {
+				field : 'teacher_name',
+				title : '老师',
+				align : 'center'
+			}, {
+				field : 'students',
+				title : '学生',
+				align : 'center'
+			}, {
+				field : 'start_time',
+				title : '开课日期',
+				align : 'center'
+			}, {
+				field : 'end_time',
+				title : '结课日期',
+				align : 'center'
+			},{
+				title : '操作',
+				align : 'center',
+				width : 200,
+				toolbar : '#jtBar'
+			} ] ]
+		});
+
+		
+		//监听工具条
+		table.on('tool(jtTable)',
+				function(obj) {
+					var data = obj.data;
+					if (obj.event === 'edit') {
+						toEdit(data.id);
+					}
+				});
+
+		$("#sreachbut").on('click', function() {
+			table.reload('jtTableReload', {
+				page : {
+					curr : 1
+				//重新从第 1 页开始
+				},
+				where : {
+					name : encodeURI($("#name").val()),
+					phone : $("#subject").val()
+				}
+			});
+		});
+
+	});
+	function toAdd() {
+		layer.open({
+			type : 2,
+			area : [ '1000px', '500px' ],
+			content : '#(ctx)/curriculum/toForm'
+		});
+	}
+	function toEdit(id) {
+		layer.open({
+			type : 2,
+			area : [ '1000px', '500px' ],
+			content : '#(ctx)/curriculum/toForm?id=' + id
+		});
+	}
+</script>
+#end

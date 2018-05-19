@@ -39,9 +39,10 @@ public class TeacherController extends Controller {
 		List<Record> list =  srv.list(paraMap);
 		if(CollectionUtil.isEmpty(list)){
 			renderJson(result.setFaild("获取列表失败", null));
-			return;
+		
+		}else{
+			renderJson(result.setSuccess("获取列表成功", list));
 		}
-		renderJson(result.setSuccess("获取列表成功", list));
 	}
 	
 	/**
@@ -103,17 +104,11 @@ public class TeacherController extends Controller {
 	public void saveOrUpdate(){
 		ResultData result = new ResultData();
 		Teacher teacher = getModel(Teacher.class);
-		String[] cst = getParaValues("class_type");
-		if(cst!=null&&cst.length>0){
-			String s="";
-			for (String str : cst) {
-				if(!"".equals(s)){
-					s=s+',';
-				}
-				s=s+str;
-			}
-			teacher.setClassType(s);
-		}
+		
+		Enumeration<String> names = getParaNames();
+		String str = ParamsUtils.getCheckboxStr(names,"class_type");
+		teacher.setClassType(str);
+		
 		if(teacher.getId() == null ){
 			if(srv.save(teacher)){
 				result.setSuccess("保存成功", null);

@@ -1,50 +1,42 @@
-<!DOCTYPE html>
-<html>
-
-#include("/WEB-INF/pages/common/head.html")
-
-<body>
-	<div class="weadmin-nav">
+#@layout_admin()
+#define js()
+<script src="#(ctx)/static/js/jtUtil.js" charset="utf-8"></script>
+#end 
+#define main_layout()
+	<!-- <div class="weadmin-nav">
 		<span class="layui-breadcrumb"> <a href="">首页</a> <a href="">学生管理</a>
 			<a> <cite>学生列表</cite></a>
 		</span> <a class="layui-btn layui-btn-sm"
 			style="line-height: 1.6em; margin-top: 3px; float: right"
 			href="javascript:location.replace(location.href);" title="刷新"> <i
 			class="layui-icon" style="line-height: 30px">ဂ</i></a>
-	</div>
+	</div> -->
 	<div class="weadmin-body">
 		<div class="layui-row">
-			<!-- <form class="layui-form layui-col-md12 we-search"> -->
-				<!-- <div class="layui-inline">
-					<input class="layui-input" placeholder="开始日" name="start"
-						id="start">
-				</div>
+			
 				<div class="layui-inline">
-					<input class="layui-input" placeholder="截止日" name="end" id="end">
-				</div> -->
-				<div class="layui-inline">
-					<input type="text" id="name" placeholder="请输入学生名册"
+					<input type="text" id="name" placeholder="请输入学生姓名"
 						autocomplete="off" class="layui-input">
 				</div>
 				<button class="layui-btn" lay-submit="" lay-filter="sreach" id="sreachbut">
 					<i class="layui-icon">&#xe615;</i>
 				</button>
-			<!-- </form> -->
+				<a class="layui-btn layui-btn-sm"
+			style="line-height: 1.6em; margin-top: 3px; float: right"
+			href="javascript:location.replace(location.href);" title="刷新"> <i
+			class="layui-icon" style="line-height: 30px">ဂ</i></a>
+		</div>
 		</div>
 		<div class="weadmin-block">
-			<!-- <button class="layui-btn layui-btn-danger" onclick="delAll()">
-				<i class="layui-icon"></i>批量删除
-			</button> -->
+			
 			<button class="layui-btn" onclick="toAdd();">
 				<i class="layui-icon"></i>添加
 			</button>
 			
 		</div>
-		<table class="layui-table" id="studentlist" lay-filter="studentlist"></table>
+	
+	<table class="layui-table" id="studentlist" lay-filter="studentlist"></table>
 
-	</div>
-	<script src="#(ctx)/lib/layui/layui.js" charset="utf-8"></script>
-	<script src="#(ctx)/static/js/jtUtil.js" charset="utf-8"></script>
 	
 	<script type="text/html" id="jtBar">
   <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
@@ -62,8 +54,8 @@
 				id:"studentlistreload",
 				url : '#(ctx)/student/listData',
 				page : true,
-				limits : [ 13, 16, 19, 22 ],
-				limit : 13,
+				limits : [ 7, 14, 21, 28 ],
+				limit : 7,
 				response : { //定义后端 json 格式，详细参见官方文档
 					statusName : 'code', //状态字段名称
 					statusCode : '1', //状态字段成功值
@@ -149,7 +141,4 @@
 		}
 		
 	</script>
-
-</body>
-
-</html>
+#end

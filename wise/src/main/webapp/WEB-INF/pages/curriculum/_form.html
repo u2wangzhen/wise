@@ -1,0 +1,168 @@
+#@layout_admin()
+#define main_layout()
+<br>
+<br>
+<div class="layui-container">
+	<form class="layui-form layui-form-pane" action="">
+		
+		<input type="hidden" name="curriculum.id" value="#(curriculum.id)">
+		<input type="hidden" name="curriculum.teacher_name" value=""/>
+		
+		<div class="layui-form-item">
+			<label class="layui-form-label">课程名称</label>
+			<div class="layui-input-block">
+				<input type='text' name="curriculum.name" lay-verify="required"
+					autocomplete="off" placeholder="请输入课程名称" class="layui-input">
+			</div>
+		</div>
+		
+		
+		
+		<div class="layui-form-item">
+			<label class="layui-form-label">科目</label>
+			<div class="layui-input-block">
+				<input type="radio" name="curriculum.subject" value="数学" title="数学" lay-filter="class_radio" >
+				<input type="radio" name="curriculum.subject" value="英语" title="英语" lay-filter="class_radio" >
+				<input type="radio" name="curriculum.subject" value="语文" title="语文" lay-filter="class_radio">
+				<input type="radio" name="curriculum.subject" value="物理" title="物理" lay-filter="class_radio">
+				<input type="radio" name="curriculum.subject" value="化学" title="化学" lay-filter="class_radio">
+				<input type="radio" name="curriculum.subject" value="生物" title="生物" lay-filter="class_radio">
+				<input type="radio" name="curriculum.subject" value="历史" title="历史" lay-filter="class_radio">
+				<input type="radio" name="curriculum.subject" value="地理" title="地理" lay-filter="class_radio">
+				<input type="radio" name="curriculum.subject" value="政治" title="政治" lay-filter="class_radio">
+			</div>
+		</div>
+		
+		
+		
+		<div class="layui-form-item">
+		
+			<label class="layui-form-label">学级</label>
+			<div class="layui-input-block">
+				<input type="radio" name="curriculum.type" value="1" title="高中" >
+				<input type="radio" name="curriculum.type" value="0" title="初中" >
+			</div>
+			
+			
+		</div>
+		<div class="layui-form-item">
+		<label class="layui-form-label">年级</label>
+			<div class="layui-input-block">
+			<input type="radio" name="curriculum.grade" value="3" title="三年级" >
+			<input type="radio" name="curriculum.grade" value="2" title="二年级" >
+			<input type="radio" name="curriculum.grade" value="1" title="一年级" >
+			</div>
+		</div>
+		
+		
+		<div class="layui-form-item">
+			<div class="layui-inline">
+			<label class="layui-form-label">老师</label>
+			<div class="layui-input-inline">
+				<!-- <input type='text' id="teacher" name="curriculum.teacher_name" lay-verify="required"
+					autocomplete="off" placeholder="请输入老师" class="layui-input" onclick="selectTeacher();"> -->
+				<select id="teacher" name="curriculum.teacher_id" lay-filter="myselect"></select>
+			</div>
+			<label class="layui-form-label">开课日期</label>
+			<div class="layui-input-inline">
+				<input id="date7" readonly="readonly" type="text" name="curriculum.start_time" lay-verify="required"
+					autocomplete="off" placeholder="请输入" class="layui-input">
+			</div>
+			<!-- <label class="layui-form-label">结课日期</label>
+			<div class="layui-input-inline">
+				<input id="date8" readonly="readonly" type="text" name="curriculum.end_time" lay-verify="required"
+					autocomplete="off" placeholder="请输入" class="layui-input">
+			</div> -->
+			</div>
+		</div>
+		
+	
+		<div class="layui-form-item layui-form-text">
+			<label class="layui-form-label">备注</label>
+			<div class="layui-input-block">
+				<textarea type="text" name="curriculum.remark" 
+					autocomplete="off" placeholder="请输入" class="layui-textarea"></textarea>
+			</div>
+		</div>
+		
+		
+		<div class="layui-form-item">
+			<center>
+				<button class="layui-btn" lay-submit="" lay-filter="add">立即提交</button>
+			</center>
+		</div>
+	</form>
+</div>
+<script>
+layui.use(['form','jquery','layer','laydate'], function(){
+	var form = layui.form;
+	var $ = layui.jquery;
+	var layer = layui.layer;
+	var laydate = layui.laydate;
+	form.render();
+	form.on('submit(add)',function(data){
+		console.log(JSON.stringify(data.field))
+		$.ajax({
+			url:'#(ctx)/curriculum/saveOrUpdate',
+			type:'POST',
+			data:data.field,
+			success:function(res){
+				if (res.code == 1) {
+					parent.location.reload(); // 父页面刷新
+					var index = parent.layer
+							.getFrameIndex(window.name);
+					//关闭当前frame
+					parent.layer.close(index);
+				}
+			}
+		});
+		
+		return false;
+	});
+	
+	form.verify({
+		nikename : function(value) {
+			if (value.length < 2) {
+				return '至少得2个字';
+			}
+		}
+	});
+	
+	laydate.render({
+	    elem: '#date7' //指定元素
+	    ,format: 'yyyy-MM-dd' //可任意组合
+	});
+	laydate.render({
+	    elem: '#date8' //指定元素
+	    ,format: 'yyyy-MM-dd' //可任意组合
+	});
+	form.on('select(myselect)',function(data){
+		
+	});
+	form.on('radio(class_radio)', function(data){
+		 // console.log(data.elem); //得到radio原始DOM对象
+		  console.log(data.value); //被点击的radio的value值
+		  $.ajax({
+				type: 'POST',
+	            url: '#(ctx)/teacher/list',
+	            data: {class_type:data.value},
+	            dataType:  'json',
+	            success: function(data){
+	            $("#teacher").html("");
+	            if(data.code==1){
+	            	var option = $("<option>").val("").text("请选择老师");
+	            	 $("#teacher").append(option);
+	            	 $.each(data.data, function(key, val) {
+	                     var option1 = $("<option>").val(val.id).text(val.name);
+	                     $("#teacher").append(option1);
+	                 }); 
+	            }
+	            form.render('select');
+	            }
+			});
+		});
+	
+});
+
+</script>
+#end

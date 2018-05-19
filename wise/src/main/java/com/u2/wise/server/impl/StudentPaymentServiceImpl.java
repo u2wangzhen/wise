@@ -2,6 +2,7 @@ package com.u2.wise.server.impl;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,6 +36,7 @@ public class StudentPaymentServiceImpl implements StudentPaymentService{
 	//@CacheEvict(cacheNames=ConstantsUtils.CACHE_NAME_OF_StudentPayment, allEntries = true)
 	 
 	public boolean save(StudentPayment studentPayment) {
+		studentPayment.setId(UUID.randomUUID().toString().replaceAll("-", ""));
 		logger.info("新增id{}", studentPayment);
 		return studentPayment.save();
 	}

@@ -55,6 +55,10 @@ public class TeacherServiceImpl implements TeacherService{
 	//列表
 	public List<Record> list(Map<String,String> param) {
 		logger.info("获取列表参数{}", param);
+		String obj = param.get("class_type");
+		if(obj==null){
+			param.put("class_type", "");
+		}
 		return Db.find(Db.getSqlPara("teacher.list", param));
 	}
 	

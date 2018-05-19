@@ -9,6 +9,7 @@ import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
 import com.u2.common.ParamsUtils;
 import com.u2.common.ResultData;
+import com.u2.common.StringUtil;
 import com.u2.wise.model.Curriculum;
 import com.u2.wise.server.CurriculumService;
 import com.u2.wise.server.impl.CurriculumServiceImpl;
@@ -76,7 +77,7 @@ public class CurriculumController extends Controller {
 	 * 详情页
 	 */
 	public void toDetail(){
-		setAttr("curriculum", srv.getById(getParaToInt()));
+		setAttr("curriculum", srv.getById(getPara()));
 		render("detail.html");
 	}
 	
@@ -84,10 +85,14 @@ public class CurriculumController extends Controller {
 	 * 新增编辑页
 	 */
 	public void toForm(){
-		Integer id = getParaToInt();
-		if(id != null && id > 0){
-			//
+		String id = getPara("id");
+		Curriculum c=null;
+		if(StringUtil.isNotEmpty(id)){
+			c=srv.getById(id);
+		}else{
+			c=new Curriculum();
 		}
+		setAttr("curriculum",c);
 		render("_form.html");
 	}
 	
@@ -106,7 +111,6 @@ public class CurriculumController extends Controller {
 		}else{
 			if(srv.update(curriculum)){
 				result.setSuccess("更新成功", null);
-				return;
 			}else{
 				result.setFaild("更新失败", null);
 			}

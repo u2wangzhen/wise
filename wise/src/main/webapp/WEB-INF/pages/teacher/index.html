@@ -1,15 +1,20 @@
-<!DOCTYPE html>
-<html>
-#include("/WEB-INF/pages/common/head.html")
-<body>
-	<div class="weadmin-nav">
-		<span class="layui-breadcrumb"> <a href="">首页</a> <a href="">老师管理</a>
-			<a> <cite>老师列表</cite></a>
-		</span> <a class="layui-btn layui-btn-sm"
+#@layout_admin()
+#define js()
+<script src="#(ctx)/static/js/jtUtil.js" charset="utf-8"></script>
+#end 
+#define main_layout()
+	<!-- <div class="weadmin-nav">
+		< <span class="layui-breadcrumb"> 
+			<a href="#">首页</a>
+			<a href="#">老师管理</a>
+			<a><cite>老师列表</cite></a>
+		</span> 
+		<a class="layui-btn layui-btn-sm"
 			style="line-height: 1.6em; margin-top: 3px; float: right"
-			href="javascript:location.replace(location.href);" title="刷新"> <i
-			class="layui-icon" style="line-height: 30px">ဂ</i></a>
-	</div>
+			href="javascript:location.replace(location.href);" title="刷新"> 
+			<i class="layui-icon" style="line-height: 30px">ဂ</i>
+		</a> 
+	</div> -->
 	<div class="weadmin-body">
 		<div class="layui-row">
 			<div class="layui-inline">
@@ -28,6 +33,11 @@
 				id="sreachbut">
 				<i class="layui-icon">&#xe615;</i>
 			</button>
+			<a class="layui-btn layui-btn-sm"
+			style="line-height: 1.6em; margin-top: 3px; float: right"
+			href="javascript:location.replace(location.href);" title="刷新"> 
+			<i class="layui-icon" style="line-height: 30px">ဂ</i>
+			</a>
 		</div>
 	</div>
 	<div class="weadmin-block">
@@ -43,22 +53,19 @@
 	<script type="text/html" id="jtBar">
   <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
 </script>
-	<script src="#(ctx)/lib/layui/layui.js" charset="utf-8"></script>
-	<script src="#(ctx)/static/js/jtUtil.js" charset="utf-8"></script>
+<!-- 	<script src="#(ctx)/lib/layui/layui.js" charset="utf-8"></script>
+ -->	
 	<script>
-		layui
-				.use(
-						[ 'layer', 'table', 'jquery' ],
+		layui.use([ 'layer', 'table', 'jquery' ],
 						function() {
 							var layer = layui.layer;
 							var table = layui.table;
 							var $ = layui.$;
 							//第一个实例
-							table
-									.render({
+							table.render({
 										elem : '#jtTable',
 										id : 'jtTableReload',
-										height : 590,
+										height : 400,
 										cellMinWidth : 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
 										,
 										url : '#(ctx)/teacher/pageList1' //数据接口
@@ -90,7 +97,7 @@
 												{
 													field : 'phone',
 													title : '电话',
-													width : 200,
+													width : 120,
 													align : 'center'
 												},
 												{
@@ -110,7 +117,7 @@
 												}, {
 													field : 'remark',
 													title : '信息',
-													width : 400,
+													width : 300,
 													align : 'center'
 												}, {
 													title : '操作',
@@ -162,6 +169,4 @@
 			});
 		}
 	</script>
-</body>
-
-</html>
+#end

@@ -1,0 +1,95 @@
+<div class="layui-container">
+	<form class="layui-form" action="">
+		
+		
+		
+		
+		<div class="layui-form-item">
+			<label class="layui-form-label"></label>
+			<div class="layui-input-block">
+				<input type='text' name="studentPayment.student_id" lay-verify="required"
+					autocomplete="off" placeholder="请输入" class="layui-input">
+			</div>
+		</div>
+		
+		
+		
+		<div class="layui-form-item">
+			<label class="layui-form-label"></label>
+			<div class="layui-input-block">
+				<input type='number'  onkeypress="return jtUtil.noNumbers(event)" onkeyup="this.value=this.value.replace(/[\u4e00-\u9fa5]/g,'')" onpaste="return false" ondragenter="return false"  style="ime-mode:disabled" name="studentPayment.amount" lay-verify="required"
+					autocomplete="off" placeholder="请输入" class="layui-input">
+			</div>
+		</div>
+		
+		
+		
+		
+		<div class="layui-form-item">
+			<label class="layui-form-label"></label>
+			<div class="layui-input-block">
+				<input id="date3" readonly="readonly" type="text" name="studentPayment.pay_date" lay-verify="required"
+					autocomplete="off" placeholder="请输入" class="layui-input">
+			</div>
+		</div>
+		
+		
+		<div class="layui-form-item">
+			<label class="layui-form-label"></label>
+			<div class="layui-input-block">
+				<input type='text' name="studentPayment.remark" lay-verify="required"
+					autocomplete="off" placeholder="请输入" class="layui-input">
+			</div>
+		</div>
+		
+		
+		
+		<div class="layui-form-item">
+			<label class="layui-form-label"></label>
+			<div class="layui-input-block">
+				<input type='number'  onkeypress="return jtUtil.noNumbers(event)" onkeyup="this.value=this.value.replace(/[\u4e00-\u9fa5]/g,'')" onpaste="return false" ondragenter="return false"  style="ime-mode:disabled" name="studentPayment.del_flag" lay-verify="required"
+					autocomplete="off" placeholder="请输入" class="layui-input">
+			</div>
+		</div>
+		
+		
+		<div class="layui-form-item">
+			<div class="layui-input-block">
+				<button class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+				<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+			</div>
+		</div>
+	</form>
+</div>
+#include("/assets/comm/_resource.html")
+<script>
+layui.use(['form','jquery','layer','laydate'], function(){
+	var form = layui.form;
+	var $ = layui.jquery;
+	var layer = layui.layer;
+	var laydate = layui.laydate;
+	form.on('submit(demo1)',function(data){
+		console.log(JSON.stringify(data.field))
+		$.ajax({
+			url:'#(CONTEXT_PATH)/sutra/studentPayment/saveOrUpdate',
+			type:'POST',
+			data:data.field,
+			success:function(res){
+				console.log(JSON.stringify(res));
+				parent.jtUtil.reloadTable2();
+				parent.jtUtil.closeAll();
+			}
+		});
+		
+		return false;
+	});
+	
+	laydate.render({
+	    elem: '#date3' //指定元素
+	    ,format: 'yyyy-MM-dd' //可任意组合
+	});
+	
+	
+	form.render();
+});
+</script>

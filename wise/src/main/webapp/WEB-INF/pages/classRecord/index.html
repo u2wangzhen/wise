@@ -1,0 +1,111 @@
+#@layout_admin() 
+#define main_layout()
+<blockquote class="layui-elem-quote layui-quote-nm layui-text" style="margin-top: 15px;">
+		<div class="jtSearch">
+		     搜索ID：
+		  <div class="layui-inline">
+		    <input class="layui-input" name="id" id="id" autocomplete="off">
+		  </div>
+		    关键字：
+		  <div class="layui-inline">
+		    <input class="layui-input" name="keyword" id="keyword" autocomplete="off">
+		  </div>		
+		  <button class="layui-btn" data-type="reload"> <i class="layui-icon">&#xe615;</i> 搜索</button>
+ 		  <button class="layui-btn" data-type="addData"> <i class="layui-icon">&#xe608;</i> 新增</button>
+		  <button class="layui-btn" data-type="getCheckData">获取选中行数据</button>
+		</div>
+</blockquote>
+<!-- table -->
+<table id="jtTable" lay-filter="jtTable"></table>
+
+<script type="text/html" id="jtBar">
+  <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
+  <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+  <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+
+<script>
+	
+layui.use(['form','table','jquery'], function(){
+	  var form = layui.form;
+	  var table = layui.table;
+	  
+	  //第一个实例
+	  table.render({
+	    elem: '#jtTable'
+	    ,id: 'jtTableReload'
+	    ,height:590
+	    ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+	    ,url: '#(CONTEXT_PATH)/sutra/classRecord/pageList1' //数据接口
+	    ,page: true //开启分页
+	    ,limits:[13,16,19,22]
+	  	,limit:13
+	    ,response: { //定义后端 json 格式，详细参见官方文档
+	    	   statusName: 'code', //状态字段名称
+	    	   statusCode: '1', //状态字段成功值
+	    	   msgName: 'msg', //消息字段
+	    	   countName: 'count', //总数字段
+	    	   dataName: 'data' //数据字段
+	   	 }
+	    ,cols: [[ //表头
+	       {checkbox: true, fixed: true}
+	      ,{field: 'id', title: 'ID', align: 'center', sort: true, fixed: 'left'}
+	      ,{field: 'cid', title: '', align: 'center'}
+	      ,{field: 'record_data', title: '', align: 'center'}
+	      ,{field: 'start_time', title: '', align: 'center'}
+	      ,{field: 'end_time', title: '', align: 'center'}
+	      ,{field: 'class_hour', title: '', align: 'center'}
+	      ,{field: 'remark', title: '', align: 'center'}
+	      ,{field: 'del_flag', title: '', align: 'center'}
+	      ,{title:'操作',align: 'center',toolbar: '#jtBar'}
+	    ]]
+	  });
+	  
+	  //监听表格复选框选择
+	  table.on('checkbox(jtTable)', function(obj){
+	    console.log(obj)
+	  });
+	//监听工具条
+	  table.on('tool(jtTable)', function(obj){
+	    var data = obj.data;
+	    if(obj.event === 'detail'){
+	    	jtUtil.detailRow('xxx详情','#(CONTEXT_PATH)/sutra/classRecord/toDetail/'+data.id);
+	    } else if(obj.event === 'del'){
+	    	jtUtil.delRow('真的删除吗','/sutra/classRecord/delete/'+data.id,obj,layui.jquery);
+	    } else if(obj.event === 'edit'){
+	      layer.alert('编辑行：<br>'+ JSON.stringify(data))
+	    }
+	  });
+
+	  
+	  var $ = layui.$, active = {
+	    reload: function(){
+	      var idObj = $('#id');
+	      var keywordObj = $('#keyword');
+	      //执行重载
+	      table.reload('jtTableReload', {
+	        page: {
+	          curr: 1 //重新从第 1 页开始
+	        }
+	        ,where: {
+	            id: idObj.val()
+	            ,keyword:keywordObj.val()
+	        }
+	      });
+	    }
+	  	,addData:function(){
+	  		jtUtil.addRow(table,'新增用户','#(CONTEXT_PATH)/sutra/classRecord/toForm');
+	  	}
+	  	,getCheckData: function(){ //获取选中数据
+	  		layer.alert(JSON.stringify(jtUtil.getCheckData(table,'jtTableReload')));
+	     }
+	  };
+	  
+	  $('.jtSearch .layui-btn').on('click', function(){
+	    var type = $(this).data('type');
+	    active[type] ? active[type].call(this) : '';
+	  });
+	  
+	});
+</script>
+#end

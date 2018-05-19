@@ -2,6 +2,7 @@ package com.u2.wise.server.impl;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +29,7 @@ public class CurriculumServiceImpl implements CurriculumService{
 	
 	//@Cacheable(cacheNames= ConstantsUtils.CACHE_NAME_OF_Curriculum,key = "#{id}")
 	 
-	public Curriculum getById(Integer id){
+	public Curriculum getById(String id){
 		logger.info("查询id{}", id);
 		return Curriculum.dao.findById(id);
 	}
@@ -36,6 +37,7 @@ public class CurriculumServiceImpl implements CurriculumService{
 	//@CacheEvict(cacheNames=ConstantsUtils.CACHE_NAME_OF_Curriculum, allEntries = true)
 	 
 	public boolean save(Curriculum curriculum) {
+		curriculum.setId(UUID.randomUUID().toString().replaceAll("-", ""));
 		logger.info("新增id{}", curriculum);
 		return curriculum.save();
 	}
