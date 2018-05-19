@@ -1,7 +1,8 @@
 ##获取列表
 #sql("list")
 	select id   ,name  ,age  ,sex  ,code  ,parent_name  ,parent_info  ,create_time  ,start_time 	from
-    t_student 
+    t_student where 1=1
+    #if(ids!=null&&ids!="") and  id in (#(ids)) #end
 #end
 
 ##分页

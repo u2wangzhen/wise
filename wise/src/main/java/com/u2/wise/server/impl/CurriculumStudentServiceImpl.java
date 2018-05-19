@@ -58,6 +58,7 @@ public class CurriculumStudentServiceImpl implements CurriculumStudentService{
 	 
 	public List<Record> list(Map<String,String> param) {
 		logger.info("获取列表参数{}", param);
+		
 		return Db.find(Db.getSqlPara("curriculumStudent.list", param));
 	}
 	

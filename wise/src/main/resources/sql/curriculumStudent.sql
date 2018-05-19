@@ -1,7 +1,8 @@
 ##获取列表
 #sql("list")
 	select id   ,cid  ,student_id 	from
-    t_curriculum_student 
+    t_curriculum_student where 1=1 
+	#if(cid!=null&&cid!="") and  cid = '#(cid)' #end
 #end
 
 ##分页

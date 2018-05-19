@@ -8,6 +8,9 @@ public class StringUtil {
 		}
 		return false;
 	}
+	public static boolean isEmpty(String str) {
+		return !isNotEmpty(str);
+	}
 	public static boolean contains(String str,String str2){
 		if(isNotEmpty(str2)&&isNotEmpty(str)){
 			return str.contains(str2);

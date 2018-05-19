@@ -86,11 +86,24 @@
 			}, {
 				field : 'type',
 				title : '学级',
-				align : 'center'
+				align : 'center',
+				templet: function(d){
+				        return  d.type==1?'<span style="color: #c00;">高中</span>':'初中';
+				      }
 			}, {
 				field : 'grade',
 				title : '年级',
-				align : 'center'
+				align : 'center',
+				templet: function(d){
+						if(d.grade=='3'){
+							return  '<span style="color: #c00;">三年级</span>';
+						}else if(d.grade=='2'){
+							return  '<span style="color: #c00;">二年级</span>';
+						}else{
+							 return  '<span style="color: #c00;">一年级</span>';
+						}
+				       
+				      }
 			}, {
 				field : 'teacher_name',
 				title : '老师',
@@ -103,6 +116,7 @@
 				field : 'start_time',
 				title : '开课日期',
 				align : 'center'
+					,templet:'<div>{{ jtUtil.dataFormat(d.start_time,"yyyy-MM-dd")}}</div>'
 			}, {
 				field : 'end_time',
 				title : '结课日期',
@@ -142,14 +156,14 @@
 	function toAdd() {
 		layer.open({
 			type : 2,
-			area : [ '1000px', '500px' ],
+			area : [ '100%', '100%' ],
 			content : '#(ctx)/curriculum/toForm'
 		});
 	}
 	function toEdit(id) {
 		layer.open({
 			type : 2,
-			area : [ '1000px', '500px' ],
+			area : [ '100%', '100%' ],
 			content : '#(ctx)/curriculum/toForm?id=' + id
 		});
 	}

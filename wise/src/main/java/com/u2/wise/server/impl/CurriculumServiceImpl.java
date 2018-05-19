@@ -13,7 +13,9 @@ import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.SqlPara;
+import com.u2.common.StringUtil;
 import com.u2.wise.model.Curriculum;
+import com.u2.wise.model.CurriculumStudent;
 import com.u2.wise.server.CurriculumService;
 
 
@@ -36,9 +38,22 @@ public class CurriculumServiceImpl implements CurriculumService{
 
 	//@CacheEvict(cacheNames=ConstantsUtils.CACHE_NAME_OF_Curriculum, allEntries = true)
 	 
-	public boolean save(Curriculum curriculum) {
+	public boolean save(Curriculum curriculum, String students) {
+		if(StringUtil.isEmpty(students)){
+			return false;
+		}
 		curriculum.setId(UUID.randomUUID().toString().replaceAll("-", ""));
 		logger.info("新增id{}", curriculum);
+		String[] stu = students.split(",");
+		
+		for(String sid:stu){
+			CurriculumStudent cs = new CurriculumStudent();
+			cs.setId(UUID.randomUUID().toString().replaceAll("-", ""));
+			cs.setCid(curriculum.getId());
+			cs.setStudentId(sid);
+			cs.save();
+		}
+		
 		return curriculum.save();
 	}
 
@@ -50,8 +65,24 @@ public class CurriculumServiceImpl implements CurriculumService{
 
 	//@CacheEvict(cacheNames=ConstantsUtils.CACHE_NAME_OF_Curriculum, allEntries = true)
 	 
-	public boolean update(Curriculum curriculum) {
+	public boolean update(Curriculum curriculum, String students) {
+		if(StringUtil.isEmpty(students)){
+			return false;
+		}
+		
 		logger.info("更新id{}", curriculum);
+		
+		Db.update("delete from t_curriculum_student where cid=?", curriculum.getId());
+		
+		String[] stu = students.split(",");
+		for(String sid:stu){
+			CurriculumStudent cs = new CurriculumStudent();
+			cs.setId(UUID.randomUUID().toString().replaceAll("-", ""));
+			cs.setCid(curriculum.getId());
+			cs.setStudentId(sid);
+			cs.save();
+		}
+		
 		return curriculum.update();
 	}
 	
@@ -59,6 +90,10 @@ public class CurriculumServiceImpl implements CurriculumService{
 	 
 	public List<Record> list(Map<String,String> param) {
 		logger.info("获取列表参数{}", param);
+		String obj = param.get("cid");
+		if(obj==null){
+			param.put("cid", "");
+		}
 		return Db.find(Db.getSqlPara("curriculum.list", param));
 	}
 	

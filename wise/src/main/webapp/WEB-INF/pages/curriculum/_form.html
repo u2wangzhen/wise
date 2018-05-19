@@ -1,4 +1,7 @@
 #@layout_admin()
+#define js()
+<script src="#(ctx)/static/js/jtUtil.js" charset="utf-8"></script>
+#end 
 #define main_layout()
 <br>
 <br>
@@ -6,13 +9,13 @@
 	<form class="layui-form layui-form-pane" action="">
 		
 		<input type="hidden" name="curriculum.id" value="#(curriculum.id)">
-		<input type="hidden" name="curriculum.teacher_name" value=""/>
-		
+		<input type="hidden" id="teacher_name" name="curriculum.teacher_name" value="#(curriculum.teacher_name)"/>
+		<input type="hidden" id="students" name="students" value="#(students)">
 		<div class="layui-form-item">
 			<label class="layui-form-label">课程名称</label>
 			<div class="layui-input-block">
-				<input type='text' name="curriculum.name" lay-verify="required"
-					autocomplete="off" placeholder="请输入课程名称" class="layui-input">
+				<input type='text' name="curriculum.name" lay-verify="required" value="#(curriculum.name)"
+					autocomplete="off" placeholder="请输入课程名称" class="layui-input" >
 			</div>
 		</div>
 		
@@ -21,15 +24,15 @@
 		<div class="layui-form-item">
 			<label class="layui-form-label">科目</label>
 			<div class="layui-input-block">
-				<input type="radio" name="curriculum.subject" value="数学" title="数学" lay-filter="class_radio" >
-				<input type="radio" name="curriculum.subject" value="英语" title="英语" lay-filter="class_radio" >
-				<input type="radio" name="curriculum.subject" value="语文" title="语文" lay-filter="class_radio">
-				<input type="radio" name="curriculum.subject" value="物理" title="物理" lay-filter="class_radio">
-				<input type="radio" name="curriculum.subject" value="化学" title="化学" lay-filter="class_radio">
-				<input type="radio" name="curriculum.subject" value="生物" title="生物" lay-filter="class_radio">
-				<input type="radio" name="curriculum.subject" value="历史" title="历史" lay-filter="class_radio">
-				<input type="radio" name="curriculum.subject" value="地理" title="地理" lay-filter="class_radio">
-				<input type="radio" name="curriculum.subject" value="政治" title="政治" lay-filter="class_radio">
+				<input type="radio" name="curriculum.subject" value="数学" title="数学" lay-filter="class_radio" #if(curriculum.subject=='数学') checked="checked"#end>
+				<input type="radio" name="curriculum.subject" value="英语" title="英语" lay-filter="class_radio" #if(curriculum.subject=='英语') checked="checked"#end>
+				<input type="radio" name="curriculum.subject" value="语文" title="语文" lay-filter="class_radio" #if(curriculum.subject=='语文') checked="checked"#end>
+				<input type="radio" name="curriculum.subject" value="物理" title="物理" lay-filter="class_radio" #if(curriculum.subject=='物理') checked="checked"#end>
+				<input type="radio" name="curriculum.subject" value="化学" title="化学" lay-filter="class_radio" #if(curriculum.subject=='化学') checked="checked"#end>
+				<input type="radio" name="curriculum.subject" value="生物" title="生物" lay-filter="class_radio" #if(curriculum.subject=='生物') checked="checked"#end>
+				<input type="radio" name="curriculum.subject" value="历史" title="历史" lay-filter="class_radio" #if(curriculum.subject=='历史') checked="checked"#end>
+				<input type="radio" name="curriculum.subject" value="地理" title="地理" lay-filter="class_radio" #if(curriculum.subject=='地理') checked="checked"#end>
+				<input type="radio" name="curriculum.subject" value="政治" title="政治" lay-filter="class_radio" #if(curriculum.subject=='政治') checked="checked"#end>
 			</div>
 		</div>
 		
@@ -39,8 +42,8 @@
 		
 			<label class="layui-form-label">学级</label>
 			<div class="layui-input-block">
-				<input type="radio" name="curriculum.type" value="1" title="高中" >
-				<input type="radio" name="curriculum.type" value="0" title="初中" >
+				<input type="radio" name="curriculum.type" value="1" title="高中" #if(curriculum.type==1) checked="checked"#end>
+				<input type="radio" name="curriculum.type" value="0" title="初中" #if(curriculum.type==0) checked="checked"#end >
 			</div>
 			
 			
@@ -48,9 +51,9 @@
 		<div class="layui-form-item">
 		<label class="layui-form-label">年级</label>
 			<div class="layui-input-block">
-			<input type="radio" name="curriculum.grade" value="3" title="三年级" >
-			<input type="radio" name="curriculum.grade" value="2" title="二年级" >
-			<input type="radio" name="curriculum.grade" value="1" title="一年级" >
+			<input type="radio" name="curriculum.grade" value="3" title="三年级" #if(curriculum.grade=='3') checked="checked"#end>
+			<input type="radio" name="curriculum.grade" value="2" title="二年级" #if(curriculum.grade=='2') checked="checked"#end>
+			<input type="radio" name="curriculum.grade" value="1" title="一年级" #if(curriculum.grade=='1') checked="checked"#end>
 			</div>
 		</div>
 		
@@ -59,32 +62,34 @@
 			<div class="layui-inline">
 			<label class="layui-form-label">老师</label>
 			<div class="layui-input-inline">
-				<!-- <input type='text' id="teacher" name="curriculum.teacher_name" lay-verify="required"
-					autocomplete="off" placeholder="请输入老师" class="layui-input" onclick="selectTeacher();"> -->
-				<select id="teacher" name="curriculum.teacher_id" lay-filter="myselect"></select>
+				
+				<select id="teacher" name="curriculum.teacher_id" lay-filter="myselect">
+				<option value="#(curriculum.teacher_id)" selected="selected">#(curriculum.teacher_name)</option>
+				</select>
 			</div>
 			<label class="layui-form-label">开课日期</label>
 			<div class="layui-input-inline">
-				<input id="date7" readonly="readonly" type="text" name="curriculum.start_time" lay-verify="required"
+				<input id="date7" readonly="readonly" type="text" name="curriculum.start_time" lay-verify="required" value="#date(curriculum.start_time,'yyyy-MM-dd')"
 					autocomplete="off" placeholder="请输入" class="layui-input">
 			</div>
-			<!-- <label class="layui-form-label">结课日期</label>
-			<div class="layui-input-inline">
-				<input id="date8" readonly="readonly" type="text" name="curriculum.end_time" lay-verify="required"
-					autocomplete="off" placeholder="请输入" class="layui-input">
-			</div> -->
+			
 			</div>
 		</div>
 		
-	
+		<div class="layui-form-item">
+				<button class="layui-btn" type="button" onclick="toSelect1();">
+					<i class="layui-icon">&#xe615;</i>点击选择学生
+				</button>
+			<table class="layui-table" id="studentlist1" lay-filter="studentlist1"></table>
+		</div>
+		
 		<div class="layui-form-item layui-form-text">
 			<label class="layui-form-label">备注</label>
 			<div class="layui-input-block">
 				<textarea type="text" name="curriculum.remark" 
-					autocomplete="off" placeholder="请输入" class="layui-textarea"></textarea>
+					autocomplete="off" placeholder="请输入" class="layui-textarea">#(curriculum.remark)</textarea>
 			</div>
 		</div>
-		
 		
 		<div class="layui-form-item">
 			<center>
@@ -92,13 +97,15 @@
 			</center>
 		</div>
 	</form>
+	
 </div>
 <script>
-layui.use(['form','jquery','layer','laydate'], function(){
+layui.use(['form','jquery','layer','laydate','table'], function(){
 	var form = layui.form;
 	var $ = layui.jquery;
 	var layer = layui.layer;
 	var laydate = layui.laydate;
+	var table = layui.table;
 	form.render();
 	form.on('submit(add)',function(data){
 		console.log(JSON.stringify(data.field))
@@ -120,6 +127,45 @@ layui.use(['form','jquery','layer','laydate'], function(){
 		return false;
 	});
 	
+		var data=#(data)
+		table.render({
+			elem : '#studentlist1',
+			height: 200 ,//容器高度
+			cols : [ [ {
+				field : 'name',
+				width : 80,
+				title : '姓名'
+			}, {
+				field : 'sex',
+				width : 80,
+				title : '性别',
+				sort : true,
+				templet: function(d){
+			        return  d.sex==0?'<span style="color: #c00;">女</span>':'男';
+			      }
+			}, {
+				field : 'age',
+				width : 80,
+				title : '年龄'
+			}, {
+				field : 'parent_name',
+				title : '父母称呼',
+				width : 100
+			}, {
+				field : 'parent_info',
+				title : '信息',
+				width : 300,
+				sort : true
+			}, {
+				field : 'start_time',
+				title : '注册时间',
+				width : 120
+				,templet:'<div>{{ jtUtil.dataFormat(d.start_time,"yyyy-MM-dd")}}</div>'
+			} ] ],
+			data:data
+		});
+	
+	
 	form.verify({
 		nikename : function(value) {
 			if (value.length < 2) {
@@ -132,12 +178,15 @@ layui.use(['form','jquery','layer','laydate'], function(){
 	    elem: '#date7' //指定元素
 	    ,format: 'yyyy-MM-dd' //可任意组合
 	});
-	laydate.render({
+	/* laydate.render({
 	    elem: '#date8' //指定元素
 	    ,format: 'yyyy-MM-dd' //可任意组合
-	});
+	}); */
 	form.on('select(myselect)',function(data){
-		
+		/* var sel=data.elem;
+		var tex=sel.find("option:selected").text();
+		console.log(tex); */
+		$("#teacher_name").val(data.elem[data.elem.selectedIndex].text);
 	});
 	form.on('radio(class_radio)', function(data){
 		 // console.log(data.elem); //得到radio原始DOM对象
@@ -163,6 +212,68 @@ layui.use(['form','jquery','layer','laydate'], function(){
 		});
 	
 });
-
+function toSelect1(){
+	
+	layer.open({
+		type : 2,
+		area : [ '900px', '500px' ],
+		content : '#(ctx)/student/toList'
+	});
+}
+function setStudent(data){
+	
+	layui.use(['table', 'layer' ,'jquery'], function() {
+		
+		var table = layui.table;
+		var layer = layui.layer;
+		var $=layui.$;
+		var s='';
+		for (var i=0; i<data.length; i++){
+			if(s!=''){
+				s+=',';
+			}
+			s+=data[i].id;
+		}
+		console.log(s);
+		$("#students").val(s);
+		var str=JSON.stringify(data);
+		table.render({
+			elem : '#studentlist1',
+			height: 200 ,//容器高度
+			cols : [ [ {
+				field : 'name',
+				width : 80,
+				title : '姓名'
+			}, {
+				field : 'sex',
+				width : 80,
+				title : '性别',
+				sort : true,
+				templet: function(d){
+			        return  d.sex==0?'<span style="color: #c00;">女</span>':'男';
+			      }
+			}, {
+				field : 'age',
+				width : 80,
+				title : '年龄'
+			}, {
+				field : 'parent_name',
+				title : '父母称呼',
+				width : 100
+			}, {
+				field : 'parent_info',
+				title : '信息',
+				width : 300,
+				sort : true
+			}, {
+				field : 'start_time',
+				title : '注册时间',
+				width : 120
+				,templet:'<div>{{ jtUtil.dataFormat(d.start_time,"yyyy-MM-dd")}}</div>'
+			} ] ],
+			data:JSON.parse(str)
+		});
+	});
+}
 </script>
 #end

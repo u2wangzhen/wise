@@ -58,6 +58,10 @@ public class StudentServiceImpl implements StudentService{
 	 
 	public List<Record> list(Map<String,String> param) {
 		logger.info("获取列表参数{}", param);
+		String obj = param.get("ids");
+		if(obj==null){
+			param.put("ids", "");
+		}
 		return Db.find(Db.getSqlPara("student.list", param));
 	}
 	
