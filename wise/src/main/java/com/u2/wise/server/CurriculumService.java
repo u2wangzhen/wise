@@ -20,5 +20,6 @@ public interface CurriculumService {
 	public Page<Record> pageList(int pageNum, int pageSize,Map<String, String> paraMap,String sort,String order);
 	public Page<Record> pageList1(int pageNum, int pageSize,Map<String, String> paraMap,String sort,String order);
 	// ---------------   系统自动生成 -请勿改动  以下区域为自行添加   -----------------
+	public boolean update(Curriculum cc);
 	
 }

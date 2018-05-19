@@ -121,6 +121,11 @@ public class CurriculumServiceImpl implements CurriculumService{
 		SqlPara para = Db.getSqlPara("curriculum.pageList1", Kv.by("params", kv).set("sort", sort).set("order", order));
 		return Db.paginate(pageNum, pageSize, para);
 	}
+
+	public boolean update(Curriculum cc) {
+		// TODO Auto-generated method stub
+		return cc.update();
+	}
 	
 	// ---------------   系统自动生成 -请勿改动  以下区域为自行添加   -----------------
 

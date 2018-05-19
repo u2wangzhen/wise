@@ -1,5 +1,6 @@
 package com.u2.wise.controller;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -75,7 +76,7 @@ public class CurriculumController extends Controller {
 	public void pageList1(){
 		ResultData result = new ResultData();
 		Map<String, String> paraMap = ParamsUtils.getParameterMap(getRequest());
-		Page<Record> pages =  srv.pageList1(getParaToInt("page",1),getParaToInt("limit",10),paraMap,getPara("sort","id"),getPara("order","desc"));
+		Page<Record> pages =  srv.pageList1(getParaToInt("page",1),getParaToInt("limit",10),paraMap,getPara("sort","start_time"),getPara("order","desc"));
 		if(pages != null){
 			result.put("count", pages.getTotalRow());
 			List<Record> list = pages.getList();
@@ -156,6 +157,7 @@ public class CurriculumController extends Controller {
 	public void saveOrUpdate(){
 		ResultData result = new ResultData();
 		Curriculum curriculum = getModel(Curriculum.class);
+		curriculum.setDelFlag(0);
 		String students=getPara("students");
 		if(curriculum.getId() == null ){
 			if(srv.save(curriculum,students)){
@@ -178,11 +180,22 @@ public class CurriculumController extends Controller {
 	 */
 	public void delete(){
 		ResultData result = new ResultData();
-		if(srv.delete(getParaToInt())){
-			renderJson(result.setSuccess("删除成功", null));
-			return;
+		String id=getPara("id");
+		if(StringUtil.isNotEmpty(id)){
+			Curriculum cc = srv.getById(id);
+			cc.setEndTime(new Date());
+			cc.setDelFlag(1);
+			if(srv.update(cc)){
+				renderJson(result.setSuccess("操作成功", null));
+			}else{
+				renderJson(result.setFaild("操作失败", null));
+			}
+		}else{
+			renderJson(result.setFaild("丢失id无法结课", null));
 		}
-		renderJson(result.setFaild("删除失败", null));
+		
+		
+		
 	}
 	
 }

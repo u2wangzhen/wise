@@ -1,3 +1,5 @@
+#@layout_admin()
+#define main_layout()
 <div class="layui-container">
 	<form class="layui-form" action="">
 		
@@ -81,7 +83,6 @@
 		</div>
 	</form>
 </div>
-#include("/assets/comm/_resource.html")
 <script>
 layui.use(['form','jquery','layer','laydate'], function(){
 	var form = layui.form;
@@ -91,7 +92,7 @@ layui.use(['form','jquery','layer','laydate'], function(){
 	form.on('submit(demo1)',function(data){
 		console.log(JSON.stringify(data.field))
 		$.ajax({
-			url:'#(CONTEXT_PATH)/sutra/classRecord/saveOrUpdate',
+			url:'#(ctx)/classRecord/saveOrUpdate',
 			type:'POST',
 			data:data.field,
 			success:function(res){
@@ -121,3 +122,4 @@ layui.use(['form','jquery','layer','laydate'], function(){
 	form.render();
 });
 </script>
+#end
