@@ -1,82 +1,72 @@
-#@layout_admin()
+#@layout_admin() 
 #define main_layout()
 <div class="layui-container">
-	<form class="layui-form" action="">
+	<br> <br>
+	<form class="layui-form layui-form-pane" action="">
 		
+		<input type='hidden' id="cid" name="classRecord.cid" value="#(classRecord.cid)">
+		<input type='hidden' name="classRecord.id" value="#(classRecord.id)">
 		
-		
+		<!-- <div class="layui-form-item">
+			<div class="layui-input-inline">
+				<button class="layui-btn" type="button" onclick="toSelect();">
+					<i class="layui-icon">&#xe615;点击选择课程</i>
+				</button>
+			</div>
+		</div> -->
 		
 		<div class="layui-form-item">
-			<label class="layui-form-label"></label>
+			<label class="layui-form-label">课程信息</label>
 			<div class="layui-input-block">
-				<input type='text' name="classRecord.cid" lay-verify="required"
-					autocomplete="off" placeholder="请输入" class="layui-input">
+			<input type='text' id="cinfo" lay-verify="required" autocomplete="off" placeholder="点击选择课程" onclick="toSelect();"
+					readonly="readonly"	class="layui-input">
 			</div>
 		</div>
-		
-		
-		
-		
+
 		<div class="layui-form-item">
-			<label class="layui-form-label"></label>
-			<div class="layui-input-block">
-				<input id="date2" readonly="readonly" type="text" name="classRecord.record_data" lay-verify="required"
-					autocomplete="off" placeholder="请输入" class="layui-input">
+			<div class="layui-inline">
+				<label class="layui-form-label">开始时间</label>
+				<div class="layui-input-inline">
+					<input id="date3" readonly="readonly" type="text" value="#date(classRecord.start_time,'HH:mm:ss')"
+						name="start_time" lay-verify="required"
+						autocomplete="off" placeholder="请输入" class="layui-input">
+				</div>
+				<label class="layui-form-label">结束时间</label>
+				<div class="layui-input-inline">
+					<input id="date4" readonly="readonly" type="text" value="#date(classRecord.end_time,'HH:mm:ss')"
+						name="end_time" lay-verify="required"
+						autocomplete="off" placeholder="请输入" class="layui-input">
+				</div>
 			</div>
 		</div>
-		
-		
-		
+
 		<div class="layui-form-item">
-			<label class="layui-form-label"></label>
-			<div class="layui-input-block">
-				<input id="date3" readonly="readonly" type="text" name="classRecord.start_time" lay-verify="required"
-					autocomplete="off" placeholder="请输入" class="layui-input">
+			<div class="layui-inline">
+				<label class="layui-form-label">课时(h)</label>
+				<div class="layui-input-inline">
+					<input type='text' name="classRecord.class_hour" value="#(classRecord.class_hour)"
+						lay-verify="required|number" autocomplete="off" placeholder="请输入"
+						class="layui-input">
+				</div>
+				<label class="layui-form-label">登记日期</label>
+				<div class="layui-input-inline">
+					<input id="date2" readonly="readonly" type="text" value="#date(classRecord.record_data,'yyyy-MM-dd')"
+						name="classRecord.record_data" lay-verify="required"
+						autocomplete="off" placeholder="请输入" class="layui-input">
+				</div>
 			</div>
 		</div>
-		
-		
-		
-		<div class="layui-form-item">
-			<label class="layui-form-label"></label>
+
+		<div class="layui-form-item layui-form-text">
+			<label class="layui-form-label">备注</label>
 			<div class="layui-input-block">
-				<input id="date4" readonly="readonly" type="text" name="classRecord.end_time" lay-verify="required"
-					autocomplete="off" placeholder="请输入" class="layui-input">
+					<textarea type="text" name="classRecord.remark" placeholder="请输入备注信息" class="layui-textarea">#(classRecord.remark)</textarea>
 			</div>
 		</div>
-		
-		
+
+
 		<div class="layui-form-item">
-			<label class="layui-form-label"></label>
-			<div class="layui-input-block">
-				<input type='text' name="classRecord.class_hour" lay-verify="required"
-					autocomplete="off" placeholder="请输入" class="layui-input">
-			</div>
-		</div>
-		
-		
-		
-		<div class="layui-form-item">
-			<label class="layui-form-label"></label>
-			<div class="layui-input-block">
-				<input type='text' name="classRecord.remark" lay-verify="required"
-					autocomplete="off" placeholder="请输入" class="layui-input">
-			</div>
-		</div>
-		
-		
-		
-		<div class="layui-form-item">
-			<label class="layui-form-label"></label>
-			<div class="layui-input-block">
-				<input type='number'  onkeypress="return jtUtil.noNumbers(event)" onkeyup="this.value=this.value.replace(/[\u4e00-\u9fa5]/g,'')" onpaste="return false" ondragenter="return false"  style="ime-mode:disabled" name="classRecord.del_flag" lay-verify="required"
-					autocomplete="off" placeholder="请输入" class="layui-input">
-			</div>
-		</div>
-		
-		
-		<div class="layui-form-item">
-			<div class="layui-input-block">
+			<div class="layui-input-inline">
 				<button class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
 				<button type="reset" class="layui-btn layui-btn-primary">重置</button>
 			</div>
@@ -84,42 +74,67 @@
 	</form>
 </div>
 <script>
-layui.use(['form','jquery','layer','laydate'], function(){
-	var form = layui.form;
-	var $ = layui.jquery;
-	var layer = layui.layer;
-	var laydate = layui.laydate;
-	form.on('submit(demo1)',function(data){
-		console.log(JSON.stringify(data.field))
-		$.ajax({
-			url:'#(ctx)/classRecord/saveOrUpdate',
-			type:'POST',
-			data:data.field,
-			success:function(res){
-				console.log(JSON.stringify(res));
-				parent.jtUtil.reloadTable2();
-				parent.jtUtil.closeAll();
-			}
+	layui.use([ 'form', 'jquery', 'layer', 'laydate' ], function() {
+		var form = layui.form;
+		var $ = layui.jquery;
+		var layer = layui.layer;
+		var laydate = layui.laydate;
+		form.on('submit(demo1)', function(data) {
+			console.log(JSON.stringify(data.field))
+			$.ajax({
+				url : '#(ctx)/classRecord/saveOrUpdate',
+				type : 'POST',
+				data : data.field,
+				success : function(res) {
+					console.log(JSON.stringify(res));
+					parent.jtUtil.reloadTable2();
+					parent.jtUtil.closeAll();
+				}
+			});
+
+			return false;
+		});
+
+		laydate.render({
+			elem : '#date2' //指定元素
+			,
+			format : 'yyyy-MM-dd' //可任意组合
+		});
+		laydate.render({
+			elem : '#date3' //指定元素
+			,
+			type : 'time'
+		///,format: 'yyyy-MM-dd' //可任意组合
+		});
+		laydate.render({
+			elem : '#date4' //指定元素
+			,
+			type : 'time'
+		/// ,format: 'yyyy-MM-dd' //可任意组合
+		});
+
+		form.render();
+	});
+	function toSelect(){
+		layer.open({
+			type : 2,
+			title:'选择课程',
+			area : [ '100%', '100%' ],
+			content : '#(ctx)/curriculum/toList'
+		});
+	}
+	function setCurriculum(data){
+		///alert(data[0].name);
+		layui.use([ 'jquery' ], function() {
+			var $ = layui.jquery;
+			
+			///var tab='<table class="layui-table" >'+'<tr>'+'<td>'+'课程名称: '+data[0].name+'</td>'+'<td>'+'科目: '+data[0].subject+'</td>'+'<td>'+'老师: '+data[0].teacher_name+'</td>'+'<td>'+'学生: '+data[0].students+'</td>'+'</tr>'+'</table>';
+			var tab='| 课程名称: '+data[0].name+' | 科目: '+data[0].subject+' | 老师: '+data[0].teacher_name+' | 学生: '+data[0].students+" |";
+
+			$("#cinfo").val(tab);
+			$("#cid").val(data[0].id);
 		});
 		
-		return false;
-	});
-	
-	laydate.render({
-	    elem: '#date2' //指定元素
-	    ,format: 'yyyy-MM-dd' //可任意组合
-	});
-	laydate.render({
-	    elem: '#date3' //指定元素
-	    ,format: 'yyyy-MM-dd' //可任意组合
-	});
-	laydate.render({
-	    elem: '#date4' //指定元素
-	    ,format: 'yyyy-MM-dd' //可任意组合
-	});
-	
-	
-	form.render();
-});
+	}
 </script>
 #end

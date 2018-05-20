@@ -1,5 +1,7 @@
 package com.u2.wise.controller;
 
+import java.text.DateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -10,9 +12,13 @@ import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
 import com.u2.common.ParamsUtils;
 import com.u2.common.ResultData;
+import com.u2.common.StringUtil;
 import com.u2.wise.model.ClassRecord;
 import com.u2.wise.server.ClassRecordService;
+import com.u2.wise.server.CurriculumService;
 import com.u2.wise.server.impl.ClassRecordServiceImpl;
+import com.u2.wise.server.impl.CurriculumServiceImpl;
+import com.xiaoleilu.hutool.date.DateUtil;
 import com.xiaoleilu.hutool.util.CollectionUtil;
 
 import com.jfinal.core.Controller;
@@ -24,6 +30,7 @@ public class ClassRecordController extends Controller {
 	
 	//private static final Logger logger = LoggerFactory.getLogger(ClassRecordController.class);
 	private ClassRecordService srv = enhance(ClassRecordServiceImpl.class);
+	private CurriculumService csrv = enhance(CurriculumServiceImpl.class);
 
 	public void index() {
 		this.render("index.html");
@@ -66,18 +73,34 @@ public class ClassRecordController extends Controller {
 		Page<Record> pages =  srv.pageList1(getParaToInt("page",1),getParaToInt("limit",10),paraMap,getPara("sort","id"),getPara("order","desc"));
 		if(pages != null){
 			result.put("count", pages.getTotalRow());
-			renderJson(result.setSuccess("查询分页数据成功", pages.getList()));
+			renderJson(result.setSuccess("查询分页数据成功", buildCname(pages.getList())));
 			return;
 		}
 		result.put("count", 0);
 		renderJson(result.setFaild("查询分页数据失败", null));
 	}
 	
+	private List<Record> buildCname(List<Record> list) {
+		// TODO Auto-generated method stub
+			if(list!=null&&!list.isEmpty()){
+				for (Record r : list) {
+					
+					String cid=r.get("cid");
+					if(StringUtil.isNotEmpty(cid)){
+						r.set("cname", csrv.getById(cid).getName());
+					}
+					
+				}
+			}
+		
+		return list;
+	}
+
 	/**
 	 * 详情页
 	 */
 	public void toDetail(){
-		setAttr("classRecord", srv.getById(getParaToInt()));
+		setAttr("classRecord", srv.getById(getPara()));
 		render("detail.html");
 	}
 	
@@ -85,10 +108,14 @@ public class ClassRecordController extends Controller {
 	 * 新增编辑页
 	 */
 	public void toForm(){
-		Integer id = getParaToInt();
-		if(id != null && id > 0){
-			//
+		String id = getPara("id");
+		ClassRecord cr=null;
+		if(StringUtil.isNotEmpty(id)){
+			cr=srv.getById(id);
+		}else{
+			cr=new ClassRecord();
 		}
+		setAttr("classRecord", cr);
 		render("_form.html");
 	}
 	
@@ -98,6 +125,15 @@ public class ClassRecordController extends Controller {
 	public void saveOrUpdate(){
 		ResultData result = new ResultData();
 		ClassRecord classRecord = getModel(ClassRecord.class);
+		String rd = DateUtil.formatDate(classRecord.getRecordData());
+		String start=rd+" "+getPara("start_time");
+		String end=rd+" "+getPara("end_time");
+		Date s=DateUtil.parseDateTime(start);
+		Date e=DateUtil.parseDateTime(end);
+		
+		classRecord.setStartTime(s);
+		classRecord.setEndTime(e);
+		
 		if(classRecord.getId() == null ){
 			if(srv.save(classRecord)){
 				result.setSuccess("保存成功", null);
@@ -107,7 +143,6 @@ public class ClassRecordController extends Controller {
 		}else{
 			if(srv.update(classRecord)){
 				result.setSuccess("更新成功", null);
-				return;
 			}else{
 				result.setFaild("更新失败", null);
 			}

@@ -42,6 +42,10 @@ public class CurriculumController extends Controller {
 		this.render("index.html");
 	}
 	
+	public void toList(){
+		this.render("_list.html");
+	}
+	
 	/**
 	 * 列表
 	 */
@@ -100,7 +104,7 @@ public class CurriculumController extends Controller {
 					String sts="";
 					for (Record record : ll) {
 						if(StringUtil.isNotEmpty(sts)){
-							sts+="|";
+							sts+=" , ";
 						}
 						sts+=ssrv.getById(record.getStr("student_id")).getName();
 					}
@@ -131,18 +135,20 @@ public class CurriculumController extends Controller {
 			Map<String, String> param=new HashMap<String, String>();
 			param.put("cid", id);
 			List<Record> list = csrv.list(param);
-			String sts="";
-			for (Record record : list) {
-				if(StringUtil.isNotEmpty(sts)){
-					sts+=",";
+			if(!list.isEmpty()){
+				String sts="";
+				for (Record record : list) {
+					if(StringUtil.isNotEmpty(sts)){
+						sts+=",";
+					}
+					sts+="'"+record.get("student_id")+"'";
 				}
-				sts+="'"+record.get("student_id")+"'";
+				
+				param.put("ids", sts);
+				list=ssrv.list(param);
+				setAttr("data",JsonKit.toJson(list));
+				setAttr("students",sts.replaceAll("'", ""));
 			}
-			
-			param.put("ids", sts);
-			list=ssrv.list(param);
-			setAttr("data",JsonKit.toJson(list));
-			setAttr("students",sts.replaceAll("'", ""));
 		}else{
 			c=new Curriculum();
 		}

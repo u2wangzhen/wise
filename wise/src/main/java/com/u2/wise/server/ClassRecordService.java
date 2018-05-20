@@ -13,7 +13,7 @@ public interface ClassRecordService {
 	public boolean update(ClassRecord classRecord);
 	public boolean delete(Integer id);
 	public boolean save(ClassRecord classRecord);
-	public ClassRecord getById(Integer id);
+	public ClassRecord getById(String id);
 	public List<Record> list(Map<String, String> param);
 	public Page<Record> pageList(int pageNum, int pageSize,Map<String, String> paraMap,String sort,String order);
 	public Page<Record> pageList1(int pageNum, int pageSize,Map<String, String> paraMap,String sort,String order);

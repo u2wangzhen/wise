@@ -13,13 +13,6 @@
 			<input class="layui-input" id="subject" placeholder="输入科目"
 				autocomplete="off">
 		</div>
-		<div class="layui-inline">
-			<select id="del_flag">
-				<option value='0'>正在上的课程</option>
-				<option value='1'>已结课程</option>
-				<option value='2'>全部课程</option>
-			</select>
-		</div>
 		<button class="layui-btn" lay-submit="" lay-filter="sreach"
 			id="sreachbut">
 			<i class="layui-icon">&#xe615;</i>
@@ -33,19 +26,13 @@
 </div>
 <div class="weadmin-block">
 
-	<button class="layui-btn" type="button" onclick="toAdd();">
+	<button type="button" class="layui-btn" id="add">
 		<i class="layui-icon"></i>添加
 	</button>
 
 </div>
 <!-- table -->
 <table id="jtTable" lay-filter="jtTable"></table>
-
-<script type="text/html" id="jtBar">
-  <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
-  <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-  <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">结课</a>
-</script>
 
 <script>
 	layui.use([ 'form', 'table', 'jquery' ], function() {
@@ -127,40 +114,8 @@
 				field : 'end_time',
 				title : '结课日期',
 				align : 'center'
-			},{
-				title : '操作',
-				align : 'center',
-				width : 200,
-				toolbar : '#jtBar'
-			} ] ]
+			}] ]
 		});
-
-		
-		//监听工具条
-		table.on('tool(jtTable)',
-				function(obj) {
-					var data = obj.data;
-					if (obj.event === 'edit') {
-						toEdit(data.id);
-					}
-					if (obj.event === 'del') {
-						if(data.del_flag==0){
-							layer.confirm('确定结课吗？', function(index){
-						        $.ajax({
-						        	url:'#(ctx)/curriculum/delete',
-						        	data:{id:data.id},
-						        	type:'POST',
-						        	success:function(data){
-						        		layer.msg(data.msg);
-						        		table.reload('jtTableReload',{page : {curr : 1}});
-						        	},
-						        	dataType:'json'
-						        });
-						        layer.close(index);
-						});
-						}
-					}
-				});
 
 		$("#sreachbut").on('click', function() {
 			table.reload('jtTableReload', {
@@ -171,33 +126,27 @@
 				where : {
 					name : encodeURI($("#name").val()),
 					subject : encodeURI($("#subject").val()),
-					del_flag: $("#del_flag").val()
+					del_flag: 0
 				}
 			});
 		});
 
+		$('#add').on('click', function(){
+			 var checkStatus = table.checkStatus('jtTableReload')
+		      ,data = checkStatus.data;
+			 if(data.length==1){
+				 parent.setCurriculum(data);
+				 var index = parent.layer.getFrameIndex(window.name); //获取窗口索引  
+				 parent.layer.close(index);
+			 }else if(data.length==0){
+				 layer.msg("请选择一条数据！")
+			 }else{
+				 layer.msg("只能选择一条数据！")
+			 }
+			 
+		});
 	});
-	function toAdd() {
-		layer.open({
-			type : 2,
-			area : [ '100%', '100%' ],
-			content : '#(ctx)/curriculum/toForm'
-		});
-	}
-	function toEdit(id) {
-		layer.open({
-			type : 2,
-			area : [ '100%', '100%' ],
-			content : '#(ctx)/curriculum/toForm?id=' + id
-		});
-	}
 	
-	function toDel(id) {
-		layer.open({
-			type : 2,
-			area : [ '100%', '100%' ],
-			content : '#(ctx)/curriculum/toForm?id=' + id
-		});
-	}
+	
 </script>
 #end

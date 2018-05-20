@@ -176,7 +176,7 @@
     jtUtil.addRow = function(table,title,url,width , height){
     	$table = table;
 		var _w = '800px';
-		var _h = '600px';
+		var _h = '400px';
 		if(width!=null) _w=width+"px";
 		if(height!=null) _h=height+"px";
 		layer.open({

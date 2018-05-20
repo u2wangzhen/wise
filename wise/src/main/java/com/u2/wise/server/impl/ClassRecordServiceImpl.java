@@ -29,7 +29,7 @@ public class ClassRecordServiceImpl implements ClassRecordService{
 	
 	//@Cacheable(cacheNames= ConstantsUtils.CACHE_NAME_OF_ClassRecord,key = "#{id}")
 	 
-	public ClassRecord getById(Integer id){
+	public ClassRecord getById(String id){
 		logger.info("查询id{}", id);
 		return ClassRecord.dao.findById(id);
 	}
