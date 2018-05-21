@@ -80,6 +80,24 @@ public class CurriculumController extends Controller {
 	public void pageList1(){
 		ResultData result = new ResultData();
 		Map<String, String> paraMap = ParamsUtils.getParameterMap(getRequest());
+		
+		String sid = paraMap.get("student_id");
+		String sts="";
+		if(StringUtil.isNotEmpty(sid)){
+			Map<String, String> m=new HashMap<String, String>();
+			m.put("student_id", sid);
+			List<Record> list = csrv.list(m);
+			if(list!=null&&!list.isEmpty()){
+				
+				for (Record r : list) {
+					if(StringUtil.isNotEmpty(sts)){
+						sts+=",";
+					}
+					sts+="'"+r.getStr("cid")+"'";
+				}
+			}
+		}
+		paraMap.put("ids", sts);
 		Page<Record> pages =  srv.pageList1(getParaToInt("page",1),getParaToInt("limit",10),paraMap,getPara("sort","start_time"),getPara("order","desc"));
 		if(pages != null){
 			result.put("count", pages.getTotalRow());

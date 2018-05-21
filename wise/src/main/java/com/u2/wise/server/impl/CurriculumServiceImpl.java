@@ -130,18 +130,31 @@ public class CurriculumServiceImpl implements CurriculumService {
 		try {
 			if (StringUtil.isNotEmpty(paraMap.get("name"))) {
 
-				kv.set("name", java.net.URLDecoder.decode(paraMap.get("name"), "UTF-8"));
+				kv.set("name", "%"+java.net.URLDecoder.decode(paraMap.get("name"), "UTF-8")+"%");
 
 			}
 
 			if (StringUtil.isNotEmpty(paraMap.get("subject"))) {
-				kv.set("subject", java.net.URLDecoder.decode(paraMap.get("subject"), "UTF-8"));
+				kv.set("subject", "%"+java.net.URLDecoder.decode(paraMap.get("subject"), "UTF-8")+"%");
+			}
+			
+			if (StringUtil.isNotEmpty(paraMap.get("teacher_name"))) {
+				kv.set("teacher_name", "%"+java.net.URLDecoder.decode(paraMap.get("teacher_name"), "UTF-8")+"%");
 			}
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		SqlPara para = Db.getSqlPara("curriculum.pageList1", Kv.by("params", kv).set("sort", sort).set("order", order));
+		String t = paraMap.get("type");
+		if(StringUtil.isNotEmpty(t)){
+			kv.set("type=",Integer.valueOf(t));
+		}
+		
+		kv.set("grade=",paraMap.get("grade"));
+		Kv k = Kv.by("params", kv);
+		k.set("ids",paraMap.get("ids"));
+		
+		SqlPara para = Db.getSqlPara("curriculum.pageList1", k.set("sort", sort).set("order", order));
 		return Db.paginate(pageNum, pageSize, para);
 	}
 

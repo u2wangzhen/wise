@@ -1,0 +1,109 @@
+#@layout_admin()
+#define js()
+<script src="#(ctx)/static/js/jtUtil.js" charset="utf-8"></script>
+#end 
+#define main_layout()
+	<div class="weadmin-body">
+		
+		<div class="weadmin-block">
+			
+			<button class="layui-btn" id="add" >
+				<i class="layui-icon"></i>确认
+			</button>
+			
+			<div class="layui-inline">
+					<input type="text" id="name" placeholder="请输入学生姓名"
+						autocomplete="off" class="layui-input">
+				</div>
+				<button class="layui-btn" lay-submit="" lay-filter="sreach" id="sreachbut">
+					<i class="layui-icon">&#xe615;</i>
+				</button>
+				<a class="layui-btn layui-btn-sm"
+			style="line-height: 1.6em; margin-top: 3px; float: right"
+			href="javascript:location.replace(location.href);" title="刷新"> <i
+			class="layui-icon" style="line-height: 30px">ဂ</i></a>
+			
+		</div>
+	</div>
+	<table class="layui-table" id="studentlist1" lay-filter="studentlist1"></table>
+
+	<script type="text/javascript">
+		layui.use(['table', 'layer' ,'jquery'], function() {
+			
+			var table = layui.table;
+			var layer = layui.layer;
+			var $=layui.$;
+			
+
+			table.render({
+				elem : '#studentlist1',
+				id:"studentlistreload1",
+				url : '#(ctx)/student/list',
+				page:false,
+				response : { //定义后端 json 格式，详细参见官方文档
+					statusName : 'code', //状态字段名称
+					statusCode : '1', //状态字段成功值
+					msgName : 'msg', //消息字段
+					dataName : 'data' //数据字段
+				},
+				cols : [ [ {
+					field : 'id',
+					width : 50,
+					checkbox : true,
+					fixed : true
+				}, {
+					field : 'name',
+					width : 80,
+					title : '姓名'
+				}, {
+					field : 'sex',
+					width : 80,
+					title : '性别',
+					sort : true,
+					templet: function(d){
+				        return  d.sex==0?'<span style="color: #c00;">女</span>':'男';
+				      }
+				}, {
+					field : 'age',
+					width : 80,
+					title : '年龄'
+				}, {
+					field : 'parent_name',
+					title : '父母称呼',
+					width : 100
+				}, {
+					field : 'parent_info',
+					title : '信息',
+					width : 300,
+					sort : true
+				}, {
+					field : 'start_time',
+					title : '注册时间',
+					width : 120
+					,templet:'<div>{{ jtUtil.dataFormat(d.start_time,"yyyy-MM-dd")}}</div>'
+				} ] ]
+			});
+			$('#sreachbut').on('click', function(){
+				table.reload('studentlistreload1', {
+			        where: {
+			            name: $("#name").val()
+			        }
+			      });
+			});
+			$('#add').on('click', function(){
+				 var checkStatus = table.checkStatus('studentlistreload1')
+			      ,data = checkStatus.data;
+				 if(data.length==1){
+					 parent.setStudent(data);
+					 var index = parent.layer.getFrameIndex(window.name); //获取窗口索引  
+					 parent.layer.close(index);
+				 }else if(data.length>1){
+					 layer.msg('只能选择一个学生！');
+				 }else{
+					 layer.msg('请选择一个学生');
+				 }
+				 
+			});
+		});
+	</script>
+#end

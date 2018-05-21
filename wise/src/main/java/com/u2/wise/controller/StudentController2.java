@@ -37,6 +37,9 @@ public class StudentController2 extends BaseController{
 	public void toList(){
 		render("_list.html");
 	}
+	public void toList2(){
+		render("_list2.html");
+	}
 	
 	public void saveOrUpdate(){
 		
