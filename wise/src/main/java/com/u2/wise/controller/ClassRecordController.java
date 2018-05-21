@@ -2,6 +2,7 @@ package com.u2.wise.controller;
 
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -14,10 +15,15 @@ import com.u2.common.ParamsUtils;
 import com.u2.common.ResultData;
 import com.u2.common.StringUtil;
 import com.u2.wise.model.ClassRecord;
+import com.u2.wise.model.Curriculum;
 import com.u2.wise.server.ClassRecordService;
 import com.u2.wise.server.CurriculumService;
+import com.u2.wise.server.CurriculumStudentService;
+import com.u2.wise.server.StudentService;
 import com.u2.wise.server.impl.ClassRecordServiceImpl;
 import com.u2.wise.server.impl.CurriculumServiceImpl;
+import com.u2.wise.server.impl.CurriculumStudentServiceImpl;
+import com.u2.wise.server.impl.StudentServiceImpl;
 import com.xiaoleilu.hutool.date.DateUtil;
 import com.xiaoleilu.hutool.util.CollectionUtil;
 
@@ -31,6 +37,10 @@ public class ClassRecordController extends Controller {
 	//private static final Logger logger = LoggerFactory.getLogger(ClassRecordController.class);
 	private ClassRecordService srv = enhance(ClassRecordServiceImpl.class);
 	private CurriculumService csrv = enhance(CurriculumServiceImpl.class);
+	private StudentService ssrv = enhance(StudentServiceImpl.class);
+	private CurriculumStudentService cssrv = enhance(CurriculumStudentServiceImpl.class);
+
+
 
 	public void index() {
 		this.render("index.html");
@@ -100,8 +110,36 @@ public class ClassRecordController extends Controller {
 	 * 详情页
 	 */
 	public void toDetail(){
-		setAttr("classRecord", srv.getById(getPara()));
+		ClassRecord cr = srv.getById(getPara("ID"));
+		String cid=cr.getCid();
+		
+		setAttr("classRecord", cr);
+		setAttr("curriculum_info", buildCurriculumInfo(cid));
 		render("detail.html");
+	}
+	
+	private String buildCurriculumInfo(String cid){
+		String str="";
+		if(StringUtil.isNotEmpty(cid)){
+			Curriculum c = csrv.getById(cid);
+			if(c!=null){
+				str="| 课程名称: "+c.getName()+" | 科目: "+c.getSubject()+" | 老师: "+c.getTeacherName();//+" | 学生: "+c.+" |";
+				Map<String, String> param=new HashMap<String, String>();
+				param.put("cid", c.getId());
+				List<Record> ll = cssrv.list(param);
+				if(ll!=null&&!ll.isEmpty()){
+					String sts="";
+					for (Record record : ll) {
+						if(StringUtil.isNotEmpty(sts)){
+							sts+=" , ";
+						}
+						sts+=ssrv.getById(record.getStr("student_id")).getName();
+					}
+					str+=" | 学生: "+sts+" |";
+				}
+			}
+		}
+		return str;
 	}
 	
 	/**
@@ -112,6 +150,7 @@ public class ClassRecordController extends Controller {
 		ClassRecord cr=null;
 		if(StringUtil.isNotEmpty(id)){
 			cr=srv.getById(id);
+			setAttr("curriculum_info", buildCurriculumInfo(cr.getCid()));
 		}else{
 			cr=new ClassRecord();
 		}

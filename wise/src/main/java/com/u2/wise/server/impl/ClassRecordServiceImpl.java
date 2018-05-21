@@ -13,8 +13,11 @@ import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.SqlPara;
+import com.u2.common.StringUtil;
 import com.u2.wise.model.ClassRecord;
 import com.u2.wise.server.ClassRecordService;
+import com.xiaoleilu.hutool.date.DatePattern;
+import com.xiaoleilu.hutool.date.DateUtil;
 
 
 
@@ -83,7 +86,15 @@ public class ClassRecordServiceImpl implements ClassRecordService{
 		paraMap.remove("sort");
 		paraMap.remove("order");
 		Kv kv = Kv.by("id=", paraMap.get("id"));
-		SqlPara para = Db.getSqlPara("classRecord.pageList1", Kv.by("params", kv).set("sort", sort).set("order", order));
+		Kv k = Kv.by("params", kv);
+		if(StringUtil.isNotEmpty(paraMap.get("date1"))){
+			String d1=paraMap.get("date1")+" 00:00:00";
+			k.set("date1", DateUtil.parse(d1, DatePattern.NORM_DATETIME_PATTERN));
+			String d2=paraMap.get("date1")+" 23:59:59";
+			k.set("date2", DateUtil.parse(d2, DatePattern.NORM_DATETIME_PATTERN));
+		}
+		
+		SqlPara para = Db.getSqlPara("classRecord.pageList1", k.set("sort", sort).set("order", order));
 		return Db.paginate(pageNum, pageSize, para);
 	}
 	

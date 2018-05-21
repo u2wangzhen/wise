@@ -6,13 +6,13 @@
 	<div class="jtSearch">
 		日期：
 		<div class="layui-inline">
-			<input class="layui-input" name="id" id="id" autocomplete="off">
+			<input class="layui-input" id="data1" autocomplete="off">
 		</div>
-		科目：
+		<!-- 科目：
 		<div class="layui-inline">
 			<input class="layui-input" name="keyword" id="keyword"
 				autocomplete="off">
-		</div>
+		</div> -->
 		<button class="layui-btn" data-type="reload">
 			<i class="layui-icon">&#xe615;</i> 搜索
 		</button>
@@ -29,10 +29,15 @@
 </script>
 
 <script>
-	layui.use([ 'form', 'table', 'jquery' ], function() {
+	layui.use([ 'form', 'table', 'jquery', 'laydate' ], function() {
 		var form = layui.form;
 		var table = layui.table;
-
+		var laydate = layui.laydate;
+		
+		laydate.render({
+			elem : '#data1' //指定元素
+			,format : 'yyyy-MM-dd' //可任意组合
+		});
 		//第一个实例
 		table.render({
 			elem : '#jtTable',
@@ -111,8 +116,7 @@
 					//重新从第 1 页开始
 					},
 					where : {
-						id : idObj.val(),
-						keyword : keywordObj.val()
+						date1 : $("#data1").val()
 					}
 				});
 			},

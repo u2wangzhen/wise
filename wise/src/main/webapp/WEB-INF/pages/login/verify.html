@@ -1,0 +1,60 @@
+#@layout_admin()
+
+#define main_layout()
+<br>
+<br>
+<div class="layui-container">
+	<form class="layui-form layui-form-pane" action="">
+		<input type="hidden" name="url" value="#(url)">
+		
+		<div class="layui-form-item">
+			
+			<div class="layui-input-block">
+				<input type="password" name="password" lay-verify="required" 
+					autocomplete="off" placeholder="请输入密码" class="layui-input"  >
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<center>
+				<button class="layui-btn" lay-submit="" lay-filter="add">立即提交</button>
+			</center>
+		</div>
+	</form>
+	
+</div>
+<script>
+layui.use(['form','jquery','layer'], function(){
+	var form = layui.form;
+	var layer=layui.layer;
+	var $ = layui.jquery;
+	form.render();
+	form.on('submit(add)',function(data){
+		console.log(JSON.stringify(data.field))
+		$.ajax({
+			url:'#(ctx)/login/verify',
+			type:'POST',
+			data:data.field,
+			success:function(res){
+				layer.msg(res.msg);
+				if (res.code == 1) {
+					//parent.location.reload(); // 父页面刷新
+					parent.layer.open({
+						title:'设置'
+						,type:2
+						,area : [ '100%', '100%' ],
+						content : res.data
+					});
+					 var index = parent.layer
+							.getFrameIndex(window.name);
+					//关闭当前frame
+					parent.layer.close(index); 
+					
+				}
+			}
+		});
+		return false;
+	});
+});
+	
+</script>
+#end

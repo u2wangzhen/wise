@@ -84,12 +84,11 @@
   <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
   <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
   <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">结课</a>
+  <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="config">设置</a>
 </script>
 
 <script>
-	layui
-			.use(
-					[ 'form', 'table', 'jquery' ],
+	layui.use([ 'form', 'table', 'jquery' ],
 					function() {
 						var form = layui.form;
 						var table = layui.table;
@@ -215,6 +214,18 @@
 									});
 								}
 							}
+							
+							if(obj.event === 'config'){
+								
+								layer.open({
+									title:'请输入密码!'
+									,type:2
+									,content:'#(ctx)/login/toVerify?url=#(ctx)/curriculumConfig/toForm'
+									,area : [ '300', '300' ]
+								});
+								
+							}
+							
 						});
 
 						$("#sreachbut").on('click', function() {

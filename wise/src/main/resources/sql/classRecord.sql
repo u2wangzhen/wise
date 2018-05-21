@@ -25,5 +25,6 @@
 			and #field(x.key) #para(x.value) 
 		#end
 	#end
+	#if(date1!=null) and start_time > '#(date1)' and start_time < '#(date2)' #end
 		order by #if(sort != "") #(sort) #else id #end  #if(order != "") #(order) #else desc #end
 #end
