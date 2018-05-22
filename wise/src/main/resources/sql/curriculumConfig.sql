@@ -1,7 +1,8 @@
 ##获取列表
 #sql("list")
 	select id   ,cid  ,student_count  ,class_fee  ,teacher_price 	from
-    t_curriculum_config 
+    t_curriculum_config where 1=1
+    #if(cid!=null && cid!="") and cid = '#(cid)' #end
 #end
 
 ##分页

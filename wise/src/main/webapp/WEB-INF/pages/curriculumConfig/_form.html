@@ -1,48 +1,46 @@
+#@layout_admin() 
+#define main_layout()
 <div class="layui-container">
-	<form class="layui-form" action="">
-		
-		
-		
-		
+	<form class="layui-form layui-form-pane" action="">
+
+
+		<br> <br> <input type="hidden" name="curriculumConfig.cid"
+			value="#(curriculumConfig.cid)"> <input type="hidden"
+			name="curriculumConfig.id" value="#(curriculumConfig.id)">
+
+
 		<div class="layui-form-item">
-			<label class="layui-form-label"></label>
-			<div class="layui-input-block">
-				<input type='text' name="curriculumConfig.cid" lay-verify="required"
-					autocomplete="off" placeholder="请输入" class="layui-input">
+			<div class="layui-inline">
+				<label class="layui-form-label">学生个数</label>
+				<div class="layui-input-inline">
+					<input type='number'  name="curriculumConfig.student_count" value="#(curriculumConfig.student_count)"
+						lay-verify="required|number" autocomplete="off" placeholder="请输入学生个数"
+						class="layui-input">
+				</div>
+				<label class="layui-form-label">学生费用</label>
+				<div class="layui-input-inline">
+					<input type='number' name="curriculumConfig.class_fee" value="#(curriculumConfig.class_fee)"
+						lay-verify="required|number" autocomplete="off" placeholder="请输入每个学生每小时的费用"
+						class="layui-input">
+				</div>
 			</div>
 		</div>
+
+
+
 		
-		
-		
+
+
 		<div class="layui-form-item">
-			<label class="layui-form-label"></label>
+			<label class="layui-form-label">老师价格</label>
 			<div class="layui-input-block">
-				<input type='number'  onkeypress="return jtUtil.noNumbers(event)" onkeyup="this.value=this.value.replace(/[\u4e00-\u9fa5]/g,'')" onpaste="return false" ondragenter="return false"  style="ime-mode:disabled" name="curriculumConfig.student_count" lay-verify="required"
-					autocomplete="off" placeholder="请输入" class="layui-input">
+				<input type='number'  name="curriculumConfig.teacher_price" value="#(curriculumConfig.teacher_price)"
+					lay-verify="required|number" autocomplete="off" placeholder="请输入老师每小时价格"
+					class="layui-input">
 			</div>
 		</div>
-		
-		
-		
-		<div class="layui-form-item">
-			<label class="layui-form-label"></label>
-			<div class="layui-input-block">
-				<input type='number'  onkeypress="return jtUtil.noNumbers(event)" onkeyup="this.value=this.value.replace(/[\u4e00-\u9fa5]/g,'')" onpaste="return false" ondragenter="return false"  style="ime-mode:disabled" name="curriculumConfig.class_fee" lay-verify="required"
-					autocomplete="off" placeholder="请输入" class="layui-input">
-			</div>
-		</div>
-		
-		
-		
-		<div class="layui-form-item">
-			<label class="layui-form-label"></label>
-			<div class="layui-input-block">
-				<input type='number'  onkeypress="return jtUtil.noNumbers(event)" onkeyup="this.value=this.value.replace(/[\u4e00-\u9fa5]/g,'')" onpaste="return false" ondragenter="return false"  style="ime-mode:disabled" name="curriculumConfig.teacher_price" lay-verify="required"
-					autocomplete="off" placeholder="请输入" class="layui-input">
-			</div>
-		</div>
-		
-		
+
+
 		<div class="layui-form-item">
 			<div class="layui-input-block">
 				<button class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
@@ -52,29 +50,33 @@
 	</form>
 </div>
 <script>
-layui.use(['form','jquery','layer','laydate'], function(){
-	var form = layui.form;
-	var $ = layui.jquery;
-	var layer = layui.layer;
-	var laydate = layui.laydate;
-	form.on('submit(demo1)',function(data){
-		console.log(JSON.stringify(data.field))
-		$.ajax({
-			url:'#(CONTEXT_PATH)/sutra/curriculumConfig/saveOrUpdate',
-			type:'POST',
-			data:data.field,
-			success:function(res){
-				console.log(JSON.stringify(res));
-				parent.jtUtil.reloadTable2();
-				parent.jtUtil.closeAll();
-			}
+	layui.use([ 'form', 'jquery', 'layer', 'laydate' ], function() {
+		var form = layui.form;
+		var $ = layui.jquery;
+		var layer = layui.layer;
+		var laydate = layui.laydate;
+		form.on('submit(demo1)', function(data) {
+			console.log(JSON.stringify(data.field))
+			$.ajax({
+				url : '#(ctx)/curriculumConfig/saveOrUpdate',
+				type : 'POST',
+				data : data.field,
+				success : function(res) {
+					layer.msg(res.msg);
+					if (res.code == 1) {
+						parent.location.reload(); // 父页面刷新
+						var index = parent.layer
+								.getFrameIndex(window.name);
+						//关闭当前frame
+						parent.layer.close(index);
+					}
+				}
+			});
+
+			return false;
 		});
-		
-		return false;
+
+		form.render();
 	});
-	
-	
-	
-	form.render();
-});
 </script>
+#end

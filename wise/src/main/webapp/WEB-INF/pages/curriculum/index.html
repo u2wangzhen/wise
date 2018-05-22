@@ -218,9 +218,9 @@
 							if(obj.event === 'config'){
 								
 								layer.open({
-									title:'请输入密码!'
+									title:'验证'
 									,type:2
-									,content:'#(ctx)/login/toVerify?url=#(ctx)/curriculumConfig/toForm'
+									,content:'#(ctx)/login/toVerify?url=#(ctx)/curriculumConfig/toForm?cid='+data.id
 									,area : [ '300', '300' ]
 								});
 								

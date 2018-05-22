@@ -13,7 +13,7 @@ public interface CurriculumConfigService {
 	public boolean update(CurriculumConfig curriculumConfig);
 	public boolean delete(Integer id);
 	public boolean save(CurriculumConfig curriculumConfig);
-	public CurriculumConfig getById(Integer id);
+	public CurriculumConfig getById(String id);
 	public List<Record> list(Map<String, String> param);
 	public Page<Record> pageList(int pageNum, int pageSize,Map<String, String> paraMap,String sort,String order);
 	public Page<Record> pageList1(int pageNum, int pageSize,Map<String, String> paraMap,String sort,String order);

@@ -1,5 +1,6 @@
 package com.u2.wise.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -9,6 +10,7 @@ import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
 import com.u2.common.ParamsUtils;
 import com.u2.common.ResultData;
+import com.u2.common.StringUtil;
 import com.u2.wise.model.CurriculumConfig;
 import com.u2.wise.server.CurriculumConfigService;
 import com.u2.wise.server.impl.CurriculumConfigServiceImpl;
@@ -76,7 +78,7 @@ public class CurriculumConfigController extends Controller {
 	 * 详情页
 	 */
 	public void toDetail(){
-		setAttr("curriculumConfig", srv.getById(getParaToInt()));
+		setAttr("curriculumConfig", srv.getById(getPara()));
 		render("detail.html");
 	}
 	
@@ -84,10 +86,19 @@ public class CurriculumConfigController extends Controller {
 	 * 新增编辑页
 	 */
 	public void toForm(){
-		Integer id = getParaToInt();
-		if(id != null && id > 0){
-			//
+		String cid = getPara("cid");
+		CurriculumConfig cc=new CurriculumConfig();
+		if(StringUtil.isNotEmpty(cid)){
+			Map<String, String> m=new HashMap<String, String>();
+			m.put("cid", cid);
+			List<Record> list = srv.list(m);
+			if(list!=null&&!list.isEmpty()){
+				cc=srv.getById(list.get(0).get("id").toString());
+			}else{
+				cc.setCid(cid);
+			}
 		}
+		setAttr("curriculumConfig", cc);
 		render("_form.html");
 	}
 	
@@ -106,7 +117,6 @@ public class CurriculumConfigController extends Controller {
 		}else{
 			if(srv.update(curriculumConfig)){
 				result.setSuccess("更新成功", null);
-				return;
 			}else{
 				result.setFaild("更新失败", null);
 			}

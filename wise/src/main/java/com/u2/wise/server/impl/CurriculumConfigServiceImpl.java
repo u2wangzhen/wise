@@ -28,7 +28,7 @@ public class CurriculumConfigServiceImpl implements CurriculumConfigService{
 	
 	//@Cacheable(cacheNames= ConstantsUtils.CACHE_NAME_OF_CurriculumConfig,key = "#{id}")
 	 
-	public CurriculumConfig getById(Integer id){
+	public CurriculumConfig getById(String id){
 		logger.info("查询id{}", id);
 		return CurriculumConfig.dao.findById(id);
 	}
