@@ -1,17 +1,7 @@
 package com.u2.wise;
 
 import com.jfinal.config.Routes;
-import com.u2.wise.controller.ClassRecordController;
-import com.u2.wise.controller.CurriculumConfigController;
-import com.u2.wise.controller.CurriculumController;
-import com.u2.wise.controller.CurriculumStudentController;
-import com.u2.wise.controller.IndexController;
-import com.u2.wise.controller.LoginController;
-import com.u2.wise.controller.MainController;
-import com.u2.wise.controller.StudentController;
-import com.u2.wise.controller.StudentController2;
-import com.u2.wise.controller.StudentPaymentController;
-import com.u2.wise.controller.TeacherController;
+import com.u2.wise.controller.*;
 
 
 public class SutraRoutes extends Routes{
@@ -26,7 +16,7 @@ public class SutraRoutes extends Routes{
 	    add("/curriculum", CurriculumController.class);
 	    add("/curriculumConfig", CurriculumConfigController.class);
 	    add("/curriculumStudent", CurriculumStudentController.class);
-	    ///add("/student", StudentController.class);
+	    add("/charts", ChartsController.class);
 	    add("/studentPayment", StudentPaymentController.class);
 	    add("/teacher", TeacherController.class);
 	

@@ -11,59 +11,94 @@
 					
 						
 					
-						<div  id="baobiao" style="width: 100%;height:400px"></div>
+						<div  id="student" style="width: 100%;height:400px"></div>
 					
 				</div>
 				<div class="layui-col-lg6 layui-col-md12">
-					
+					<div  id="teacher" style="width: 100%;height:400px"></div>
 				</div>
 			</div>
+			<!-- <div class="layui-col-lg12 layui-collapse" style="border: none;">
+				
+				<div class="layui-col-lg12 layui-col-md12">
+					<div  id="teacher" style="width: 100%;height:400px"></div>
+				</div>
+			</div> -->
 			
 		</div>
 	<script type="text/javascript">
 		layui.extend({
 			admin: '#(ctx)/static/js/admin',
 		});
-		layui.use(['jquery', 'element','util', 'admin', 'carousel'], function() {
-			var element = layui.element,
-				$ = layui.jquery,
-				carousel = layui.carousel,
-				util = layui.util,
-				admin = layui.admin;
+		layui.use(['jquery'], function() {
+			var $ = layui.jquery;
 			
 			
 			
-			 var myChart = echarts.init(document.getElementById('baobiao'));
+			 var studentChart = echarts.init(document.getElementById('student'));
 
+			 var teacherChart = echarts.init(document.getElementById('teacher'));
 		        // 指定图表的配置项和数据
 		        var option = {
-		            title: {
-		                text: '测试图标'
-		            },
+		            title: {},
 		            tooltip: {},
-		            legend: {
-		                data:['课时',"数量"]
-		            },
-		            xAxis: {
-		                data: ["数学","语文","英语","化学","物理","生物"]
-		            	//data:[]
-		            },
+		            legend: {},
+		            xAxis: {},
 		            yAxis: {},
-		            series: [{
-		                name: '课时',
-		                type: 'bar',
-		                data: [5, 20, 36, 10, 10, 20]
-		            	//data:[]
-		            },{
-		                name: '数量',
-		                type: 'bar',
-		                data: [50, 14, 25, 32, 5, 9]
-		            	//data:[]
-		            }]
+		            series: []
 		        };
+		        var o = {
+			            title: {},
+			            tooltip: {},
+			            legend: {},
+			            xAxis: {},
+			            yAxis: {},
+			            series: []
+			        };
 
-		        // 使用刚指定的配置项和数据显示图表。https://www.cnblogs.com/zychengzhiit1/p/4534867.html
-		        myChart.setOption(option);
+		       
+		        
+		        $.ajax({
+		        	type: "post",
+		            async: false, //同步执行
+		       		url:'#(ctx)/charts/studentClassHour',
+		       		dataType: "json", //返回数据形式为json
+		       		success: function(result) {
+		                if (result) {
+		                    //将返回的category和series对象赋值给options对象内的category和series
+		                    //因为xAxis是一个数组 这里需要是xAxis[i]的形式
+		                    option.title.text=result.title;
+		                    option.legend.data=result.legend;
+		                    option.xAxis.data = result.xAxis;
+		                    option.series = result.series;
+		                    studentChart.setOption(option);
+		                }
+		            },
+		            error: function(errorMsg) {
+		                alert("图表请求数据失败啦!");
+		            }
+		        });
+		        
+		        $.ajax({
+		        	type: "post",
+		            async: false, //同步执行
+		       		url:'#(ctx)/charts/teacherClassHour',
+		       		dataType: "json", //返回数据形式为json
+		       		success: function(result) {
+		                if (result) {
+		                    //将返回的category和series对象赋值给options对象内的category和series
+		                    //因为xAxis是一个数组 这里需要是xAxis[i]的形式
+		                    o.title.text=result.title;
+		                    o.legend.data=result.legend;
+		                    o.xAxis.data = result.xAxis;
+		                    o.series = result.series;
+		                    teacherChart.setOption(o);
+		                }
+		            },
+		            error: function(errorMsg) {
+		                alert("图表请求数据失败啦!");
+		            }
+		        });
 		});
 	</script>
 #end

@@ -18,5 +18,7 @@ public interface ClassRecordService {
 	public Page<Record> pageList(int pageNum, int pageSize,Map<String, String> paraMap,String sort,String order);
 	public Page<Record> pageList1(int pageNum, int pageSize,Map<String, String> paraMap,String sort,String order);
 	// ---------------   系统自动生成 -请勿改动  以下区域为自行添加   -----------------
+	public List<Record> studentClassHour(Map<String, String> paraMap);
+	public List<Record> teacherClassHour(Map<String, String> paraMap);
 	
 }
