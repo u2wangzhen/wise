@@ -78,6 +78,7 @@
 	</a>
 </div>
 <!-- table -->
+<hr class="layui-bg-green">
 <table id="jtTable" lay-filter="jtTable"></table>
 
 <script type="text/html" id="jtBar">
@@ -125,7 +126,7 @@
 											{
 												field : 'name',
 												title : '课程名称',
-												width : 200,
+												width : 400,
 												align : 'center'
 											},
 											{
@@ -137,13 +138,21 @@
 											{
 												field : 'type',
 												title : '学级',
+												width : 80,
 												align : 'center',
 												templet : function(d) {
-													return d.type == 1 ? '<span style="color: #c00;">高中</span>'
-															: '初中';
+													var str=d.type == 1 ? '高' : '初';
+													if (d.grade == '3') {
+														str+='三';
+													} else if (d.grade == '2') {
+														str+='二';
+													} else {
+														str+='一';
+													}
+													return str;
 												}
 											},
-											{
+											/* {
 												field : 'grade',
 												title : '年级',
 												align : 'center',
@@ -157,26 +166,31 @@
 													}
 
 												}
-											},
+											}, */
 											{
 												field : 'teacher_name',
 												title : '老师',
+												width : 100,
 												align : 'center'
 											},
 											{
 												field : 'students',
 												title : '学生',
+												width : 300,
 												align : 'center'
 											},
 											{
 												field : 'start_time',
 												title : '开课日期',
+												width : 120,
 												align : 'center',
 												templet : '<div>{{ jtUtil.dataFormat(d.start_time,"yyyy-MM-dd")}}</div>'
 											}, {
 												field : 'end_time',
 												title : '结课日期',
-												align : 'center'
+												width : 120,
+												align : 'center',
+												templet : '<div>{{ jtUtil.dataFormat(d.start_time,"yyyy-MM-dd")}}</div>'
 											}, {
 												title : '操作',
 												align : 'center',
@@ -190,6 +204,9 @@
 							var data = obj.data;
 							if (obj.event === 'edit') {
 								toEdit(data.id);
+							}
+							if (obj.event === 'detail') {
+								toDetail(data.id);
 							}
 							if (obj.event === 'del') {
 								if (data.del_flag == 0) {
@@ -250,13 +267,25 @@
 	function toAdd() {
 		layer.open({
 			type : 2,
+			title:'课程信息添加',
 			area : [ '100%', '100%' ],
 			content : '#(ctx)/curriculum/toForm'
 		});
 	}
+	
+	function toDetail(id){
+		layer.open({
+			type : 2,
+			title:'课时查看',
+			area : [ '100%', '100%' ],
+			content : '#(ctx)/curriculum/toDetail?id=' + id
+		});
+	}
+	
 	function toEdit(id) {
 		layer.open({
 			type : 2,
+			title:'课程信息编辑',
 			area : [ '100%', '100%' ],
 			content : '#(ctx)/curriculum/toForm?id=' + id
 		});
@@ -265,6 +294,7 @@
 	function toDel(id) {
 		layer.open({
 			type : 2,
+			title:'结课',
 			area : [ '100%', '100%' ],
 			content : '#(ctx)/curriculum/toForm?id=' + id
 		});

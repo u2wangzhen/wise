@@ -138,7 +138,8 @@ public class CurriculumController extends Controller {
 	 * 详情页
 	 */
 	public void toDetail(){
-		setAttr("curriculum", srv.getById(getPara()));
+		setAttr("cid", getPara("id"));
+		setAttr("c", srv.getById(getPara("id")));
 		render("detail.html");
 	}
 	

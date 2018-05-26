@@ -17,7 +17,8 @@ GROUP BY c.teacher_name
 ##获取列表
 #sql("list")
 	select id   ,cid  ,record_data  ,start_time  ,end_time  ,class_hour  ,remark  ,del_flag 	from
-    t_class_record 
+    t_class_record where 1=1 
+    #if(cid!=null&&cid!="") and  cid = '#(cid)' #end
 #end
 
 ##分页

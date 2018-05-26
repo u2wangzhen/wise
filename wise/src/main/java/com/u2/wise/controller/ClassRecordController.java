@@ -1,6 +1,5 @@
 package com.u2.wise.controller;
 
-import java.text.DateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -55,9 +54,9 @@ public class ClassRecordController extends Controller {
 		List<Record> list =  srv.list(paraMap);
 		if(CollectionUtil.isEmpty(list)){
 			renderJson(result.setFaild("获取列表失败", null));
-			return;
+		}else{
+			renderJson(result.setSuccess("获取列表成功", list));
 		}
-		renderJson(result.setSuccess("获取列表成功", list));
 	}
 	
 	/**
