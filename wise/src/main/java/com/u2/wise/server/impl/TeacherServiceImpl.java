@@ -1,6 +1,7 @@
 package com.u2.wise.server.impl;
 
 import java.io.UnsupportedEncodingException;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -37,6 +38,7 @@ public class TeacherServiceImpl implements TeacherService{
 	//@CacheEvict(cacheNames=ConstantsUtils.CACHE_NAME_OF_Teacher, allEntries = true)
 	public boolean save(Teacher teacher) {
 		teacher.setId(UUID.randomUUID().toString().replaceAll("-", ""));
+		teacher.setCreateTime(new Date());
 		logger.info("新增id{}", teacher);
 		return teacher.save();
 	}

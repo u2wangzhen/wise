@@ -81,7 +81,7 @@ public class StudentController2 extends BaseController{
 		int limit = getParaToInt("limit");*/
 		Map<String, String> paraMap = ParamsUtils.getParameterMap(getRequest());
 		//Page<Student> page = Student.dao.paginate(p, limit,"select * ","from t_student ");
-		Page<Record> r = srv.pageList1(getParaToInt("page", 1), getParaToInt("limit", 10), paraMap, "age", "desc");
+		Page<Record> r = srv.pageList1(getParaToInt("page", 1), getParaToInt("limit", 10), paraMap, getPara("sort","create_time"),getPara("order","desc"));
 		rd.put("count", r.getTotalRow());
 		rd.setSuccess("ok", r.getList());
 		renderJson(rd);

@@ -1,5 +1,7 @@
 package com.u2.wise.server.impl;
 
+import java.io.UnsupportedEncodingException;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -37,6 +39,7 @@ public class StudentServiceImpl implements StudentService{
 	 
 	public boolean save(Student student) {
 		student.setId(UUID.randomUUID().toString().replaceAll("-", ""));
+		student.setCreateTime(new Date());
 		logger.info("新增id{}", student);
 		return student.save();
 	}
@@ -62,6 +65,26 @@ public class StudentServiceImpl implements StudentService{
 		if(obj==null){
 			param.put("ids", "");
 		}
+		if(param.get("name")!=null){
+			try {
+				String name = java.net.URLDecoder.decode(param.get("name"),"UTF-8");
+				param.put("name", name);
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		if(param.get("parent_info")!=null){
+			try {
+				String parent_info = java.net.URLDecoder.decode(param.get("parent_info"),"UTF-8");
+				param.put("parent_info", parent_info);
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		
 		return Db.find(Db.getSqlPara("student.list", param));
 	}
 	
@@ -86,7 +109,16 @@ public class StudentServiceImpl implements StudentService{
 		paraMap.remove("sort");
 		paraMap.remove("order");
 		Kv kv = Kv.by("id=", paraMap.get("id"));
-		kv.set("name ", paraMap.get("name"));
+		if(paraMap.get("name")!=null){
+			try {
+				String name = java.net.URLDecoder.decode(paraMap.get("name"),"UTF-8");
+				kv.set("name ", name);
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
 		SqlPara para = Db.getSqlPara("student.pageList1", Kv.by("params", kv).set("sort", sort).set("order", order));
 		return Db.paginate(pageNum, pageSize, para);
 	}

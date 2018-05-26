@@ -65,7 +65,7 @@ public class TeacherController extends Controller {
 	public void pageList1(){
 		ResultData result = new ResultData();
 		Map<String, String> paraMap = ParamsUtils.getParameterMap(getRequest());
-		Page<Record> pages =  srv.pageList1(getParaToInt("page",1),getParaToInt("limit",10),paraMap,getPara("sort","id"),getPara("order","desc"));
+		Page<Record> pages =  srv.pageList1(getParaToInt("page",1),getParaToInt("limit",10),paraMap,getPara("sort","create_time"),getPara("order","desc"));
 		if(pages != null){
 			result.put("count", pages.getTotalRow());
 			renderJson(result.setSuccess("查询分页数据成功", pages.getList()));

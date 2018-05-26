@@ -11,16 +11,21 @@
 		<input type="hidden" name="curriculum.id" value="#(curriculum.id)">
 		<input type="hidden" id="teacher_name" name="curriculum.teacher_name" value="#(curriculum.teacher_name)"/>
 		<input type="hidden" id="students" name="students" value="#(students)">
+		<input type="hidden" id="students_name">
+		<input type="hidden" id="students_sl">
 		<div class="layui-form-item">
 			<label class="layui-form-label">课程名称</label>
 			<div class="layui-input-block">
-				<input type='text' name="curriculum.name" lay-verify="required" value="#(curriculum.name)"
+				<input type='text' id="cname" name="curriculum.name" lay-verify="required" value="#(curriculum.name)"
 					autocomplete="off" placeholder="请输入课程名称" class="layui-input" >
+					
 			</div>
+			
 		</div>
-		
-		
-		
+		<div class="layui-form-item">
+		<button class="layui-btn" type="button" onclick="buildCname();">生成名称
+		</button>
+		</div>
 		<div class="layui-form-item">
 			<label class="layui-form-label">科目</label>
 			<div class="layui-input-block">
@@ -217,8 +222,43 @@ function toSelect1(){
 	
 	layer.open({
 		type : 2,
-		area : [ '900px', '500px' ],
+		title:'请选择学生',
+		area : [ '100%', '100%' ],
 		content : '#(ctx)/student/toList'
+	});
+}
+function buildCname(){
+	layui.use(['jquery'], function(){
+		var $ = layui.jquery;
+	var sn=$("#students_name").val();
+	var sl=$("#students_sl").val();
+	var tm=$("#teacher_name").val();
+	var km=$("input[name='curriculum.subject']:checked").val();
+	var str='';
+	if(sn!=null&&sn!=''){
+		str+=sn;
+	}
+	if(km!=null&&km!=''){
+		str+='['+km+']';
+	}
+	if(sl!=null&&sl!=''){
+		if(sl=='1'){
+			str+="[一对一]";
+		}else if(sl=='2'){
+			str+="[一对二]";
+		}else if(sl=='3'){
+			str+="[一对三]";
+		}else if(sl=='4'){
+			str+="[一对四]";
+		}else{
+			str+="[小班]";
+		}
+	}
+	if(tm!=null&&tm!=''){
+		str+='['+tm+']';
+	}
+	$("#cname").val(str);
+
 	});
 }
 function setStudent(data){
@@ -228,15 +268,20 @@ function setStudent(data){
 		var table = layui.table;
 		var layer = layui.layer;
 		var $=layui.$;
-		var s='';
+		var s='',sn='';
 		for (var i=0; i<data.length; i++){
 			if(s!=''){
 				s+=',';
+				sn+=','
 			}
 			s+=data[i].id;
+			sn+=data[i].name;
 		}
+		
 		console.log(s);
 		$("#students").val(s);
+		$("#students_name").val(sn);
+		$("#students_sl").val(data.length);
 		var str=JSON.stringify(data);
 		table.render({
 			elem : '#studentlist1',

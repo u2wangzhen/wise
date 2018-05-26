@@ -120,7 +120,7 @@
 			          curr: 1 //重新从第 1 页开始
 			        }
 			        ,where: {
-			            name: $("#name").val()
+			            name: encodeURI($("#name").val())
 			        }
 			      });
 			});

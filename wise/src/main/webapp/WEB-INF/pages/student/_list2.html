@@ -6,24 +6,40 @@
 	<div class="weadmin-body">
 		
 		<div class="weadmin-block">
-			
-			<button class="layui-btn" id="add" >
+		<div class="layui-inline">
+			<button class="layui-btn" id="add">
 				<i class="layui-icon"></i>确认
 			</button>
+		</div>
+
+		<div class="layui-inline">
+			<input type="text" id="name" placeholder="请输入学生姓名" autocomplete="off"
+				class="layui-input">
+		</div>
+		<div class="layui-inline">
 			
-			<div class="layui-inline">
-					<input type="text" id="name" placeholder="请输入学生姓名"
-						autocomplete="off" class="layui-input">
-				</div>
-				<button class="layui-btn" lay-submit="" lay-filter="sreach" id="sreachbut">
-					<i class="layui-icon">&#xe615;</i>
-				</button>
-				<a class="layui-btn layui-btn-sm"
+				<select id="sex">
+					<option value="">请选择性别</option>
+					<option value="1">男</option>
+					<option value="0">女</option>
+				</select>
+		</div>
+		<div class="layui-inline">
+			<input type="text" id="parent_info" placeholder="请输入信息" autocomplete="off"
+				class="layui-input">
+		</div>
+		<div class="layui-inline">
+			<button class="layui-btn" lay-submit="" lay-filter="sreach" id="sreachbut">
+				<i class="layui-icon">&#xe615;</i>
+			</button>
+		</div>
+		
+		<a class="layui-btn layui-btn-sm"
 			style="line-height: 1.6em; margin-top: 3px; float: right"
 			href="javascript:location.replace(location.href);" title="刷新"> <i
 			class="layui-icon" style="line-height: 30px">ဂ</i></a>
-			
-		</div>
+		
+	</div>
 	</div>
 	<table class="layui-table" id="studentlist1" lay-filter="studentlist1"></table>
 
@@ -86,7 +102,9 @@
 			$('#sreachbut').on('click', function(){
 				table.reload('studentlistreload1', {
 			        where: {
-			            name: $("#name").val()
+			        	name : encodeURI($("#name").val()),
+						parent_info:encodeURI($("#parent_info").val()),
+						sex:$("#sex").val()
 			        }
 			      });
 			});

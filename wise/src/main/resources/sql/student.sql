@@ -3,6 +3,9 @@
 	select id   ,name  ,age  ,sex  ,code  ,parent_name  ,parent_info  ,create_time  ,start_time 	from
     t_student where 1=1
     #if(ids!=null&&ids!="") and  id in (#(ids)) #end
+    #if(name!=null&&name!="") and  name like '%#(name)%' #end
+    #if(sex!=null&&sex!="") and  sex = #(sex) #end
+    #if(parent_info!=null&&parent_info!="") and  parent_info like '%#(parent_info)%' #end
 #end
 
 ##分页
