@@ -119,14 +119,18 @@ layui.use(['form','jquery','layer','laydate','table'], function(){
 			type:'POST',
 			data:data.field,
 			success:function(res){
-				layer.msg(res.msg);
-				if (res.code == 1) {
-					parent.location.reload(); // 父页面刷新
-					var index = parent.layer
-							.getFrameIndex(window.name);
-					//关闭当前frame
-					parent.layer.close(index);
-				}
+				layer.alert(res.msg, {
+					icon : 6
+				}, function() {
+					// 获得frame索引
+					if (res.code == 1) {
+						parent.location.reload(); // 父页面刷新
+						var index = parent.layer
+								.getFrameIndex(window.name);
+						//关闭当前frame
+						parent.layer.close(index);
+					}
+				});
 			}
 		});
 		

@@ -16,7 +16,7 @@
 		</div> -->
 		
 		<div class="layui-form-item">
-			<label class="layui-form-label">课程信息</label>
+			<label class="layui-form-label">课程名称</label>
 			<div class="layui-input-block">
 			<input type='text' id="cinfo" lay-verify="required" autocomplete="off" placeholder="点击选择课程" onclick="toSelect();"
 					readonly="readonly" value="#(curriculum_info)"	class="layui-input">
@@ -31,22 +31,23 @@
 						name="start_time" lay-verify="required"
 						autocomplete="off" placeholder="请输入" class="layui-input">
 				</div>
-				<label class="layui-form-label">结束时间</label>
+				
+				<label class="layui-form-label">课时(h)</label>
 				<div class="layui-input-inline">
-					<input id="date4" readonly="readonly" type="text" value="#date(classRecord.end_time,'HH:mm:ss')"
-						name="end_time" lay-verify="required"
-						autocomplete="off" placeholder="请输入" class="layui-input">
+					<input type="number" id="class_hour" name="classRecord.class_hour" value="#(classRecord.class_hour)"
+						lay-verify="required|number" autocomplete="off" placeholder="请输入"
+						class="layui-input" onmouseleave="setEndTime();">
 				</div>
 			</div>
 		</div>
 
 		<div class="layui-form-item">
 			<div class="layui-inline">
-				<label class="layui-form-label">课时(h)</label>
+				<label class="layui-form-label">结束时间</label>
 				<div class="layui-input-inline">
-					<input type='text' name="classRecord.class_hour" value="#(classRecord.class_hour)"
-						lay-verify="required|number" autocomplete="off" placeholder="请输入"
-						class="layui-input">
+					<input id="date4" readonly="readonly" type="text" value="#date(classRecord.end_time,'HH:mm:ss')"
+						name="end_time" lay-verify="required"
+						autocomplete="off" placeholder="请输入" class="layui-input">
 				</div>
 				<label class="layui-form-label">登记日期</label>
 				<div class="layui-input-inline">
@@ -86,9 +87,19 @@
 				type : 'POST',
 				data : data.field,
 				success : function(res) {
-					console.log(JSON.stringify(res));
-					parent.jtUtil.reloadTable2();
-					parent.jtUtil.closeAll();
+					layer.alert(res.msg, {
+						icon : 6
+					}, function() {
+						// 获得frame索引
+						if (res.code == 1) {
+							parent.location.reload(); // 父页面刷新
+							var index = parent.layer
+									.getFrameIndex(window.name);
+							//关闭当前frame
+							parent.layer.close(index);
+						}
+					});
+					
 				}
 			});
 
@@ -129,12 +140,46 @@
 			var $ = layui.jquery;
 			
 			///var tab='<table class="layui-table" >'+'<tr>'+'<td>'+'课程名称: '+data[0].name+'</td>'+'<td>'+'科目: '+data[0].subject+'</td>'+'<td>'+'老师: '+data[0].teacher_name+'</td>'+'<td>'+'学生: '+data[0].students+'</td>'+'</tr>'+'</table>';
-			var tab='| 课程名称: '+data[0].name+' | 科目: '+data[0].subject+' | 老师: '+data[0].teacher_name+' | 学生: '+data[0].students+" |";
+			///var tab='| 课程名称: '+data[0].name+' | 科目: '+data[0].subject+' | 老师: '+data[0].teacher_name+' | 学生: '+data[0].students+" |";
 
-			$("#cinfo").val(tab);
+			$("#cinfo").val(data[0].name);
 			$("#cid").val(data[0].id);
 		});
 		
+	}
+	function setEndTime(){
+		layui.use([ 'jquery' ], function() {
+			var $ = layui.jquery;
+			var s=$("#date3").val();
+			var h=$("#class_hour").val();
+			if(s!=null&&s!=''&&h!=null&&h!=''){
+				if(h.indexOf('.5')<0){
+					var s1=s.substring(0,s.indexOf(':'));
+					var s2=s.substring(s.indexOf(':'));
+					
+					var hh=parseInt(h)+parseInt(s1);
+					
+					var str=hh+s2;
+					
+					$("#date4").val(str);
+				}else{
+					var hh=s.substring(0,s.indexOf(':'));
+					var mm=s.substring(s.indexOf(':')+1).substring(0,s.indexOf(':'));
+					
+					var mmm=parseInt(mm)+30;
+					var i=0;
+					if(mmm>=60){
+						mmm=mmm-60;
+						i++;
+					}
+					
+					var hhh=parseInt(hh)+parseInt(h)+i;
+					var str=hhh+":"+mmm+":00";
+					$("#date4").val(str);
+				}
+				
+			}
+		});
 	}
 </script>
 #end

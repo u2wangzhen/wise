@@ -17,6 +17,7 @@ public class SutraRoutes extends Routes{
 	    add("/curriculumConfig", CurriculumConfigController.class);
 	    add("/curriculumStudent", CurriculumStudentController.class);
 	    add("/charts", ChartsController.class);
+	    add("/total", TotalController.class);
 	    add("/studentPayment", StudentPaymentController.class);
 	    add("/teacher", TeacherController.class);
 	

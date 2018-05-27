@@ -79,17 +79,17 @@ public class ClassRecordController extends Controller {
 	public void pageList1(){
 		ResultData result = new ResultData();
 		Map<String, String> paraMap = ParamsUtils.getParameterMap(getRequest());
-		Page<Record> pages =  srv.pageList1(getParaToInt("page",1),getParaToInt("limit",10),paraMap,getPara("sort","start_time"),getPara("order","desc"));
+		Page<Record> pages =  srv.pageList1(getParaToInt("page",1),getParaToInt("limit",10),paraMap,getPara("sort","r.start_time"),getPara("order","desc"));
 		if(pages != null){
 			result.put("count", pages.getTotalRow());
-			renderJson(result.setSuccess("查询分页数据成功", buildCname(pages.getList())));
+			renderJson(result.setSuccess("查询分页数据成功", pages.getList()));
 			return;
 		}
 		result.put("count", 0);
 		renderJson(result.setFaild("查询分页数据失败", null));
 	}
 	
-	private List<Record> buildCname(List<Record> list) {
+	/*private List<Record> buildCname(List<Record> list) {
 		// TODO Auto-generated method stub
 			if(list!=null&&!list.isEmpty()){
 				for (Record r : list) {
@@ -103,7 +103,7 @@ public class ClassRecordController extends Controller {
 			}
 		
 		return list;
-	}
+	}*/
 
 	/**
 	 * 详情页

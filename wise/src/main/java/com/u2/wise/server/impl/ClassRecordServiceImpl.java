@@ -1,5 +1,6 @@
 package com.u2.wise.server.impl;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -98,6 +99,22 @@ public class ClassRecordServiceImpl implements ClassRecordService {
 		return Db.find(Db.getSqlPara("classRecord.teacher_CH", param));
 	}
 
+	public List<Record> curriculumClassHour(Map<String, String> param) {
+		// TODO Auto-generated method stub
+		if (param.get("date") == null) {
+
+			param.put("start_time", DateUtil.beginOfMonth(new Date()).toString());
+			param.put("end_time", DateUtil.endOfMonth(new Date()).toString());
+		} else {
+			String d = param.get("date");
+			DateTime dd = DateUtil.parse(d + "-1", DatePattern.NORM_DATE_PATTERN);
+			param.put("start_time", DateUtil.beginOfMonth(dd).toString());
+			param.put("end_time", DateUtil.endOfMonth(dd).toString());
+		}
+
+		return Db.find(Db.getSqlPara("classRecord.curriculum_CH", param));
+	}
+	
 	// 分页
 
 	public Page<Record> pageList(int pageNum, int pageSize, Map<String, String> paraMap, String sort, String order) {
@@ -120,17 +137,34 @@ public class ClassRecordServiceImpl implements ClassRecordService {
 		paraMap.remove("sort");
 		paraMap.remove("order");
 		Kv kv = Kv.by("id=", paraMap.get("id"));
+		
+		if(paraMap.get("cname")!=null){
+			try {
+				kv.set("c.name", "%"+java.net.URLDecoder.decode(paraMap.get("cname"), "UTF-8")+"%");
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
 		Kv k = Kv.by("params", kv);
 		if (StringUtil.isNotEmpty(paraMap.get("date1"))) {
 			String d1 = paraMap.get("date1") + " 00:00:00";
 			k.set("date1", DateUtil.parse(d1, DatePattern.NORM_DATETIME_PATTERN));
 			String d2 = paraMap.get("date1") + " 23:59:59";
 			k.set("date2", DateUtil.parse(d2, DatePattern.NORM_DATETIME_PATTERN));
+		}else if (StringUtil.isNotEmpty(paraMap.get("month1"))) {
+			String d=paraMap.get("month1");
+			DateTime dd = DateUtil.parse(d + "-1", DatePattern.NORM_DATE_PATTERN);
+			k.set("date1", DateUtil.beginOfMonth(dd).toString());
+			k.set("date2", DateUtil.endOfMonth(dd).toString());
 		}
 
 		SqlPara para = Db.getSqlPara("classRecord.pageList1", k.set("sort", sort).set("order", order));
 		return Db.paginate(pageNum, pageSize, para);
 	}
+
+	
 
 	// --------------- 系统自动生成 -请勿改动 以下区域为自行添加 -----------------
 

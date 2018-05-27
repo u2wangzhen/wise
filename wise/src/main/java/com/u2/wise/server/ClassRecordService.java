@@ -20,5 +20,6 @@ public interface ClassRecordService {
 	// ---------------   系统自动生成 -请勿改动  以下区域为自行添加   -----------------
 	public List<Record> studentClassHour(Map<String, String> paraMap);
 	public List<Record> teacherClassHour(Map<String, String> paraMap);
+	public List<Record> curriculumClassHour(Map<String, String> paraMap);
 	
 }

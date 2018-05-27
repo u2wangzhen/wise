@@ -69,7 +69,7 @@
 			}, {
 				field : 'name',
 				title : '课程名称',
-				width : 200,
+				width : 300,
 				align : 'center'
 			}, {
 				field : 'subject',
@@ -78,42 +78,38 @@
 				align : 'center'
 			}, {
 				field : 'type',
-				title : '学级',
-				align : 'center',
-				templet: function(d){
-				        return  d.type==1?'<span style="color: #c00;">高中</span>':'初中';
-				      }
-			}, {
-				field : 'grade',
 				title : '年级',
+				width : 80,
 				align : 'center',
-				templet: function(d){
-						if(d.grade=='3'){
-							return  '<span style="color: #c00;">三年级</span>';
-						}else if(d.grade=='2'){
-							return  '<span style="color: #c00;">二年级</span>';
-						}else{
-							 return  '<span style="color: #c00;">一年级</span>';
-						}
-				       
-				      }
-			}, {
+				templet : function(d) {
+					var str=d.type == 1 ? '高' : '初';
+					if (d.grade == '3') {
+						str+='三';
+					} else if (d.grade == '2') {
+						str+='二';
+					} else {
+						str+='一';
+					}
+					return str;
+				}
+			},  {
 				field : 'teacher_name',
 				title : '老师',
+				width : 80,
 				align : 'center'
 			}, {
 				field : 'students',
 				title : '学生',
+				width : 200,
 				align : 'center'
 			}, {
-				field : 'start_time',
-				title : '开课日期',
+				field : 'del_flag',
+				title : '状态',
+				width : 100,
 				align : 'center'
-					,templet:'<div>{{ jtUtil.dataFormat(d.start_time,"yyyy-MM-dd")}}</div>'
-			}, {
-				field : 'end_time',
-				title : '结课日期',
-				align : 'center'
+					,templet:function(d){
+						return d.del_flag==0?'正在进行':'结课';
+					}
 			}] ]
 		});
 

@@ -4,15 +4,19 @@
 <blockquote class="layui-elem-quote layui-quote-nm layui-text"
 	style="margin-top: 15px;">
 	<div class="jtSearch">
-		日期：
+		
 		<div class="layui-inline">
-			<input class="layui-input" id="data1" autocomplete="off">
-		</div>
-		<!-- 科目：
-		<div class="layui-inline">
-			<input class="layui-input" name="keyword" id="keyword"
+			<input class="layui-input"  id="cname"  placeholder="输入课程名称"
 				autocomplete="off">
-		</div> -->
+		</div> 
+		
+		<div class="layui-inline">
+			<input class="layui-input"  id="data1" autocomplete="off"  placeholder="选择日期">
+		</div>
+		
+		<div class="layui-inline">
+			<input class="layui-input"  id="month1" autocomplete="off"  placeholder="选择月份">
+		</div>
 		<button class="layui-btn" data-type="reload">
 			<i class="layui-icon">&#xe615;</i> 搜索
 		</button>
@@ -37,6 +41,10 @@
 		laydate.render({
 			elem : '#data1' //指定元素
 			,format : 'yyyy-MM-dd' //可任意组合
+		});
+		laydate.render({
+			elem : '#month1' //指定元素
+			,type : 'month' //可任意组合
 		});
 		//第一个实例
 		table.render({
@@ -116,7 +124,9 @@
 					//重新从第 1 页开始
 					},
 					where : {
-						date1 : $("#data1").val()
+						cname : encodeURI($("#cname").val()),
+						date1 : $("#data1").val(),
+						month1 : $("#month1").val()
 					}
 				});
 			},

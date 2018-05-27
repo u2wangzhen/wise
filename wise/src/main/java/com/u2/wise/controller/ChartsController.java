@@ -48,4 +48,21 @@ public class ChartsController extends Controller{
 		}
 		renderJson(cob);
 	}
+	
+	public void curriculumClassHour(){
+		Map<String, String> paraMap = ParamsUtils.getParameterMap(getRequest());
+		List<Record> list =  srv.curriculumClassHour(paraMap);
+		ChartOptionBean cob=new ChartOptionBean();
+		String d = DateUtil.format(new Date(), "yyyy年MM月");
+		cob.setTitle(d+"课程课时统计图").setLegend("课时（h）");
+		if(list!=null&&!list.isEmpty()){
+		
+			for (Record record : list) {
+				cob.setxAxis(record.getStr("name"));
+				cob.setData(0,"bar",record.get("total"));
+			}
+
+		}
+		renderJson(cob);
+	}
 }

@@ -30,13 +30,17 @@
 					<dl class="layui-nav-child">
 						<!-- 二级菜单 -->
 						<dd>
-							<a onclick="WeAdminShow('资讯','https://www.youfa365.com/')"><i class="iconfont">&#xe6a2;</i>资讯</a>
+							<a onclick="WeAdminShow('课时','#(ctx)/classRecord/toForm')"><i class="iconfont">&#xe6a8;</i>课时</a>
 						</dd>
 						<dd>
-							<a onclick="WeAdminShow('图片','http://www.baidu.com')"><i class="iconfont">&#xe6a8;</i>图片</a>
+							<a onclick="WeAdminShow('课程添加','#(ctx)/curriculum/toForm')"><i class="iconfont">&#xe6a2;</i>课程</a>
+						</dd>
+						
+						<dd>
+							<a onclick="WeAdminShow('学生','#(ctx)/student/toForm')"><i class="iconfont">&#xe6b8;</i>学生</a>
 						</dd>
 						<dd>
-							<a onclick="WeAdminShow('用户','https://www.youfa365.com/')"><i class="iconfont">&#xe6b8;</i>用户</a>
+							<a onclick="WeAdminShow('老师','#(ctx)/teacher/toForm')"><i class="iconfont">&#xe6b8;</i>老师</a>
 						</dd>
 					</dl>
 				</li>
@@ -57,9 +61,9 @@
 						</dd>
 					</dl>
 				</li>
-				<li class="layui-nav-item to-index">
+				<!-- <li class="layui-nav-item to-index">
 					<a href="/">前台首页</a>
-				</li>
+				</li> -->
 			</ul>
 
 		</div>
@@ -108,6 +112,34 @@
 								<a _href="#(ctx)/classRecord">
 									<i class="iconfont">&#xe6a7;</i>
 									<cite>课时登记</cite>
+								</a>
+							</li>
+						</ul>
+					</li>
+					
+					<li>
+						<a href="javascript:;">
+							<i class="iconfont">&#xe723;</i>
+							<cite>课时统计</cite>
+							<i class="iconfont nav_right">&#xe697;</i>
+						</a>
+						<ul class="sub-menu">
+							<li>
+								<a _href="#(ctx)/total/toCurriculum">
+									<i class="iconfont">&#xe6a7;</i>
+									<cite>课程</cite>
+								</a>
+							</li>
+							<li>
+								<a _href="#(ctx)/total/toStudent">
+									<i class="iconfont">&#xe6a7;</i>
+									<cite>学生</cite>
+								</a>
+							</li>
+							<li>
+								<a _href="#(ctx)/total/toCurriculum">
+									<i class="iconfont">&#xe6a7;</i>
+									<cite>老师</cite>
 								</a>
 							</li>
 						</ul>
