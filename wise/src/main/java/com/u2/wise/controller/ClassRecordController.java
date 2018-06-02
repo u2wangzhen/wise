@@ -122,8 +122,9 @@ public class ClassRecordController extends Controller {
 		if(StringUtil.isNotEmpty(cid)){
 			Curriculum c = csrv.getById(cid);
 			if(c!=null){
-				str="| 课程名称: "+c.getName()+" | 科目: "+c.getSubject()+" | 老师: "+c.getTeacherName();//+" | 学生: "+c.+" |";
-				Map<String, String> param=new HashMap<String, String>();
+				///str="| 课程名称: "+c.getName()+" | 科目: "+c.getSubject()+" | 老师: "+c.getTeacherName();//+" | 学生: "+c.+" |";
+				str=c.getName();
+				/*Map<String, String> param=new HashMap<String, String>();
 				param.put("cid", c.getId());
 				List<Record> ll = cssrv.list(param);
 				if(ll!=null&&!ll.isEmpty()){
@@ -135,7 +136,7 @@ public class ClassRecordController extends Controller {
 						sts+=ssrv.getById(record.getStr("student_id")).getName();
 					}
 					str+=" | 学生: "+sts+" |";
-				}
+				}*/
 			}
 		}
 		return str;

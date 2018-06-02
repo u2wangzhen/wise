@@ -2,20 +2,20 @@
 #sql("student_CH")
 SELECT ss.`name` as student_name,SUM(c.class_hour) as total from t_class_record c,t_curriculum_student s,t_student ss WHERE s.student_id=ss.id and c.cid=s.cid 
 
-#if(start_time!="")and c.start_time > '#(strat_time)' and c.start_time < '#(end_time)' #end
+#if(start_time!="")and c.start_time > '#(start_time)' and c.start_time < '#(end_time)' #end
 
 GROUP BY ss.`name`
 #end
 ####
 #sql("teacher_CH")
 SELECT c.teacher_name,SUM(r.class_hour) as total from t_class_record r,t_curriculum c where c.id=r.cid 
-#if(start_time!="") and r.start_time > '#(strat_time)' and r.start_time < '#(end_time)' #end
+#if(start_time!="") and r.start_time > '#(start_time)' and r.start_time < '#(end_time)' #end
 GROUP BY c.teacher_name 
 #end
 ####
 #sql("curriculum_CH")
 SELECT c.name,SUM(r.class_hour) as total from t_class_record r,t_curriculum c where c.id=r.cid 
-#if(start_time!="") and r.start_time > '#(strat_time)' and r.start_time < '#(end_time)' #end
+#if(start_time!="") and r.start_time > '#(start_time)' and r.start_time < '#(end_time)' #end
 GROUP BY c.name
 #end
 
