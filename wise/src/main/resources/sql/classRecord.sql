@@ -25,6 +25,8 @@ GROUP BY c.name
 	select id   ,cid  ,record_data  ,start_time  ,end_time  ,class_hour  ,remark  ,del_flag 	from
     t_class_record where 1=1 
     #if(cid!=null&&cid!="") and  cid = '#(cid)' #end
+   #if(start_time!="") and start_time > '#(start_time)' and start_time < '#(end_time)' #end
+   order by start_time asc
 #end
 
 ##分页

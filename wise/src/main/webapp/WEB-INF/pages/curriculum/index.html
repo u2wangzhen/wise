@@ -167,18 +167,18 @@
 
 												}
 											}, */
-											{
+											/* {
 												field : 'teacher_name',
 												title : '老师',
 												width : 100,
 												align : 'center'
-											},
-											{
+											}, */
+											/* {
 												field : 'students',
 												title : '学生',
 												width : 200,
 												align : 'center'
-											},
+											}, */
 											{
 												field : 'start_time',
 												title : '开课日期',
@@ -191,6 +191,19 @@
 												width : 120,
 												align : 'center',
 												templet : '<div>{{ jtUtil.dataFormat(d.start_time,"yyyy-MM-dd")}}</div>'
+											},{
+												field : 'isConfig',
+												title : '设置',
+												width : 80,
+												align : 'center',
+												templet : function(d) {
+													if (d.isConfig == '否') {
+														return '<span style="color: #c00;">否</span>';
+													} else {
+														return '是';
+													}
+
+												}
 											}, {
 												title : '操作',
 												align : 'center',

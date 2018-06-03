@@ -37,6 +37,8 @@ public class CurriculumController extends Controller {
 	private CurriculumService srv = enhance(CurriculumServiceImpl.class);
 	private CurriculumStudentService csrv = enhance(CurriculumStudentServiceImpl.class);
 	private StudentService ssrv = enhance(StudentServiceImpl.class);
+	
+	private CurriculumConfigService ccsrv = enhance(CurriculumConfigServiceImpl.class);
 
 	public void index() {
 		this.render("index.html");
@@ -102,14 +104,32 @@ public class CurriculumController extends Controller {
 		if(pages != null){
 			result.put("count", pages.getTotalRow());
 			List<Record> list = pages.getList();
-			renderJson(result.setSuccess("查询分页数据成功", addStudents(list)));
+			renderJson(result.setSuccess("查询分页数据成功", isConfig(list)));
 			return;
 		}
 		result.put("count", 0);
 		renderJson(result.setFaild("查询分页数据失败", null));
 	}
 	
-	private List<Record> addStudents(List<Record> list) {
+	private List<Record> isConfig(List<Record> list) {
+		// TODO Auto-generated method stub
+		if(list!=null&&!list.isEmpty()){
+			for (Record r : list) {
+				Map<String, String> param=new HashMap<String, String>();
+				param.put("cid", r.getStr("id"));
+				List<Record> ll = ccsrv.list(param);{
+					if(ll!=null&&!ll.isEmpty()){
+					r.set("isConfig", "是");
+					}else{
+						r.set("isConfig", "否");
+					}
+				}
+			}
+		}
+		return list;
+	}
+
+	/*private List<Record> addStudents(List<Record> list) {
 		// TODO Auto-generated method stub
 		if(list!=null&&!list.isEmpty()){
 			
@@ -132,7 +152,7 @@ public class CurriculumController extends Controller {
 		}
 		
 		return list;
-	}
+	}*/
 
 	/**
 	 * 详情页
