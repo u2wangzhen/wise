@@ -22,20 +22,21 @@
 				id="sreachbut">
 				<i class="layui-icon">&#xe615;</i>
 			</button>
-			<a class="layui-btn layui-btn-sm"
+			<button class="layui-btn" onclick="toAdd();">
+			<i class="layui-icon"></i>添加
+			</button>
+			<!-- <a class="layui-btn layui-btn-sm"
 			style="line-height: 1.6em; margin-top: 3px; float: right"
 			href="javascript:location.replace(location.href);" title="刷新"> 
 			<i class="layui-icon" style="line-height: 30px">ဂ</i>
-			</a>
+			</a> -->
 		</div>
 	</div>
-	<div class="weadmin-block">
+	<!-- <div class="weadmin-block">
 
-		<button class="layui-btn" onclick="toAdd();">
-			<i class="layui-icon"></i>添加
-		</button>
+		
 
-	</div>
+	</div> -->
 	<!-- table -->
 	<table class="layui-table" id="jtTable" lay-filter="jtTable"></table>
 
@@ -61,8 +62,8 @@
 										,
 										page : true //开启分页
 										,
-										limits : [ 13, 16, 19, 22 ],
-										limit : 13,
+										limits : [ 8, 16, 24, 32 ],
+										limit : 8,
 										response : { //定义后端 json 格式，详细参见官方文档
 											statusName : 'code', //状态字段名称
 											statusCode : '1', //状态字段成功值

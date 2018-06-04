@@ -1,10 +1,7 @@
 #@layout_admin() #define js()
 <script src="#(ctx)/static/js/jtUtil.js" charset="utf-8"></script>
 #end #define main_layout()
-<blockquote class="layui-elem-quote layui-quote-nm layui-text"
-	style="margin-top: 15px;">
-	<div class="jtSearch">
-		
+<div class="weadmin-body jtSearch">
 		<div class="layui-inline">
 			<input class="layui-input"  id="cname"  placeholder="输入课程名称"
 				autocomplete="off">
@@ -17,6 +14,7 @@
 		<div class="layui-inline">
 			<input class="layui-input"  id="month1" autocomplete="off"  placeholder="选择月份">
 		</div>
+		
 		<button class="layui-btn" data-type="reload">
 			<i class="layui-icon">&#xe615;</i> 搜索
 		</button>
@@ -24,7 +22,7 @@
 			<i class="layui-icon">&#xe608;</i> 新增
 		</button>
 	</div>
-</blockquote>
+</div>
 <!-- table -->
 <table id="jtTable" lay-filter="jtTable"></table>
 
@@ -57,8 +55,8 @@
 			,
 			page : true //开启分页
 			,
-			limits : [ 13, 16, 19, 22 ],
-			limit : 13,
+			limits : [ 8, 16, 24, 32 ],
+			limit : 8,
 			response : { //定义后端 json 格式，详细参见官方文档
 				statusName : 'code', //状态字段名称
 				statusCode : '1', //状态字段成功值

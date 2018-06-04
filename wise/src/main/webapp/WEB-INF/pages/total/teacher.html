@@ -6,70 +6,59 @@
 	<legend>老师课时统计</legend>
 </fieldset>
 
-<table class="layui-table">
-	<colgroup>
-		<col width="100">
-		<col width="100">
-		<col width="100">
-		<col>
-	</colgroup>
-	<thead>
-		<tr>
-			<td>老师姓名</td>
-			<td>总计课时</td>
-			<td>上课次数</td>
-			<td>课程信息</td>
-		</tr>
-	</thead>
-	<tbody>
+<div class="layui-collapse" lay-filter="test">
+	#for(t:list)
 
-		#for(t:list)
-		<tr>
+	<div class="layui-colla-item">
+		<h2 class="layui-colla-title">#(t.name)，共&nbsp;#(t.cs)&nbsp;次，总计&nbsp;#(t.hours)&nbsp;小时</h2>
+		<div class="layui-colla-content">
+			<table class="layui-table">
+				<colgroup>
+					<col width="400">
+					<col>
+				</colgroup>
+				<tbody>
+					#for(c:t.currList)
+					<tr>
+						<th>#(c.name)，共&nbsp;#(c.cs)&nbsp;次，总计&nbsp;#(c.hours)&nbsp;小时</th>
 
-			<th>#(t.name)</th>
-			<th>#(t.hours)(h)</th>
-			<th>#(t.cs)</th>
-			<td>
-				<table class="layui-table" >
-					<colgroup>
-						<col width="300">
-						<col width="80">
-						<col width="50">
-						<col>
-					</colgroup>
-					<tbody>
-						#for(c:t.currList)
-						<tr>
-							<th>#(c.name)</th>
-							<th>#(c.hours)</th>
-							<th>#(c.cs)</th>
-							<td>
-								<table class="layui-table" lay-skin="nob">
-									<colgroup>
-										<col width="150">
-										<col width="150">
-										<col width="150">
-										<col>
-									</colgroup>
-									<tbody>
-										#for(r:c.crlist)
-										<tr>
-											<th>日期：#date(r.record_data, "yyyy-MM-dd")</th>
-											<th>开始时间：#date(r.start_time, "HH:mm")</th>
-											<th>结束时间：#date(r.end_time, "HH:mm")</th>
-											<th>课时：#(r.class_hour)（h）</th>
-										</tr>
-										#end
-									</tbody>
-								</table>
-							</td>
-						</tr>
-						#end
-					</tbody>
-				</table>
-			</td>
-		</tr>
-		#end
-	</tbody>
-</table>
+						<td>
+							<table class="layui-table" lay-skin="nob">
+								<colgroup>
+									<col width="150">
+									<col width="150">
+									<col width="150">
+									<col>
+								</colgroup>
+								<tbody>
+									#for(r:c.crlist)
+									<tr>
+										<th>日期：#date(r.record_data, "yyyy-MM-dd")</th>
+										<th>开始时间：#date(r.start_time, "HH:mm")</th>
+										<th>结束时间：#date(r.end_time, "HH:mm")</th>
+										<th>课时：#(r.class_hour)（h）</th>
+									</tr>
+									#end
+								</tbody>
+							</table>
+						</td>
+					</tr>
+					#end
+				</tbody>
+			</table>
+		</div>
+	</div>
+	#end
+</div>
+<script>
+layui.use(['element', 'layer'], function(){
+  var element = layui.element;
+  var layer = layui.layer;
+  
+  //监听折叠
+/*   element.on('collapse(test)', function(data){
+    layer.msg('展开状态：'+ data.show);
+  }); */
+});
+</script>
 #end
