@@ -3,6 +3,7 @@ package com.u2.wise.controller;
 import java.util.List;
 import java.util.Map;
 
+import com.jfinal.aop.Before;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
 import com.u2.common.BaseController;
@@ -12,6 +13,7 @@ import com.u2.common.StringUtil;
 import com.u2.wise.model.Student;
 import com.u2.wise.server.StudentService;
 import com.u2.wise.server.impl.StudentServiceImpl;
+import com.u2.wise.validator.StudentValidator;
 import com.xiaoleilu.hutool.util.CollectionUtil;
 
 public class StudentController2 extends BaseController{
@@ -40,7 +42,7 @@ public class StudentController2 extends BaseController{
 	public void toList2(){
 		render("_list2.html");
 	}
-	
+	@Before(StudentValidator.class)
 	public void saveOrUpdate(){
 		
 		ResultData rd=new ResultData();

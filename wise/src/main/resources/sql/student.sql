@@ -4,6 +4,7 @@
     t_student where 1=1
     #if(ids!=null&&ids!="") and  id in (#(ids)) #end
     #if(name!=null&&name!="") and  name like '%#(name)%' #end
+     #if(name2!=null&&name2!="") and  name = '#(name2)' #end
     #if(sex!=null&&sex!="") and  sex = #(sex) #end
     #if(parent_info!=null&&parent_info!="") and  parent_info like '%#(parent_info)%' #end
 #end
