@@ -14,8 +14,9 @@ import com.u2.common.StringUtil;
 import com.u2.wise.model.Teacher;
 import com.u2.wise.server.TeacherService;
 import com.u2.wise.server.impl.TeacherServiceImpl;
+import com.u2.wise.validator.TearcherValidator;
 import com.xiaoleilu.hutool.util.CollectionUtil;
-
+import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
 
 /**
@@ -101,6 +102,7 @@ public class TeacherController extends Controller {
 	/**
 	 * 新增或编辑记录
 	 */
+	@Before(TearcherValidator.class)
 	public void saveOrUpdate(){
 		ResultData result = new ResultData();
 		Teacher teacher = getModel(Teacher.class);

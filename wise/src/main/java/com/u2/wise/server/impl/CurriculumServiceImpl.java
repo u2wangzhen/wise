@@ -135,11 +135,11 @@ public class CurriculumServiceImpl implements CurriculumService {
 			}
 
 			if (StringUtil.isNotEmpty(paraMap.get("subject"))) {
-				kv.set("subject", "%"+java.net.URLDecoder.decode(paraMap.get("subject"), "UTF-8")+"%");
+				kv.set("subject", java.net.URLDecoder.decode(paraMap.get("subject"), "UTF-8"));
 			}
 			
 			if (StringUtil.isNotEmpty(paraMap.get("teacher_name"))) {
-				kv.set("teacher_name", "%"+java.net.URLDecoder.decode(paraMap.get("teacher_name"), "UTF-8")+"%");
+				kv.set("teacher_name", java.net.URLDecoder.decode(paraMap.get("teacher_name"), "UTF-8"));
 			}
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block

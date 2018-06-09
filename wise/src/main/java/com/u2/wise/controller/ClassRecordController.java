@@ -23,9 +23,10 @@ import com.u2.wise.server.impl.ClassRecordServiceImpl;
 import com.u2.wise.server.impl.CurriculumServiceImpl;
 import com.u2.wise.server.impl.CurriculumStudentServiceImpl;
 import com.u2.wise.server.impl.StudentServiceImpl;
+import com.u2.wise.validator.ClassRecordValidator;
 import com.xiaoleilu.hutool.date.DateUtil;
 import com.xiaoleilu.hutool.util.CollectionUtil;
-
+import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
 
 /**
@@ -161,6 +162,7 @@ public class ClassRecordController extends Controller {
 	/**
 	 * 新增或编辑记录
 	 */
+	@Before(ClassRecordValidator.class)
 	public void saveOrUpdate(){
 		ResultData result = new ResultData();
 		ClassRecord classRecord = getModel(ClassRecord.class);

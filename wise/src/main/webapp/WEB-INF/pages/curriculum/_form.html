@@ -13,19 +13,15 @@
 		<input type="hidden" id="students" name="students" value="#(students)">
 		<input type="hidden" id="students_name">
 		<input type="hidden" id="students_sl">
+		
 		<div class="layui-form-item">
-			<label class="layui-form-label">课程名称</label>
-			<div class="layui-input-block">
-				<input type='text' id="cname" name="curriculum.name" lay-verify="required" value="#(curriculum.name)"
-					autocomplete="off" placeholder="请输入课程名称" class="layui-input" >
-					
-			</div>
-			
+				<button class="layui-btn" type="button" onclick="toSelect1();">
+					<i class="layui-icon">&#xe615;</i>点击选择学生
+				</button>
+			<table class="layui-table" id="studentlist1" lay-filter="studentlist1"></table>
 		</div>
-		<div class="layui-form-item">
-		<button class="layui-btn" type="button" onclick="buildCname();">生成名称
-		</button>
-		</div>
+		
+		
 		<div class="layui-form-item">
 			<label class="layui-form-label">科目</label>
 			<div class="layui-input-block">
@@ -82,10 +78,17 @@
 		</div>
 		
 		<div class="layui-form-item">
-				<button class="layui-btn" type="button" onclick="toSelect1();">
-					<i class="layui-icon">&#xe615;</i>点击选择学生
-				</button>
-			<table class="layui-table" id="studentlist1" lay-filter="studentlist1"></table>
+			<label class="layui-form-label">课程名称</label>
+			<div class="layui-input-block">
+				<input type='text' id="cname" name="curriculum.name" lay-verify="required" value="#(curriculum.name)"
+					autocomplete="off" placeholder="请输入课程名称" class="layui-input" >
+					
+			</div>
+			
+		</div>
+		<div class="layui-form-item">
+		<button class="layui-btn" type="button" onclick="buildCname();">生成名称
+		</button>
 		</div>
 		
 		<div class="layui-form-item layui-form-text">
@@ -140,7 +143,7 @@ layui.use(['form','jquery','layer','laydate','table'], function(){
 		var data=#(data)
 		table.render({
 			elem : '#studentlist1',
-			height: 200 ,//容器高度
+			//height: 200 ,//容器高度
 			cols : [ [ {
 				field : 'name',
 				width : 80,
@@ -238,9 +241,27 @@ function buildCname(){
 	var sl=$("#students_sl").val();
 	var tm=$("#teacher_name").val();
 	var km=$("input[name='curriculum.subject']:checked").val();
+	var t=$("input[name='curriculum.type']:checked").val();
+	var g=$("input[name='curriculum.grade']:checked").val();
 	var str='';
+	
 	if(sn!=null&&sn!=''){
 		str+=sn;
+	}
+	if(t!=null&&t!=''&&g!=null&&g!=''){
+		if(t=='1'){
+			t='高';
+		}else{
+			t='初';
+		}
+		if(g=='1'){
+			g='一';
+		}else if(g=='2'){
+			g='二';
+		}else{
+			g='三';
+		}
+		str+='['+t+g+']';
 	}
 	if(km!=null&&km!=''){
 		str+='['+km+']';
@@ -261,6 +282,7 @@ function buildCname(){
 	if(tm!=null&&tm!=''){
 		str+='['+tm+']';
 	}
+	
 	$("#cname").val(str);
 
 	});
@@ -289,7 +311,7 @@ function setStudent(data){
 		var str=JSON.stringify(data);
 		table.render({
 			elem : '#studentlist1',
-			height: 200 ,//容器高度
+			///height: 200 ,//容器高度
 			cols : [ [ {
 				field : 'name',
 				width : 80,

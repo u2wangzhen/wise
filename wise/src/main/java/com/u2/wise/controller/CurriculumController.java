@@ -23,8 +23,9 @@ import com.u2.wise.server.impl.CurriculumServiceImpl;
 import com.u2.wise.server.impl.CurriculumStudentServiceImpl;
 import com.u2.wise.server.impl.StudentPaymentServiceImpl;
 import com.u2.wise.server.impl.StudentServiceImpl;
+import com.u2.wise.validator.CurriculumValidator;
 import com.xiaoleilu.hutool.util.CollectionUtil;
-
+import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
 import com.jfinal.kit.JsonKit;
 
@@ -199,6 +200,7 @@ public class CurriculumController extends Controller {
 	/**
 	 * 新增或编辑记录
 	 */
+	@Before(CurriculumValidator.class)
 	public void saveOrUpdate(){
 		ResultData result = new ResultData();
 		Curriculum curriculum = getModel(Curriculum.class);

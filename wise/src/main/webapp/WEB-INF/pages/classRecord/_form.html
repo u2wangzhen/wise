@@ -92,7 +92,7 @@
 					}, function() {
 						// 获得frame索引
 						if (res.code == 1) {
-							parent.location.reload(); // 父页面刷新
+							parent.reloadTable(); // 父页面刷新
 							var index = parent.layer
 									.getFrameIndex(window.name);
 							//关闭当前frame

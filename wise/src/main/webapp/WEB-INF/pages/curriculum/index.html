@@ -7,9 +7,9 @@
 			<input class="layui-input" id="name" placeholder="输入课程名称"
 				autocomplete="off">
 		</div>
-		<div class="layui-inline">
-			<!-- <input class="layui-input" id="subject" placeholder="输入科目"
-				autocomplete="off"> -->
+		<!-- <div class="layui-inline">
+			<input class="layui-input" id="subject" placeholder="输入科目"
+				autocomplete="off">
 				<select id="subject">
 				<option value="">请选择科目</option>
 				<option vlaue="数学">数学</option>
@@ -23,17 +23,17 @@
 				<option vlaue="政治">政治</option>
 				
 				</select>
-		</div>
-		<div class="layui-inline">
+		</div> -->
+		<!-- <div class="layui-inline">
 			<input class="layui-input" id="teacher_name" placeholder="输入老师姓名"
 				autocomplete="off">
 
-		</div>
-		<div class="layui-inline">
+		</div> -->
+		<!-- <div class="layui-inline">
 			<input class="layui-input"  id="student_name" placeholder="点击选择学生" readonly="readonly"
 				autocomplete="off" onclick="toSelect1();">
 				<input id="student_id" type="hidden">
-		</div>
+		</div> -->
 		<div class="layui-inline">
 			<select id="type">
 				<option value=''>请选择学级</option>
@@ -265,12 +265,12 @@
 								},
 								where : {
 									name : encodeURI($("#name").val()),
-									subject : encodeURI($("#subject").val()),
+									//subject : encodeURI($("#subject").val()),
 									del_flag : $("#del_flag1").val(),
 									type:$("#type").val(),
-									grade:$("#grade").val(),
-									student_id:$("#student_id").val(),
-									teacher_name:$("#teacher_name").val()
+									grade:$("#grade").val()
+									//student_id:$("#student_id").val(),
+									//teacher_name:$("#teacher_name").val()
 								}
 							});
 						});

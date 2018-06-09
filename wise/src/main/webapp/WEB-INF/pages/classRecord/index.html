@@ -113,8 +113,8 @@
 
 		var $ = layui.$, active = {
 			reload : function() {
-				var idObj = $('#id');
-				var keywordObj = $('#keyword');
+				//var idObj = $('#id');
+				//var keywordObj = $('#keyword');
 				//执行重载
 				table.reload('jtTableReload', {
 					page : {
@@ -144,5 +144,25 @@
 		});
 
 	});
+	function reloadTable(){
+		
+		layui.use([ 'table', 'jquery' ], function() {
+			var table = layui.table;
+			var $ = layui.jquery;
+			table.reload('jtTableReload', {
+				page : {
+					curr : 1
+				//重新从第 1 页开始
+				},
+				where : {
+					cname : encodeURI($("#cname").val()),
+					date1 : $("#data1").val(),
+					month1 : $("#month1").val()
+				}
+			});
+		});
+		
+		
+	}
 </script>
 #end

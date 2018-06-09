@@ -4,6 +4,7 @@ SELECT ss.`name` as student_name,SUM(c.class_hour) as total from t_class_record 
 
 #if(start_time!="")and c.start_time > '#(start_time)' and c.start_time < '#(end_time)' #end
 
+
 GROUP BY ss.`name`
 #end
 ####
@@ -25,7 +26,11 @@ GROUP BY c.name
 	select id   ,cid  ,record_data  ,start_time  ,end_time  ,class_hour  ,remark  ,del_flag 	from
     t_class_record where 1=1 
     #if(cid!=null&&cid!="") and  cid = '#(cid)' #end
-   #if(start_time!="") and start_time > '#(start_time)' and start_time < '#(end_time)' #end
+   #if(start_time!=null&&start_time!="") and start_time > '#(start_time)' and start_time < '#(end_time)' #end
+   #if(start1!=null&&start1!="")
+    and (( start_time < '#(end1)' and start_time >= '#(start1)') or (end_time > '#(start1)' and end_time <= '#(end1)' ))
+   #end
+   
    order by start_time asc
 #end
 
