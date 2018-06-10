@@ -20,18 +20,23 @@ SELECT c.name,SUM(r.class_hour) as total from t_class_record r,t_curriculum c wh
 GROUP BY c.name
 #end
 
+#sql("calendar_CH")
+select record_data,count(*) as ks from t_class_record where 1=1  
+#if(start_time!="") and start_time > '#(start_time)' and start_time < '#(end_time)'  #end
+GROUP BY record_data
+#end
 
 ##获取列表
 #sql("list")
-	select id   ,cid  ,record_data  ,start_time  ,end_time  ,class_hour  ,remark  ,del_flag 	from
-    t_class_record where 1=1 
-    #if(cid!=null&&cid!="") and  cid = '#(cid)' #end
-   #if(start_time!=null&&start_time!="") and start_time > '#(start_time)' and start_time < '#(end_time)' #end
+	select r.id ,r.cid  ,r.record_data  ,r.start_time  ,r.end_time  ,r.class_hour  ,r.remark  ,r.del_flag,c.name as cname from
+    t_class_record r,t_curriculum c  where r.cid=c.id 
+    #if(cid!=null&&cid!="") and  r.cid = '#(cid)' #end
+   #if(start_time!=null&&start_time!="") and r.start_time > '#(start_time)' and r.start_time < '#(end_time)' #end
    #if(start1!=null&&start1!="")
-    and (( start_time < '#(end1)' and start_time >= '#(start1)') or (end_time > '#(start1)' and end_time <= '#(end1)' ))
+    and (( r.start_time < '#(end1)' and r.start_time >= '#(start1)') or (r.end_time > '#(start1)' and r.end_time <= '#(end1)' ))
    #end
    
-   order by start_time asc
+   order by r.start_time asc
 #end
 
 ##分页

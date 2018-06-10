@@ -21,5 +21,6 @@ public interface ClassRecordService {
 	public List<Record> studentClassHour(Map<String, String> paraMap);
 	public List<Record> teacherClassHour(Map<String, String> paraMap);
 	public List<Record> curriculumClassHour(Map<String, String> paraMap);
+	public List<Record> calendarList(String string);
 	
 }

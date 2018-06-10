@@ -2,6 +2,7 @@ package com.u2.wise.server.impl;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -64,6 +65,21 @@ public class ClassRecordServiceImpl implements ClassRecordService {
 
 	public List<Record> list(Map<String, String> param) {
 		logger.info("获取列表参数{}", param);
+		String date=param.get("date1");
+		if(StringUtil.isNotEmpty(date)){
+			Date d=null;
+			if("now".equals(date)){
+				d=new Date();
+			}else{
+				d = DateUtil.parse(date, DatePattern.NORM_DATE_PATTERN);
+			}
+			
+			param.put("start_time", DateUtil.beginOfDay(d).toString());
+			param.put("end_time", DateUtil.endOfDay(d).toString());
+			param.remove("date1");
+		}
+		
+		
 		return Db.find(Db.getSqlPara("classRecord.list", param));
 	}
 
@@ -81,6 +97,16 @@ public class ClassRecordServiceImpl implements ClassRecordService {
 		}
 
 		return Db.find(Db.getSqlPara("classRecord.student_CH", param));
+	}
+	
+	public List<Record> calendarList(String string) {
+		// TODO Auto-generated method stub
+		Map<String, String> param=new HashMap<String, String>();
+		DateTime d = DateUtil.parse(string, "yyyy");
+		
+		param.put("start_time", DateUtil.beginOfYear(d).toString());
+		param.put("end_time", DateUtil.endOfYear(d).toString());
+		return Db.find(Db.getSqlPara("classRecord.calendar_CH", param));
 	}
 
 	public List<Record> teacherClassHour(Map<String, String> param) {
@@ -163,6 +189,8 @@ public class ClassRecordServiceImpl implements ClassRecordService {
 		SqlPara para = Db.getSqlPara("classRecord.pageList1", k.set("sort", sort).set("order", order));
 		return Db.paginate(pageNum, pageSize, para);
 	}
+
+	
 
 	
 

@@ -95,6 +95,10 @@ public class TotalController extends Controller{
 		render("Curriculum.html");
 	}
 	
+	public void toClassRecord(){
+		render("classRecord.html");
+	}
+	
 	/*public static void main(String[] args) {
 		Double d=new Double(1.5);
 		Double c=new Double(2.5);

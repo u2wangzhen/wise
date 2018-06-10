@@ -43,6 +43,7 @@ public class ClassRecordController extends Controller {
 
 
 	public void index() {
+		setAttr("date1", DateUtil.formatDate(new Date()));
 		this.render("index.html");
 	}
 	

@@ -8,7 +8,7 @@
 		</div> 
 		
 		<div class="layui-inline">
-			<input class="layui-input"  id="data1" autocomplete="off"  placeholder="选择日期">
+			<input class="layui-input"  id="data1" autocomplete="off" value="#(date1)"  placeholder="选择日期">
 		</div>
 		
 		<div class="layui-inline">
@@ -35,6 +35,7 @@
 		var form = layui.form;
 		var table = layui.table;
 		var laydate = layui.laydate;
+		var $ = layui.jquery;
 		
 		laydate.render({
 			elem : '#data1' //指定元素
@@ -51,7 +52,7 @@
 			height : 400,
 			cellMinWidth : 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
 			,
-			url : '#(ctx)/classRecord/pageList1' //数据接口
+			url : '#(ctx)/classRecord/pageList1?date1=#(date1)' //数据接口
 			,
 			page : true //开启分页
 			,
@@ -111,7 +112,7 @@
 			}
 		});
 
-		var $ = layui.$, active = {
+		var active = {
 			reload : function() {
 				//var idObj = $('#id');
 				//var keywordObj = $('#keyword');

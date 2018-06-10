@@ -44,9 +44,12 @@
 			
 			
 			 var studentChart = echarts.init(document.getElementById('student'));
-
 			 var teacherChart = echarts.init(document.getElementById('teacher'));
 			 var cChart = echarts.init(document.getElementById('cChart'));
+			 cChart.on('click', function (params) {
+				    console.log(params);
+				});
+
 		        // 指定图表的配置项和数据
 		        var option = {
 		            title: {},
@@ -75,19 +78,7 @@
 			            series: []
 			        };
 
-		        var o2 = {
-			            title: {},
-			            tooltip: {},
-			            legend: {},
-			            xAxis: {
-			            	axisLabel:{  
-		                         interval:0,//横轴信息全部显示  
-		                         rotate:-20,//-30度角倾斜显示  
-		                    }
-			            },
-			            yAxis: {},
-			            series: []
-			        };
+		       
 		        
 		        $.ajax({
 		        	type: "post",
@@ -134,16 +125,39 @@
 		        $.ajax({
 		        	type: "post",
 		            async: false, //同步执行
-		       		url:'#(ctx)/charts/curriculumClassHour',
+		       		url:'#(ctx)/charts/calendarClassHour',
 		       		dataType: "json", //返回数据形式为json
 		       		success: function(result) {
 		                if (result) {
 		                    //将返回的category和series对象赋值给options对象内的category和series
 		                    //因为xAxis是一个数组 这里需要是xAxis[i]的形式
-		                    o2.title.text=result.title;
-		                    o2.legend.data=result.legend;
-		                    o2.xAxis.data = result.xAxis;
-		                    o2.series = result.series;
+		                var o2 = {
+		                    		
+		                		 tooltip: {
+		                		        position: 'top',
+		                		        formatter: function (p) {
+		                		            var format = echarts.format.formatTime('yyyy-MM-dd', p.data[0]);
+		                		            return format + ' : ' + p.data[1]+'次课';
+		                		        }
+		                		    },
+		        		visualMap: {
+		        	        min: 0,
+		        	        max: 30,
+		        	        calculable: true,
+		        	        orient: 'horizontal',
+		        	        left: 'center',
+		        	        top: 'top'
+		        	    },
+		        	    calendar: {
+		        	        range: '2018',
+		        	        cellSize: ['auto', 20]
+		        	    },
+		        	    series: {
+		        	        type: 'heatmap',
+		        	        coordinateSystem: 'calendar',
+		        	        data: result
+		        	    }
+			        };
 		                    cChart.setOption(o2);
 		                }
 		            },

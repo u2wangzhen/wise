@@ -1,5 +1,6 @@
 package com.u2.wise.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -10,6 +11,7 @@ import com.u2.common.ParamsUtils;
 import com.u2.wise.ChartOptionBean;
 import com.u2.wise.server.ClassRecordService;
 import com.u2.wise.server.impl.ClassRecordServiceImpl;
+import com.xiaoleilu.hutool.date.DatePattern;
 import com.xiaoleilu.hutool.date.DateUtil;
 
 public class ChartsController extends Controller{
@@ -64,5 +66,25 @@ public class ChartsController extends Controller{
 
 		}
 		renderJson(cob);
+	}
+	
+	public void calendarClassHour(){
+		List<String[]> ll=new ArrayList<String[]>();
+		List<Record> list =srv.calendarList("2018");
+		if(list!=null&&!list.isEmpty()){
+			
+			for (Record r : list) {
+				String[] s=new String[2];
+				Date date = r.getDate("record_data");
+				String d=DateUtil.format(date, DatePattern.NORM_DATE_PATTERN);
+				String sl=r.getStr("ks");
+				s[0]=d;
+				s[1]=sl;
+				ll.add(s);
+			}
+			
+			
+		}
+		renderJson(ll);
 	}
 }
