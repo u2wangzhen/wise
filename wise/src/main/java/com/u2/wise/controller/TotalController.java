@@ -42,18 +42,30 @@ public class TotalController extends Controller{
 		param.put("end_time", DateUtil.endOfMonth(new Date()).toString());
 		List<Record> crlist = crs.list(param);
 		
-		List<TeacherTotalBean> ttbl=buildTeacherTotal(crlist);
-		setAttr("list", ttbl);
+		Map<String,Object> m=buildTeacherTotal(crlist);
+		setAttr("list", m.get("list"));
+		setAttr("zks", m.get("zks"));
+		setAttr("zsr", m.get("zsr"));
+		setAttr("zgz", m.get("zgz"));
+		setAttr("csr", m.get("csr"));
+		setAttr("zcs", m.get("zcs"));
 		render("teacher.html");
 	}
-	private List<TeacherTotalBean> buildTeacherTotal(List<Record> crlist) {
+	private Map<String,Object> buildTeacherTotal(List<Record> crlist) {
 		// TODO Auto-generated method stub
+		Map<String,Object> m=new HashMap<String, Object>();
+		double zks=0;
+		double zsr=0;
+		double zgz=0;
+		int zcs=0;
 		List<TeacherTotalBean> ttbl=new ArrayList<TeacherTotalBean>();
 		if(crlist!=null){
 			Map<String,TeacherTotalBean> map=new HashMap<String, TeacherTotalBean>();
 			for (Record r : crlist) {
+				
 				String cid=r.get("cid");
 				Curriculum c = cs.getById(cid);
+				Record config=getConfig(cid);
 				TeacherTotalBean ttb = map.get(c.getTeacherName());
 				if(ttb==null){
 					ttb=new TeacherTotalBean();
@@ -63,8 +75,19 @@ public class TotalController extends Controller{
 				}
 				
 				///
+				zcs++;
+				zks+=r.getDouble("class_hour");
+				if(config!=null){
+					zsr+=config.getInt("student_count")*config.getInt("class_fee")*r.getDouble("class_hour");
+					zgz+=config.getInt("teacher_price")*r.getDouble("class_hour");
+				}
+				///
 				ttb.setHours(ttb.getHours()+r.getDouble("class_hour"));
 				ttb.setCs(ttb.getCs()+1);
+				if(config!=null){
+					ttb.setTotal(ttb.getTotal()+(config.getInt("student_count")*config.getInt("class_fee")*r.getDouble("class_hour")));
+					ttb.setSalary(ttb.getSalary()+(config.getInt("teacher_price")*r.getDouble("class_hour")));
+				}
 				////
 				if(ttb.getCurrMap()==null){
 					CurriculumTotalBean ctb = new CurriculumTotalBean();
@@ -83,13 +106,31 @@ public class TotalController extends Controller{
 				////
 				ctb.setHours(ctb.getHours()+r.getDouble("class_hour"));
 				ctb.setCs(ctb.getCs()+1);
+				if(config!=null){
+					ctb.setTotal(ctb.getTotal()+(config.getInt("student_count")*config.getInt("class_fee")*r.getDouble("class_hour")));
+					ctb.setSalary(ctb.getSalary()+(config.getInt("teacher_price")*r.getDouble("class_hour")));
+				}
 				ctb.addCrlist(r);
 				////
 			}
 			
 		}
-		
-		return ttbl;
+		m.put("list", ttbl);
+		m.put("zks", zks);
+		m.put("zsr", zsr);
+		m.put("zgz", zgz);
+		m.put("zcs", zcs);
+		m.put("csr", zsr-zgz);
+		return m;
+	}
+	private Record getConfig(String cid) {
+		Map<String, String> map=new HashMap<String, String>();
+		map.put("cid", cid);
+		List<Record> list = ccs.list(map);
+		if(list!=null&&!list.isEmpty()){
+			return list.get(0);
+		}
+		return null;
 	}
 	public void toCurriculum(){
 		render("Curriculum.html");

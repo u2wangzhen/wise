@@ -11,7 +11,8 @@ public class CurriculumTotalBean {
 	private Double hours=new Double(0);
 	
 	private int cs=0;
-	
+	private Double total=new Double(0);
+	private Double salary=new Double(0);
 	private List<Record> crlist;
 
 	public String getName() {
@@ -51,4 +52,21 @@ public class CurriculumTotalBean {
 		}
 		crlist.add(r);
 	}
+
+	public Double getTotal() {
+		return total;
+	}
+
+	public void setTotal(Double total) {
+		this.total = total;
+	}
+
+	public Double getSalary() {
+		return salary;
+	}
+
+	public void setSalary(Double salary) {
+		this.salary = salary;
+	}
+	
 }

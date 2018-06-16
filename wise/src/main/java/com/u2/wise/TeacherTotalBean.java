@@ -12,6 +12,8 @@ public class TeacherTotalBean {
 	
 	private Double hours=new Double(0);
 	private int cs=0;
+	private Double total=new Double(0);
+	private Double salary=new Double(0);
 	private Map<String,CurriculumTotalBean> currMap;
 	private List<CurriculumTotalBean> currList;
 	public String getName() {
@@ -54,6 +56,18 @@ public class TeacherTotalBean {
 	}
 	public List<CurriculumTotalBean> getCurrList() {
 		return currList;
+	}
+	public Double getTotal() {
+		return total;
+	}
+	public void setTotal(Double total) {
+		this.total = total;
+	}
+	public Double getSalary() {
+		return salary;
+	}
+	public void setSalary(Double salary) {
+		this.salary = salary;
 	}
 	
 	
