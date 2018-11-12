@@ -1,5 +1,6 @@
 package com.u2.wise.controller;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -10,6 +11,7 @@ import com.u2.common.BaseController;
 import com.u2.common.ParamsUtils;
 import com.u2.common.ResultData;
 import com.u2.common.StringUtil;
+import com.u2.wise.model.Curriculum;
 import com.u2.wise.model.Student;
 import com.u2.wise.server.StudentService;
 import com.u2.wise.server.impl.StudentServiceImpl;
@@ -47,6 +49,7 @@ public class StudentController2 extends BaseController{
 		
 		ResultData rd=new ResultData();
 		Student stu=getModel(Student.class);
+		stu.setAge(0);
 		if(StringUtil.isNotEmpty(stu.getId())){
 			if(srv.update(stu)){
 				rd.setSuccess("更新成功", null);
@@ -87,5 +90,28 @@ public class StudentController2 extends BaseController{
 		rd.put("count", r.getTotalRow());
 		rd.setSuccess("ok", r.getList());
 		renderJson(rd);
+	}
+	
+	
+	/**
+	 * 删除记录
+	 */
+	public void delete(){
+		ResultData result = new ResultData();
+		String id=getPara("id");
+		if(StringUtil.isNotEmpty(id)){
+			 Student cc = srv.getById(id);
+			cc.setAge(1);
+			if(srv.update(cc)){
+				renderJson(result.setSuccess("操作成功", null));
+			}else{
+				renderJson(result.setFaild("操作失败", null));
+			}
+		}else{
+			renderJson(result.setFaild("丢失id无法结课", null));
+		}
+		
+		
+		
 	}
 }
