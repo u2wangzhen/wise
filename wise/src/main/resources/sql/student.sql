@@ -7,6 +7,7 @@
      #if(name2!=null&&name2!="") and  name = '#(name2)' #end
     #if(sex!=null&&sex!="") and  sex = #(sex) #end
     #if(parent_info!=null&&parent_info!="") and  parent_info like '%#(parent_info)%' #end
+    order by create_time desc
 #end
 
 ##分页

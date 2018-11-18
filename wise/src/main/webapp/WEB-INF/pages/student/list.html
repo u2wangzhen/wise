@@ -17,6 +17,25 @@
 				<div class="layui-inline">
 					<input type="text" id="name" placeholder="请输入学生姓名"
 						autocomplete="off" class="layui-input">
+					<select>
+					<option value="初一">初一</option>
+					<option value="初二">初二</option>
+					<option value="初三">初三</option>
+					<option value="高一">高一</option>
+					<option value="高二">高二</option>
+					<option value="高三">高三</option>
+					</select>
+				</div>
+				<div class="layui-inline">
+					
+					<select>
+					<option value="初一">初一</option>
+					<option value="初二">初二</option>
+					<option value="初三">初三</option>
+					<option value="高一">高一</option>
+					<option value="高二">高二</option>
+					<option value="高三">高三</option>
+					</select>
 				</div>
 				<button class="layui-btn" lay-submit="" lay-filter="sreach" id="sreachbut">
 					<i class="layui-icon">&#xe615;</i>
@@ -83,6 +102,10 @@
 					templet: function(d){
 				        return  d.sex==0?'<span style="color: #c00;">女</span>':'男';
 				      }
+				},{
+					field : 'parent_name',
+					width : 80,
+					title : '学级'
 				},{
 					field : 'parent_info',
 					title : '信息',

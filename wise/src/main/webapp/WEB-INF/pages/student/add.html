@@ -42,11 +42,21 @@
 
 		<div class="layui-form-item">
 			<div class="layui-inline">
-				<label class="layui-form-label">父母名称</label>
+				<label class="layui-form-label">学级</label>
 				<div class="layui-input-inline">
-					<input type="text" name="student.parent_name" lay-verify="required|nikename"
+					<!-- <input type="text" name="student.parent_name" lay-verify="required|nikename"
 						autocomplete="off" class="layui-input"
-						value="#(student.parent_name)">
+						value="#(student.parent_name)"> -->
+					<select name="student.parent_name" lay-verify="required|nikename">
+					<option value="初一" #if(student.parent_name=='初一') selected="selected"#end>初一</option>
+					<option value="初二" #if(student.parent_name=='初二') selected="selected"#end>初二</option>
+					<option value="初三" #if(student.parent_name=='初三') selected="selected"#end>初三</option>
+					<option value="高一" #if(student.parent_name=='高一') selected="selected"#end>高一</option>
+					<option value="高二" #if(student.parent_name=='高二') selected="selected"#end>高二</option>
+					<option value="高三" #if(student.parent_name=='高三') selected="selected"#end>高三</option>
+					</select>
+						
+						
 				</div>
 
 				<label class="layui-form-label">注册日期</label>
@@ -61,7 +71,7 @@
 
 
 		<div class="layui-form-item layui-form-text">
-			<label class="layui-form-label">父母信息</label>
+			<label class="layui-form-label">信息</label>
 			<div class="layui-input-block">
 				<textarea type="text" name="student.parent_info" placeholder="请输入手机号码、联系方式、家庭住址等信息、学校等信息" class="layui-textarea">#(student.parent_info)</textarea>
 			</div>
