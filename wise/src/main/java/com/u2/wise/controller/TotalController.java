@@ -21,6 +21,7 @@ import com.u2.wise.server.impl.CurriculumConfigServiceImpl;
 import com.u2.wise.server.impl.CurriculumServiceImpl;
 import com.u2.wise.server.impl.CurriculumStudentServiceImpl;
 import com.u2.wise.server.impl.StudentServiceImpl;
+import com.xiaoleilu.hutool.date.DateTime;
 import com.xiaoleilu.hutool.date.DateUtil;
 
 public class TotalController extends Controller{
@@ -37,9 +38,25 @@ public class TotalController extends Controller{
 	}
 	public void toTeacher(){
 		
+		Integer month = getParaToInt("month");
+		int	year=DateUtil.year(new Date());
+		//}
+		if(month==null||month==0){
+			month=DateUtil.month(new Date())+1;
+		}
+		String str="";
+		if(month<10){
+			str=year+"-0"+month+"-01";
+		}else{
+			str=year+"-"+month+"-01";
+		}
+		
+		DateTime date = DateUtil.parse(str);
+		
+		
 		Map<String, String> param=new HashMap<String, String>();
-		param.put("start_time", DateUtil.beginOfMonth(new Date()).toString());
-		param.put("end_time", DateUtil.endOfMonth(new Date()).toString());
+		param.put("start_time", DateUtil.beginOfMonth(date).toString());
+		param.put("end_time", DateUtil.endOfMonth(date).toString());
 		List<Record> crlist = crs.list(param);
 		
 		Map<String,Object> m=buildTeacherTotal(crlist);
@@ -49,6 +66,7 @@ public class TotalController extends Controller{
 		setAttr("zgz", m.get("zgz"));
 		setAttr("csr", m.get("csr"));
 		setAttr("zcs", m.get("zcs"));
+		setAttr("month", month);
 		render("teacher.html");
 	}
 	private Map<String,Object> buildTeacherTotal(List<Record> crlist) {
@@ -121,6 +139,7 @@ public class TotalController extends Controller{
 		m.put("zgz", zgz);
 		m.put("zcs", zcs);
 		m.put("csr", zsr-zgz);
+		
 		return m;
 	}
 	private Record getConfig(String cid) {
