@@ -39,8 +39,11 @@ public class TotalController extends Controller{
 	public void toTeacher(){
 		
 		Integer month = getParaToInt("month");
-		int	year=DateUtil.year(new Date());
-		//}
+		Integer year= getParaToInt("year");
+		if(year==null||year==0){
+			year=DateUtil.year(new Date());
+		}
+		
 		if(month==null||month==0){
 			month=DateUtil.month(new Date())+1;
 		}
@@ -67,6 +70,7 @@ public class TotalController extends Controller{
 		setAttr("csr", m.get("csr"));
 		setAttr("zcs", m.get("zcs"));
 		setAttr("month", month);
+		setAttr("year",year);
 		render("teacher.html");
 	}
 	private Map<String,Object> buildTeacherTotal(List<Record> crlist) {

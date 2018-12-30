@@ -3,7 +3,15 @@
 #end #define main_layout()
 <fieldset class="layui-elem-field layui-field-title"
 	style="margin-top: 20px;">
-	选择<select id="month" onchange="reload();">
+	
+		
+	<legend>
+	<select id="year" onchange="reload();">
+		<option value="#(year)">#(year)</option>
+		<option value="2018">2018</option>
+		<option value="2019">2019</option>
+	</select>年<select id="month" onchange="reload();">
+		<option value="#(month)">#(month)</option>
 		<option value="1">1</option>
 		<option value="2">2</option>
 		<option value="3">3</option>
@@ -16,10 +24,7 @@
 		<option value="10">10</option>
 		<option value="11">11</option>
 		<option value="12">12</option>
-	</select>
-	<legend>
-	#(month)月
-	老师课时统计，总次数：#(zcs)，总计课时：#(zks)，毛收入：#(zsr)，总工资：#(zgz)，净收入：#(csr)</legend>
+	</select>月【总次数：#(zcs)，总计课时：#(zks)，毛收入：#(zsr)，总工资：#(zgz)，净收入：#(csr)】</legend>
 </fieldset>
 
 <div class="layui-collapse" lay-filter="test">
@@ -79,7 +84,8 @@ layui.use(['element', 'layer'], function(){
 function reload(){
 
 	var m=document.getElementById("month").value;
-	window.location.href="/wise/total/toTeacher?month="+m;
+	var y=document.getElementById("year").value;
+	window.location.href="/wise/total/toTeacher?month="+m+"&year="+y;
 }
 </script>
 #end
