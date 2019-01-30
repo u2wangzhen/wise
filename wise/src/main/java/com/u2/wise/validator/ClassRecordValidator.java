@@ -34,7 +34,7 @@ public class ClassRecordValidator extends Validator{
 			if(s.getTime()>=e.getTime()){
 				addError("msg", "开始时间晚于或者等于结束时间！");
 			}else{
-				Map<String, String> param=new HashMap<String, String>();
+				Map<String, Object> param=new HashMap<String, Object>();
 				param.put("start1", start);
 				param.put("end1", end);
 				param.put("cid", cid);

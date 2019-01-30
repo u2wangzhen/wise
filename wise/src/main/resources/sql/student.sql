@@ -3,10 +3,33 @@
 	select id   ,name  ,age  ,sex  ,code  ,parent_name  ,parent_info  ,create_time  ,start_time 	from
     t_student where 1=1 and age<>1
     #if(ids!=null&&ids!="") and  id in (#(ids)) #end
-    #if(name!=null&&name!="") and  name like '%#(name)%' #end
+    
+    #-- #if(name!=null&&name!="") and  name like '%#(name)%' #end --#
+    #if(ns!=null)
+    	and ( 
+    	#for(n:ns)
+    		#if(for.index!=0) or #end
+    		#if(n!= null && n != "")
+    			name like '%#(n)%' 
+    		#end
+    	#end
+    	)
+    #end
+    
+    #if(cs!=null)
+    	and (
+     #for(c:cs)
+    	#if(for.index!=0) or #end
+    	#if(c != null && c != "")
+    		code like '%#(c)%' 
+    	#end
+    #end
+    	)
+   	#end 
+    
      #if(name2!=null&&name2!="") and  name = '#(name2)' #end
     #if(sex!=null&&sex!="") and  sex = #(sex) #end
-    #if(parent_info!=null&&parent_info!="") and  parent_info like '%#(parent_info)%' #end
+    #-- #if(parent_info!=null&&parent_info!="") and  parent_info like '%#(parent_info)%' #end --#
     order by create_time desc
 #end
 

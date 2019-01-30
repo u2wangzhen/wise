@@ -1,5 +1,6 @@
 package com.u2.wise.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -46,7 +47,35 @@ public class CurriculumController extends Controller {
 	}
 	
 	public void toList(){
-		this.render("_list.html");
+		
+		Map<String, Object> paraMap = ParamsUtils.getParameterMap(getRequest());
+		List<Record> list =  srv.list(paraMap);
+		
+		if(list!=null&&!list.isEmpty()){
+			Map<String,List<Record>> map=new HashMap<String,List<Record>>();
+			List<String> ts=new ArrayList<String>();
+			for (Record r : list) {
+				
+				String tn = r.get("subject");
+				
+				if(map.get(tn)==null){
+					map.put(tn, new ArrayList<Record>());
+					ts.add(tn);
+				}
+				
+				map.get(tn).add(r);
+				
+			}
+			
+			
+			setAttr("curriculums", map);
+			setAttr("ts", ts);
+			
+		}
+		
+		
+		
+		this.render("_select.html");
 	}
 	
 	/**
@@ -54,7 +83,7 @@ public class CurriculumController extends Controller {
 	 */
 	public void list(){
 		ResultData result = new ResultData();
-		Map<String, String> paraMap = ParamsUtils.getParameterMap(getRequest());
+		Map<String, Object> paraMap = ParamsUtils.getParameterMap(getRequest());
 		List<Record> list =  srv.list(paraMap);
 		if(CollectionUtil.isEmpty(list)){
 			renderJson(result.setFaild("获取列表失败", null));
@@ -68,7 +97,7 @@ public class CurriculumController extends Controller {
 	 */
 	public void pageList(){
 		ResultData result = new ResultData();
-		Map<String, String> paraMap = ParamsUtils.getParameterMap(getRequest());
+		Map<String, Object> paraMap = ParamsUtils.getParameterMap(getRequest());
 		Page<Record> pages =  srv.pageList(getParaToInt("pageNum",1),getParaToInt("pageSize",10),paraMap,getPara("sort","id"),getPara("order","desc"));
 		if(pages != null){
 			renderJson(result.setSuccess("查询分页数据成功", pages));
@@ -82,12 +111,12 @@ public class CurriculumController extends Controller {
 	 */
 	public void pageList1(){
 		ResultData result = new ResultData();
-		Map<String, String> paraMap = ParamsUtils.getParameterMap(getRequest());
+		Map<String, Object> paraMap = ParamsUtils.getParameterMap(getRequest());
 		
-		String sid = paraMap.get("student_id");
+		String sid = (String) paraMap.get("student_id");
 		String sts="";
 		if(StringUtil.isNotEmpty(sid)){
-			Map<String, String> m=new HashMap<String, String>();
+			Map<String, Object> m=new HashMap<String, Object>();
 			m.put("student_id", sid);
 			List<Record> list = csrv.list(m);
 			if(list!=null&&!list.isEmpty()){
@@ -116,7 +145,7 @@ public class CurriculumController extends Controller {
 		// TODO Auto-generated method stub
 		if(list!=null&&!list.isEmpty()){
 			for (Record r : list) {
-				Map<String, String> param=new HashMap<String, String>();
+				Map<String, Object> param=new HashMap<String, Object>();
 				param.put("cid", r.getStr("id"));
 				List<Record> ll = ccsrv.list(param);{
 					if(ll!=null&&!ll.isEmpty()){
@@ -172,7 +201,7 @@ public class CurriculumController extends Controller {
 		Curriculum c=null;
 		if(StringUtil.isNotEmpty(id)){
 			c=srv.getById(id);
-			Map<String, String> param=new HashMap<String, String>();
+			Map<String, Object> param=new HashMap<String, Object>();
 			param.put("cid", id);
 			List<Record> list = csrv.list(param);
 			if(!list.isEmpty()){

@@ -14,6 +14,12 @@
 			<input type="text" id="name" placeholder="请输入学生姓名" autocomplete="off"
 				class="layui-input">
 		</div>
+		
+		<div class="layui-inline">
+			<input type="text" id="code" placeholder="请输入拼音缩写" autocomplete="off"
+				class="layui-input">
+		</div>
+		
 		<div class="layui-inline">
 			
 				<select id="sex">
@@ -22,10 +28,7 @@
 					<option value="0">女</option>
 				</select>
 		</div>
-		<div class="layui-inline">
-			<input type="text" id="parent_info" placeholder="请输入信息" autocomplete="off"
-				class="layui-input">
-		</div>
+		
 		<div class="layui-inline">
 			<button class="layui-btn" lay-submit="" lay-filter="sreach" id="sreachbut">
 				<i class="layui-icon">&#xe615;</i>
@@ -88,8 +91,8 @@
 												title : '年龄'
 											}, */
 											{
-												field : 'parent_name',
-												title : '父母称呼',
+												field : 'code',
+												title : '编号',
 												width : 100
 											},
 											{
@@ -109,7 +112,7 @@
 							table.reload('studentlistreload1', {
 								where : {
 									name : encodeURI($("#name").val()),
-									parent_info:encodeURI($("#parent_info").val()),
+									code:encodeURI($("#code").val()),
 									sex:$("#sex").val()
 								}
 							});

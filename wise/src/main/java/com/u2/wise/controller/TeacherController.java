@@ -36,7 +36,7 @@ public class TeacherController extends Controller {
 	 */
 	public void list(){
 		ResultData result = new ResultData();
-		Map<String, String> paraMap = ParamsUtils.getParameterMap(getRequest());
+		Map<String, Object> paraMap = ParamsUtils.getParameterMap(getRequest());
 		List<Record> list =  srv.list(paraMap);
 		if(CollectionUtil.isEmpty(list)){
 			renderJson(result.setFaild("获取列表失败", null));
@@ -51,7 +51,7 @@ public class TeacherController extends Controller {
 	 */
 	public void pageList(){
 		ResultData result = new ResultData();
-		Map<String, String> paraMap = ParamsUtils.getParameterMap(getRequest());
+		Map<String, Object> paraMap = ParamsUtils.getParameterMap(getRequest());
 		Page<Record> pages =  srv.pageList(getParaToInt("pageNum",1),getParaToInt("pageSize",10),paraMap,getPara("sort","id"),getPara("order","desc"));
 		if(pages != null){
 			renderJson(result.setSuccess("查询分页数据成功", pages));
@@ -65,7 +65,7 @@ public class TeacherController extends Controller {
 	 */
 	public void pageList1(){
 		ResultData result = new ResultData();
-		Map<String, String> paraMap = ParamsUtils.getParameterMap(getRequest());
+		Map<String, Object> paraMap = ParamsUtils.getParameterMap(getRequest());
 		Page<Record> pages =  srv.pageList1(getParaToInt("page",1),getParaToInt("limit",10),paraMap,getPara("sort","create_time"),getPara("order","desc"));
 		if(pages != null){
 			result.put("count", pages.getTotalRow());

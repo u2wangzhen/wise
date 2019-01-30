@@ -88,9 +88,9 @@ public class CurriculumServiceImpl implements CurriculumService {
 
 	// 列表
 
-	public List<Record> list(Map<String, String> param) {
+	public List<Record> list(Map<String, Object> param) {
 		logger.info("获取列表参数{}", param);
-		String obj = param.get("cid");
+		String obj = (String) param.get("cid");
 		if (obj == null) {
 			param.put("cid", "");
 		}
@@ -99,7 +99,7 @@ public class CurriculumServiceImpl implements CurriculumService {
 
 	// 分页
 
-	public Page<Record> pageList(int pageNum, int pageSize, Map<String, String> paraMap, String sort, String order) {
+	public Page<Record> pageList(int pageNum, int pageSize, Map<String, Object> paraMap, String sort, String order) {
 		logger.info("分页参数{}", paraMap);
 		paraMap.remove("pageNum");
 		paraMap.remove("pageSize");
@@ -112,7 +112,7 @@ public class CurriculumServiceImpl implements CurriculumService {
 
 	// 分页1
 
-	public Page<Record> pageList1(int pageNum, int pageSize, Map<String, String> paraMap, String sort, String order) {
+	public Page<Record> pageList1(int pageNum, int pageSize, Map<String, Object> paraMap, String sort, String order) {
 		logger.info("分页参数{}", paraMap);
 		paraMap.remove("page");
 		paraMap.remove("limit");
@@ -120,32 +120,32 @@ public class CurriculumServiceImpl implements CurriculumService {
 		paraMap.remove("order");
 		Kv kv = Kv.by("id=", paraMap.get("id"));
 
-		if (StringUtil.isNotEmpty(paraMap.get("del_flag"))) {
-			String df = new String(paraMap.get("del_flag"));
+		if (StringUtil.isNotEmpty((String) paraMap.get("del_flag"))) {
+			String df = new String((String) paraMap.get("del_flag"));
 			paraMap.remove("del_flag");
 			if (!"2".equals(df)) {
 				kv.set("del_flag=", Integer.valueOf(df));
 			}
 		}
 		try {
-			if (StringUtil.isNotEmpty(paraMap.get("name"))) {
+			if (StringUtil.isNotEmpty((String) paraMap.get("name"))) {
 
-				kv.set("name", "%"+java.net.URLDecoder.decode(paraMap.get("name"), "UTF-8")+"%");
+				kv.set("name", "%"+java.net.URLDecoder.decode((String) paraMap.get("name"), "UTF-8")+"%");
 
 			}
 
-			if (StringUtil.isNotEmpty(paraMap.get("subject"))) {
-				kv.set("subject", java.net.URLDecoder.decode(paraMap.get("subject"), "UTF-8"));
+			if (StringUtil.isNotEmpty((String) paraMap.get("subject"))) {
+				kv.set("subject", java.net.URLDecoder.decode((String) paraMap.get("subject"), "UTF-8"));
 			}
 			
-			if (StringUtil.isNotEmpty(paraMap.get("teacher_name"))) {
-				kv.set("teacher_name", java.net.URLDecoder.decode(paraMap.get("teacher_name"), "UTF-8"));
+			if (StringUtil.isNotEmpty((String) paraMap.get("teacher_name"))) {
+				kv.set("teacher_name", java.net.URLDecoder.decode((String) paraMap.get("teacher_name"), "UTF-8"));
 			}
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		String t = paraMap.get("type");
+		String t = (String) paraMap.get("type");
 		if(StringUtil.isNotEmpty(t)){
 			kv.set("type=",Integer.valueOf(t));
 		}

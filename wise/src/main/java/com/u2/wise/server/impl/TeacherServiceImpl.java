@@ -55,9 +55,9 @@ public class TeacherServiceImpl implements TeacherService{
 	}
 	
 	//列表
-	public List<Record> list(Map<String,String> param) {
+	public List<Record> list(Map<String,Object> param) {
 		logger.info("获取列表参数{}", param);
-		String obj = param.get("class_type");
+		String obj = (String) param.get("class_type");
 		if(obj==null){
 			param.put("class_type", "");
 		}
@@ -65,7 +65,7 @@ public class TeacherServiceImpl implements TeacherService{
 	}
 	
 	//分页
-	public Page<Record> pageList(int pageNum, int pageSize,Map<String, String> paraMap,String sort,String order) {
+	public Page<Record> pageList(int pageNum, int pageSize,Map<String, Object> paraMap,String sort,String order) {
 		logger.info("分页参数{}", paraMap);
 		paraMap.remove("pageNum");
 		paraMap.remove("pageSize");
@@ -76,7 +76,7 @@ public class TeacherServiceImpl implements TeacherService{
 	}
 	
 	//分页1
-	public Page<Record> pageList1(int pageNum, int pageSize,Map<String, String> paraMap,String sort,String order) {
+	public Page<Record> pageList1(int pageNum, int pageSize,Map<String, Object> paraMap,String sort,String order) {
 		logger.info("分页参数{}", paraMap);
 		paraMap.remove("page");
 		paraMap.remove("limit");
@@ -86,11 +86,11 @@ public class TeacherServiceImpl implements TeacherService{
 		
 		kv.set("phone",paraMap.get("phone"));
 		try {
-			String ct=paraMap.get("class_type");
+			String ct=(String) paraMap.get("class_type");
 			if(StringUtil.isNotEmpty(ct)){
 				kv.set("class_type",java.net.URLDecoder.decode(ct,"UTF-8"));
 			}
-			String name=paraMap.get("name");
+			String name=(String) paraMap.get("name");
 			if(StringUtil.isNotEmpty(name)){
 				kv.set("name",java.net.URLDecoder.decode(name,"UTF-8"));
 			}

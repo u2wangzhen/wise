@@ -56,7 +56,7 @@ public class CurriculumStudentServiceImpl implements CurriculumStudentService{
 	
 	//列表
 	 
-	public List<Record> list(Map<String,String> param) {
+	public List<Record> list(Map<String,Object> param) {
 		logger.info("获取列表参数{}", param);
 		
 		return Db.find(Db.getSqlPara("curriculumStudent.list", param));
@@ -64,7 +64,7 @@ public class CurriculumStudentServiceImpl implements CurriculumStudentService{
 	
 	//分页
 	 
-	public Page<Record> pageList(int pageNum, int pageSize,Map<String, String> paraMap,String sort,String order) {
+	public Page<Record> pageList(int pageNum, int pageSize,Map<String, Object> paraMap,String sort,String order) {
 		logger.info("分页参数{}", paraMap);
 		paraMap.remove("pageNum");
 		paraMap.remove("pageSize");
@@ -76,7 +76,7 @@ public class CurriculumStudentServiceImpl implements CurriculumStudentService{
 	
 	//分页1
 	 
-	public Page<Record> pageList1(int pageNum, int pageSize,Map<String, String> paraMap,String sort,String order) {
+	public Page<Record> pageList1(int pageNum, int pageSize,Map<String, Object> paraMap,String sort,String order) {
 		logger.info("分页参数{}", paraMap);
 		paraMap.remove("page");
 		paraMap.remove("limit");

@@ -57,7 +57,7 @@ public class TotalController extends Controller{
 		DateTime date = DateUtil.parse(str);
 		
 		
-		Map<String, String> param=new HashMap<String, String>();
+		Map<String, Object> param=new HashMap<String, Object>();
 		param.put("start_time", DateUtil.beginOfMonth(date).toString());
 		param.put("end_time", DateUtil.endOfMonth(date).toString());
 		List<Record> crlist = crs.list(param);
@@ -147,7 +147,7 @@ public class TotalController extends Controller{
 		return m;
 	}
 	private Record getConfig(String cid) {
-		Map<String, String> map=new HashMap<String, String>();
+		Map<String, Object> map=new HashMap<String, Object>();
 		map.put("cid", cid);
 		List<Record> list = ccs.list(map);
 		if(list!=null&&!list.isEmpty()){

@@ -22,7 +22,7 @@ public class StudentValidator extends Validator{
 		String name=c.getPara("student.name");
 		String id=c.getPara("student.id");
 		if(StringUtils.isEmpty(id)){
-			Map<String, String> param=new HashMap<String, String>();
+			Map<String, Object> param=new HashMap<String, Object>();
 			param.put("name2", name);
 			List<Record> list = srv.list(param);
 			if(list!=null&&!list.isEmpty()){

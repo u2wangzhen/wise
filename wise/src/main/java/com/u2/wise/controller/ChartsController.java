@@ -18,7 +18,7 @@ public class ChartsController extends Controller{
 	private ClassRecordService srv = enhance(ClassRecordServiceImpl.class);
 
 	public void studentClassHour(){
-		Map<String, String> paraMap = ParamsUtils.getParameterMap(getRequest());
+		Map<String, Object> paraMap = ParamsUtils.getParameterMap(getRequest());
 		List<Record> list =  srv.studentClassHour(paraMap);
 		ChartOptionBean cob=new ChartOptionBean();
 		String d = DateUtil.format(new Date(), "yyyy年MM月");
@@ -35,7 +35,7 @@ public class ChartsController extends Controller{
 	}
 	
 	public void teacherClassHour(){
-		Map<String, String> paraMap = ParamsUtils.getParameterMap(getRequest());
+		Map<String, Object> paraMap = ParamsUtils.getParameterMap(getRequest());
 		List<Record> list =  srv.teacherClassHour(paraMap);
 		ChartOptionBean cob=new ChartOptionBean();
 		String d = DateUtil.format(new Date(), "yyyy年MM月");
@@ -52,7 +52,7 @@ public class ChartsController extends Controller{
 	}
 	
 	public void curriculumClassHour(){
-		Map<String, String> paraMap = ParamsUtils.getParameterMap(getRequest());
+		Map<String, Object> paraMap = ParamsUtils.getParameterMap(getRequest());
 		List<Record> list =  srv.curriculumClassHour(paraMap);
 		ChartOptionBean cob=new ChartOptionBean();
 		String d = DateUtil.format(new Date(), "yyyy年MM月");

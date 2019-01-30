@@ -20,11 +20,11 @@ public class ParamsUtils {
 	 * @param request
 	 * @return
 	 */
-	public static Map<String, String> getParameterMap(HttpServletRequest request) {
+	public static Map<String, Object> getParameterMap(HttpServletRequest request) {
 		// 参数Map
 		Map<String, String[]> properties = request.getParameterMap();
 		// 返回值Map
-		Map<String, String> returnMap = new HashMap<String, String>();
+		Map<String, Object> returnMap = new HashMap<String, Object>();
 		Iterator<Entry<String, String[]>> entries = properties.entrySet().iterator();
 		Map.Entry<String, String[]> entry;
 		while (entries.hasNext()) {

@@ -70,7 +70,19 @@ public class StudentController2 extends BaseController{
 	
 	public void list(){
 		ResultData result = new ResultData();
-		Map<String, String> paraMap = ParamsUtils.getParameterMap(getRequest());
+		Map<String, Object> paraMap = ParamsUtils.getParameterMap(getRequest());
+		
+		String codes=(String) paraMap.get("code");
+		String names=(String) paraMap.get("name");
+		
+		String[] cs = StringUtil.split(codes);
+		String[] ns= StringUtil.split(StringUtil.nameDecode(names));
+		
+		paraMap.put("cs", cs);
+		paraMap.put("ns", ns);
+		
+		
+		
 		List<Record> list =  srv.list(paraMap);
 		if(CollectionUtil.isEmpty(list)){
 			renderJson(result.setFaild("获取列表失败", null));
@@ -84,7 +96,7 @@ public class StudentController2 extends BaseController{
 		ResultData rd=new ResultData();
 		/*int p = getParaToInt("page");
 		int limit = getParaToInt("limit");*/
-		Map<String, String> paraMap = ParamsUtils.getParameterMap(getRequest());
+		Map<String, Object> paraMap = ParamsUtils.getParameterMap(getRequest());
 		//Page<Student> page = Student.dao.paginate(p, limit,"select * ","from t_student ");
 		Page<Record> r = srv.pageList1(getParaToInt("page", 1), getParaToInt("limit", 10), paraMap, getPara("sort","create_time"),getPara("order","desc"));
 		rd.put("count", r.getTotalRow());

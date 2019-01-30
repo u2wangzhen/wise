@@ -63,9 +63,9 @@ public class ClassRecordServiceImpl implements ClassRecordService {
 
 	// 列表
 
-	public List<Record> list(Map<String, String> param) {
+	public List<Record> list(Map<String, Object> param) {
 		logger.info("获取列表参数{}", param);
-		String date=param.get("date1");
+		String date=(String) param.get("date1");
 		if(StringUtil.isNotEmpty(date)){
 			Date d=null;
 			if("now".equals(date)){
@@ -83,14 +83,14 @@ public class ClassRecordServiceImpl implements ClassRecordService {
 		return Db.find(Db.getSqlPara("classRecord.list", param));
 	}
 
-	public List<Record> studentClassHour(Map<String, String> param) {
+	public List<Record> studentClassHour(Map<String, Object> param) {
 		// TODO Auto-generated method stub
 		if (param.get("date") == null) {
 
 			param.put("start_time", DateUtil.beginOfMonth(new Date()).toString());
 			param.put("end_time", DateUtil.endOfMonth(new Date()).toString());
 		} else {
-			String d = param.get("date");
+			String d = (String) param.get("date");
 			DateTime dd = DateUtil.parse(d + "-1", DatePattern.NORM_DATE_PATTERN);
 			param.put("start_time", DateUtil.beginOfMonth(dd).toString());
 			param.put("end_time", DateUtil.endOfMonth(dd).toString());
@@ -109,14 +109,14 @@ public class ClassRecordServiceImpl implements ClassRecordService {
 		return Db.find(Db.getSqlPara("classRecord.calendar_CH", param));
 	}
 
-	public List<Record> teacherClassHour(Map<String, String> param) {
+	public List<Record> teacherClassHour(Map<String, Object> param) {
 		// TODO Auto-generated method stub
 		if (param.get("date") == null) {
 
 			param.put("start_time", DateUtil.beginOfMonth(new Date()).toString());
 			param.put("end_time", DateUtil.endOfMonth(new Date()).toString());
 		} else {
-			String d = param.get("date");
+			String d = (String) param.get("date");
 			DateTime dd = DateUtil.parse(d + "-1", DatePattern.NORM_DATE_PATTERN);
 			param.put("start_time", DateUtil.beginOfMonth(dd).toString());
 			param.put("end_time", DateUtil.endOfMonth(dd).toString());
@@ -125,14 +125,14 @@ public class ClassRecordServiceImpl implements ClassRecordService {
 		return Db.find(Db.getSqlPara("classRecord.teacher_CH", param));
 	}
 
-	public List<Record> curriculumClassHour(Map<String, String> param) {
+	public List<Record> curriculumClassHour(Map<String, Object> param) {
 		// TODO Auto-generated method stub
 		if (param.get("date") == null) {
 
 			param.put("start_time", DateUtil.beginOfMonth(new Date()).toString());
 			param.put("end_time", DateUtil.endOfMonth(new Date()).toString());
 		} else {
-			String d = param.get("date");
+			String d = (String) param.get("date");
 			DateTime dd = DateUtil.parse(d + "-1", DatePattern.NORM_DATE_PATTERN);
 			param.put("start_time", DateUtil.beginOfMonth(dd).toString());
 			param.put("end_time", DateUtil.endOfMonth(dd).toString());
@@ -143,7 +143,7 @@ public class ClassRecordServiceImpl implements ClassRecordService {
 	
 	// 分页
 
-	public Page<Record> pageList(int pageNum, int pageSize, Map<String, String> paraMap, String sort, String order) {
+	public Page<Record> pageList(int pageNum, int pageSize, Map<String, Object> paraMap, String sort, String order) {
 		logger.info("分页参数{}", paraMap);
 		paraMap.remove("pageNum");
 		paraMap.remove("pageSize");
@@ -156,7 +156,7 @@ public class ClassRecordServiceImpl implements ClassRecordService {
 
 	// 分页1
 
-	public Page<Record> pageList1(int pageNum, int pageSize, Map<String, String> paraMap, String sort, String order) {
+	public Page<Record> pageList1(int pageNum, int pageSize, Map<String, Object> paraMap, String sort, String order) {
 		logger.info("分页参数{}", paraMap);
 		paraMap.remove("page");
 		paraMap.remove("limit");
@@ -166,7 +166,7 @@ public class ClassRecordServiceImpl implements ClassRecordService {
 		
 		if(paraMap.get("cname")!=null){
 			try {
-				kv.set("c.name", "%"+java.net.URLDecoder.decode(paraMap.get("cname"), "UTF-8")+"%");
+				kv.set("c.name", "%"+java.net.URLDecoder.decode((String) paraMap.get("cname"), "UTF-8")+"%");
 			} catch (UnsupportedEncodingException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -174,13 +174,13 @@ public class ClassRecordServiceImpl implements ClassRecordService {
 		}
 		
 		Kv k = Kv.by("params", kv);
-		if (StringUtil.isNotEmpty(paraMap.get("date1"))) {
+		if (StringUtil.isNotEmpty((String) paraMap.get("date1"))) {
 			String d1 = paraMap.get("date1") + " 00:00:00";
 			k.set("date1", DateUtil.parse(d1, DatePattern.NORM_DATETIME_PATTERN));
 			String d2 = paraMap.get("date1") + " 23:59:59";
 			k.set("date2", DateUtil.parse(d2, DatePattern.NORM_DATETIME_PATTERN));
-		}else if (StringUtil.isNotEmpty(paraMap.get("month1"))) {
-			String d=paraMap.get("month1");
+		}else if (StringUtil.isNotEmpty((String) paraMap.get("month1"))) {
+			String d=(String) paraMap.get("month1");
 			DateTime dd = DateUtil.parse(d + "-1", DatePattern.NORM_DATE_PATTERN);
 			k.set("date1", DateUtil.beginOfMonth(dd).toString());
 			k.set("date2", DateUtil.endOfMonth(dd).toString());
