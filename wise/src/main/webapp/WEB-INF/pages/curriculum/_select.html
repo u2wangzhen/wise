@@ -1,0 +1,49 @@
+#@layout_admin() 
+#define js()
+<script src="#(ctx)/static/js/jtUtil.js" charset="utf-8"></script>
+#end 
+#define main_layout()
+<div class="weadmin-body">
+	<div class="layui-collapse">
+	#for(t:ts)
+	<div class="layui-colla-item">
+  		 <h2 class="layui-colla-title">#(t)</h2>
+  		<div class="layui-colla-content">
+	   #for(c:curriculums[t])
+	   <button id="#(c.id)" name="csb" #if(c.type==1)	class="layui-btn layui-btn-sm layui-btn-radius layui-btn-normal" #end #if(c.type==0)class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger" #end>#(c.name)</button>
+	   #end
+  		</div>
+	</div>
+	#end
+	</div>
+</div>
+
+
+
+<script>
+	layui.use([  'jquery','element' ], function() {
+		
+		var $ = layui.$;
+		var element = layui.element;
+		
+
+		
+
+		$("[name='csb']").on('click', function(){
+			 	
+				var data=new Object();
+				
+				data.id=this.id;
+				data.name=this.innerHTML;
+				
+				 parent.setCurriculum(data);
+				 var index = parent.layer.getFrameIndex(window.name); //获取窗口索引  
+				 parent.layer.close(index);
+			
+			 
+		});
+	});
+	
+	
+</script>
+#end
