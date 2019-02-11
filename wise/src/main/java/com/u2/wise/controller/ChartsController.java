@@ -70,7 +70,7 @@ public class ChartsController extends Controller{
 	
 	public void calendarClassHour(){
 		List<String[]> ll=new ArrayList<String[]>();
-		List<Record> list =srv.calendarList("2018");
+		List<Record> list =srv.calendarList("2019");
 		if(list!=null&&!list.isEmpty()){
 			
 			for (Record r : list) {
