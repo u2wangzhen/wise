@@ -8,7 +8,7 @@ import java.util.Set;
 
 public class TeacherTotalBean {
 
-	private String name;
+	private String name;//
 	
 	private Double hours=new Double(0);
 	private int cs=0;
